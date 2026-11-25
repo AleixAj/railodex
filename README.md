@@ -64,7 +64,7 @@ To see the app with a realistic collection:
 1. `python scripts/demo-photos.py` downloads real, freely licensed photos of each train from Wikimedia Commons and crops them around the train. They go to `public/demo/`, which isn't committed.
 2. Open `/demo` (or Ajustes → Colección de ejemplo) and press **Cargar colección de ejemplo**. **Quitar la colección de ejemplo** clears it again, for example after changing the photos.
 
-The page doesn't exist in production. Each photo's author and licence are in `src/app/(app)/demo/pieces.json` and get copied into the piece's notes (the CC licences ask for credit). References and prices are illustrative.
+The page doesn't exist in production. Each photo's author and licence are in `src/app/(app)/demo/pieces.json` and get copied into the piece's notes (the CC licences ask for credit). Catalogue numbers, running numbers, lengths and epochs come from the makers' or dealers' product pages; prices, dates and locations are made up. Model details nobody could confirm (length, interface) are left empty rather than guessed.
 
 ## Scripts
 
