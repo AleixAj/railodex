@@ -577,5 +577,148 @@
       },
       "notes": "Foto del tren real: Falk2, Wikimedia Commons (CC BY-SA 4.0)."
     }
+  },
+  {
+    "slug": "cs2",
+    "photo": {
+      "file": "File:Maerklin cs2.JPG",
+      "author": "Schwenn",
+      "license": "CC BY-SA 3.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Maerklin_cs2.JPG",
+      "crop": [0.5, 0.5, 0.82]
+    },
+    "item": {
+      "traction": null,
+      "system": null,
+      "dcc_address": "",
+      "status": "coleccion",
+      "kind": "accesorio",
+      "name": "Central Station 2",
+      "manufacturer": "Märklin",
+      "catalog_ref": "60215",
+      "scale": "H0",
+      "epoch": "",
+      "railway": "",
+      "road_number": "",
+      "condition": "usado",
+      "purchase_price": "300",
+      "estimated_value": "350",
+      "purchase_date": "2019-03-09",
+      "location": "Estudio › Mesa de control",
+      "tags": "Digital",
+      "details": {
+        "origin": "segunda_mano",
+        "hasBox": true,
+        "hasInstructions": true
+      },
+      "notes": "Foto: Schwenn, Wikimedia Commons (CC BY-SA 3.0)."
+    }
+  },
+  {
+    "slug": "ms2",
+    "photo": {
+      "file": "File:MärklinMobileStation2.JPG",
+      "author": "Hering-Home-Projects",
+      "license": "CC BY-SA 3.0",
+      "page": "https://commons.wikimedia.org/wiki/File:M%C3%A4rklinMobileStation2.JPG",
+      "crop": [0.45, 0.52, 0.9]
+    },
+    "item": {
+      "traction": null,
+      "system": null,
+      "dcc_address": "",
+      "status": "coleccion",
+      "kind": "accesorio",
+      "name": "Mobile Station 2",
+      "manufacturer": "Märklin",
+      "catalog_ref": "60657",
+      "scale": "H0",
+      "epoch": "",
+      "railway": "",
+      "road_number": "",
+      "condition": "como_nuevo",
+      "purchase_price": "",
+      "estimated_value": "75",
+      "purchase_date": "2017-12-24",
+      "location": "Estudio › Mesa de control",
+      "tags": "Digital",
+      "details": {
+        "origin": "regalo",
+        "hasBox": true
+      },
+      "notes": "Foto: Hering-Home-Projects, Wikimedia Commons (CC BY-SA 3.0)."
+    }
+  },
+  {
+    "slug": "c-gleis",
+    "photo": {
+      "file": "File:Verschiedene gerade Märklin Böschungbettungs-Geleise der Spur H0 (C-Gleise) 188,3 mm lang.jpg",
+      "author": "Bourbaki 2021",
+      "license": "CC BY-SA 4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Verschiedene_gerade_M%C3%A4rklin_B%C3%B6schungbettungs-Geleise_der_Spur_H0_(C-Gleise)_188,3_mm_lang.jpg",
+      "crop": [0.5, 0.5, 1.0]
+    },
+    "item": {
+      "traction": null,
+      "system": null,
+      "dcc_address": "",
+      "status": "coleccion",
+      "kind": "accesorio",
+      "name": "Vía recta C 188,3 mm (10 uds.)",
+      "manufacturer": "Märklin",
+      "catalog_ref": "24188",
+      "scale": "H0",
+      "epoch": "",
+      "railway": "",
+      "road_number": "",
+      "condition": "nuevo",
+      "purchase_price": "36",
+      "estimated_value": "38.90",
+      "purchase_date": "2024-02-10",
+      "location": "Estudio › Armario › Caja 4",
+      "tags": "Vía",
+      "details": {
+        "lengthMm": 188,
+        "origin": "tienda",
+        "hasBox": true
+      },
+      "notes": "Foto: Bourbaki 2021, Wikimedia Commons (CC BY-SA 4.0)."
+    }
+  },
+  {
+    "slug": "faller-muhle",
+    "photo": {
+      "file": "File:Faller Mäulesmühle BW 2.jpg",
+      "author": "Berthold Werner",
+      "license": "CC BY-SA 3.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Faller_M%C3%A4ulesm%C3%BChle_BW_2.jpg",
+      "crop": [0.43, 0.55, 0.9]
+    },
+    "item": {
+      "traction": null,
+      "system": null,
+      "dcc_address": "",
+      "status": "coleccion",
+      "kind": "accesorio",
+      "name": "Casa de entramado «Mäulesmühle»",
+      "manufacturer": "Faller",
+      "catalog_ref": "130419",
+      "scale": "H0",
+      "epoch": "",
+      "railway": "",
+      "road_number": "",
+      "condition": "como_nuevo",
+      "purchase_price": "42",
+      "estimated_value": "49.90",
+      "purchase_date": "2025-04-26",
+      "location": "Salón › Maqueta",
+      "tags": "Edificio, Montado",
+      "details": {
+        "origin": "feria",
+        "hasBox": true,
+        "hasInstructions": true
+      },
+      "notes": "Foto: Berthold Werner, Wikimedia Commons (CC BY-SA 3.0)."
+    }
   }
 ]

@@ -218,14 +218,15 @@ export default async function InicioPage() {
                   <Link key={i.id} href={`/coleccion/${i.id}`} className="group">
                     <div className="relative aspect-[4/3] overflow-hidden rounded-lg border border-ln">
                       <PhotoBox src={covers[i.id]} alt={i.name} kind={i.kind} />
-                      <span className="absolute left-2 top-2">
-                        <ScaleBadge scale={i.scale} />
-                      </span>
                     </div>
                     <p className="mt-2 truncate text-[15px] font-semibold group-hover:text-ambtx">{i.name}</p>
-                    <p className="truncate font-mono text-[13px] text-fg3">
-                      {[i.manufacturer, i.catalog_ref].filter(Boolean).join(" ")}
-                    </p>
+                    {/* The badge sat on the photo before, where its tinted colours got lost. */}
+                    <div className="mt-1 flex min-w-0 items-center gap-1.5">
+                      <ScaleBadge scale={i.scale} />
+                      <p className="truncate font-mono text-[13px] text-fg3">
+                        {[i.manufacturer, i.catalog_ref].filter(Boolean).join(" ")}
+                      </p>
+                    </div>
                   </Link>
                 ))}
               </div>

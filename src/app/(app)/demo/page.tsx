@@ -24,8 +24,8 @@ export default async function DemoPage() {
         <h1 className="mt-1 font-display text-[34px] font-bold tracking-tight">Colección de ejemplo</h1>
         <p className="mt-1 text-fg2">
           Carga {pieces.length} piezas con fotos reales de Wikimedia Commons para ver la app como quedaría con una
-          colección real. Las fotos son de los trenes de verdad (el autor está en las notas de cada pieza). Las
-          referencias son de modelos que existen; los precios, fechas y ubicaciones son de ejemplo.
+          colección real. Las fotos son de los trenes y accesorios de verdad (el autor está en las notas de cada pieza).
+          Las referencias son de modelos que existen; los precios, fechas y ubicaciones son de ejemplo.
         </p>
       </div>
       <DemoSeeder
