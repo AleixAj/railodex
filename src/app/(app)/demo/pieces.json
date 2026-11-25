@@ -1,8 +1,13 @@
 [
   {
     "slug": "renfe-333-talgo",
-    "prompt": "a single Spanish RENFE class 333 diesel locomotive alone on one straight track, six-axle, grey body with broad yellow band, Talgo livery, only one vehicle",
-    "seed": 5,
+    "photo": {
+      "file": "File:Bf Sevilla S.J., 333 077.jpg",
+      "author": "Falk2",
+      "license": "CC BY 3.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Bf_Sevilla_S.J.,_333_077.jpg",
+      "crop": [0.45, 0.62, 0.85]
+    },
     "item": {
       "kind": "locomotora",
       "traction": "diesel",
@@ -31,7 +36,7 @@
         "sound": true,
         "speaker": "Sugar Cube 15×11 mm",
         "railcom": true,
-        "livery": "Gris y amarillo Talgo",
+        "livery": "Gris y amarillo Renfe",
         "lengthMm": 241,
         "coupler": "NEM 362 con cinemática",
         "origin": "online",
@@ -60,13 +65,19 @@
             "label": "Compresor"
           }
         ]
-      }
+      },
+      "notes": "Foto del tren real: Falk2, Wikimedia Commons (CC BY 3.0)."
     }
   },
   {
     "slug": "renfe-241f-montana",
-    "prompt": "large black Spanish steam locomotive with tender, 4-8-2 Mountain type, red wheels, brass details",
-    "seed": 23,
+    "photo": {
+      "file": "File:RENFE 241F-2108.jpg",
+      "author": "Juan Enrique Gilardi",
+      "license": "CC BY-SA 2.0",
+      "page": "https://commons.wikimedia.org/wiki/File:RENFE_241F-2108.jpg",
+      "crop": [0.5, 0.55, 1.0]
+    },
     "item": {
       "kind": "locomotora",
       "traction": "vapor",
@@ -99,13 +110,19 @@
         "origin": "feria",
         "seller": "Bolsa de Alcalá",
         "hasBox": true
-      }
+      },
+      "notes": "Foto del tren real: Juan Enrique Gilardi, Wikimedia Commons (CC BY-SA 2.0)."
     }
   },
   {
     "slug": "renfe-269-electrica",
-    "prompt": "Spanish RENFE class 269 electric locomotive, boxy body in orange and dark grey livery, two pantographs on the roof",
-    "seed": 31,
+    "photo": {
+      "file": "File:Renfe clase 269.jpg",
+      "author": "Jorge González",
+      "license": "CC BY-SA 3.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Renfe_clase_269.jpg",
+      "crop": [0.62, 0.52, 0.85]
+    },
     "item": {
       "kind": "locomotora",
       "traction": "electrica",
@@ -114,7 +131,7 @@
       "manufacturer": "Mabar",
       "catalog_ref": "81501",
       "scale": "H0",
-      "epoch": "IV",
+      "epoch": "V",
       "railway": "RENFE",
       "road_number": "269.201",
       "dcc_address": "269",
@@ -133,17 +150,23 @@
         "decoderOrigin": "fabrica",
         "decoder": "ESU LokPilot 5",
         "sound": false,
-        "livery": "Naranja y gris «Estrella»",
+        "livery": "Gris y azul Renfe",
         "lengthMm": 236,
         "origin": "tienda",
         "hasBox": true
-      }
+      },
+      "notes": "Foto del tren real: Jorge González, Wikimedia Commons (CC BY-SA 3.0)."
     }
   },
   {
     "slug": "renfe-319-diesel",
-    "prompt": "Spanish RENFE class 319 diesel locomotive, six-axle, green and yellow livery, long hood",
-    "seed": 44,
+    "photo": {
+      "file": "File:RENFE 319-201 TCR Villaverde.jpg",
+      "author": "Iván Rivera",
+      "license": "CC BY-SA 2.0",
+      "page": "https://commons.wikimedia.org/wiki/File:RENFE_319-201_TCR_Villaverde.jpg",
+      "crop": [0.55, 0.55, 0.95]
+    },
     "item": {
       "kind": "locomotora",
       "traction": "diesel",
@@ -170,18 +193,24 @@
         "decoderOrigin": "fabrica",
         "decoder": "ESU LokSound 5",
         "sound": true,
-        "livery": "Verde y amarillo",
+        "livery": "Gris y amarillo Renfe",
         "lengthMm": 224,
         "origin": "online",
         "hasBox": true,
         "hasInstructions": true
-      }
+      },
+      "notes": "Foto del tren real: Iván Rivera, Wikimedia Commons (CC BY-SA 2.0)."
     }
   },
   {
     "slug": "db-br103",
-    "prompt": "German DB class 103 electric locomotive, six-axle, crimson red and cream TEE livery, sleek streamlined nose, pantographs",
-    "seed": 52,
+    "photo": {
+      "file": "File:103 224+TEE DDM.jpg",
+      "author": "Urmelbeauftragter",
+      "license": "CC BY-SA 3.0",
+      "page": "https://commons.wikimedia.org/wiki/File:103_224%2BTEE_DDM.jpg",
+      "crop": [0.5, 0.6, 0.8]
+    },
     "item": {
       "kind": "locomotora",
       "traction": "electrica",
@@ -209,18 +238,24 @@
         "decoderOrigin": "fabrica",
         "decoder": "Märklin mSD3",
         "sound": true,
-        "livery": "Rojo y crema TEE",
+        "livery": "Crema y rojo TEE",
         "lengthMm": 233,
         "origin": "tienda",
         "hasBox": true,
         "hasInstructions": true
-      }
+      },
+      "notes": "Foto del tren real: Urmelbeauftragter, Wikimedia Commons (CC BY-SA 3.0)."
     }
   },
   {
     "slug": "db-br01",
-    "prompt": "German DB class 01 express steam locomotive with tender, black body with red frames and wheels, large smoke deflectors",
-    "seed": 61,
+    "photo": {
+      "file": "File:01118 Koenigstein.jpg",
+      "author": "Eva K.",
+      "license": "CC BY-SA 2.5",
+      "page": "https://commons.wikimedia.org/wiki/File:01118_Koenigstein.jpg",
+      "crop": [0.48, 0.55, 0.9]
+    },
     "item": {
       "kind": "locomotora",
       "traction": "vapor",
@@ -252,13 +287,19 @@
         "lengthMm": 278,
         "origin": "segunda_mano",
         "hasBox": true
-      }
+      },
+      "notes": "Foto del tren real: Eva K., Wikimedia Commons (CC BY-SA 2.5)."
     }
   },
   {
     "slug": "talgo-cafeteria",
-    "prompt": "short low-floor Spanish Talgo III passenger coach, silver stainless steel body with a thin red stripe, single axle articulated car",
-    "seed": 73,
+    "photo": {
+      "file": "File:Bf Granada, Talgo-III-Endwagen TG1-26.jpg",
+      "author": "Falk2",
+      "license": "CC BY 3.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Bf_Granada,_Talgo-III-Endwagen_TG1-26.jpg",
+      "crop": [0.42, 0.58, 0.7]
+    },
     "item": {
       "kind": "coche",
       "traction": null,
@@ -286,13 +327,19 @@
         "lengthMm": 152,
         "origin": "online",
         "hasBox": true
-      }
+      },
+      "notes": "Foto del tren real: Falk2, Wikimedia Commons (CC BY 3.0)."
     }
   },
   {
     "slug": "vagon-tolva",
-    "prompt": "brown freight hopper wagon with four axles, weathered rust, open top with coal load",
-    "seed": 85,
+    "photo": {
+      "file": "File:Tolva en Vitoria 1.JPG",
+      "author": "Yrithinnd",
+      "license": "CC BY-SA 3.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Tolva_en_Vitoria_1.JPG",
+      "crop": [0.47, 0.55, 0.85]
+    },
     "item": {
       "kind": "vagon",
       "traction": null,
@@ -314,17 +361,23 @@
       "tags": "Mercancías",
       "details": {
         "wagonSubtype": "Tolva",
-        "livery": "Marrón envejecido",
+        "livery": "Verde Renfe",
         "lengthMm": 165,
         "origin": "feria",
         "hasBox": false
-      }
+      },
+      "notes": "Foto del tren real: Yrithinnd, Wikimedia Commons (CC BY-SA 3.0)."
     }
   },
   {
     "slug": "vagon-cisterna",
-    "prompt": "white chemical tank wagon with two bogies, cylindrical tank with ladder and walkway",
-    "seed": 92,
+    "photo": {
+      "file": "File:J40 009 Bf Heiligenstadt Ost, VTG-Kesselwagen.jpg",
+      "author": "Falk2",
+      "license": "CC BY-SA 4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:J40_009_Bf_Heiligenstadt_Ost,_VTG-Kesselwagen.jpg",
+      "crop": [0.5, 0.52, 0.95]
+    },
     "item": {
       "kind": "vagon",
       "traction": null,
@@ -346,17 +399,23 @@
       "tags": "Mercancías",
       "details": {
         "wagonSubtype": "Cisterna",
-        "livery": "Blanco VTG",
+        "livery": "Gris plata VTG",
         "lengthMm": 175,
         "origin": "online",
         "hasBox": true
-      }
+      },
+      "notes": "Foto del tren real: Falk2, Wikimedia Commons (CC BY-SA 4.0)."
     }
   },
   {
     "slug": "ferrobus-591",
-    "prompt": "small Spanish railbus single-car diesel multiple unit, cream and red livery, rounded front windows",
-    "seed": 101,
+    "photo": {
+      "file": "File:Ferrobús 591-441 en la estación de Madrid-Atocha, en septiembre de 1979.jpg",
+      "author": "José Ignacio Esnarriaga San José",
+      "license": "CC BY 4.0",
+      "page": "https://commons.wikimedia.org/wiki/File:Ferrob%C3%BAs_591-441_en_la_estaci%C3%B3n_de_Madrid-Atocha,_en_septiembre_de_1979.jpg",
+      "crop": [0.72, 0.55, 0.58]
+    },
     "item": {
       "kind": "automotor",
       "traction": "diesel",
@@ -383,11 +442,12 @@
         "current": "dc",
         "digitalReady": false,
         "directionalLights": true,
-        "livery": "Crema y rojo",
+        "livery": "Gris y verde",
         "lengthMm": 82,
         "origin": "herencia",
         "hasBox": false
-      }
+      },
+      "notes": "Foto del tren real: José Ignacio Esnarriaga San José, Wikimedia Commons (CC BY 4.0)."
     }
   }
 ]

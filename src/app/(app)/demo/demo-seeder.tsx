@@ -2,13 +2,13 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { CircleCheck, CircleX, LoaderCircle, Sparkles, Trash2 } from "lucide-react";
+import { CircleCheck, CircleX, LoaderCircle, RotateCcw, Sparkles, Trash2 } from "lucide-react";
 import { saveItem } from "@/app/(app)/anadir/actions";
 import { createClient } from "@/lib/supabase/client";
 import { syncPhotos } from "@/components/item-wizard/photos";
 import { btn, Card } from "@/components/ui";
 import type { DemoPiece } from "./page";
-import { deleteTestPieces } from "./actions";
+import { deletePieces } from "./actions";
 
 type Status = "pending" | "working" | "done" | "skipped" | "failed";
 
@@ -29,6 +29,8 @@ export function DemoSeeder({
   const [running, start] = useTransition();
   const tests = existing.filter((i) => isTestPiece(i.name));
   const owned = new Set(existing.map((i) => i.name));
+  const demoNames = new Set(pieces.map((p) => p.item.name));
+  const loaded = existing.filter((i) => demoNames.has(i.name));
 
   const load = () =>
     start(async () => {
@@ -55,7 +57,15 @@ export function DemoSeeder({
 
   const clearTests = () =>
     start(async () => {
-      await deleteTestPieces(tests.map((t) => t.id));
+      await deletePieces(tests.map((t) => t.id));
+      router.refresh();
+    });
+
+  // Handy after changing the photos or the data in pieces.json: clear it, then load again.
+  const clearDemo = () =>
+    start(async () => {
+      await deletePieces(loaded.map((i) => i.id));
+      setStatus({});
       router.refresh();
     });
 
@@ -65,6 +75,11 @@ export function DemoSeeder({
         <button onClick={load} disabled={running} className={btn.primary}>
           <Sparkles className="h-[18px] w-[18px]" /> {running ? "Cargando…" : "Cargar colección de ejemplo"}
         </button>
+        {loaded.length > 0 && (
+          <button onClick={clearDemo} disabled={running} className={btn.secondary}>
+            <RotateCcw className="h-[18px] w-[18px]" /> Quitar la colección de ejemplo
+          </button>
+        )}
         {tests.length > 0 && (
           <button onClick={clearTests} disabled={running} className={btn.danger}>
             <Trash2 className="h-[18px] w-[18px]" /> Borrar {tests.length} piezas de prueba

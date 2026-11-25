@@ -9,8 +9,8 @@ export const metadata: Metadata = { title: "Colección de ejemplo" };
 
 export type DemoPiece = { slug: string; item: ItemPayload };
 
-// Development helper: fills your account with an example collection and AI-generated
-// photos (scripts/demo-photos.py) so the app can be seen as it would look in real use.
+// Development helper: fills your account with an example collection and real photos
+// from Wikimedia Commons (scripts/demo-photos.py) so the app can be seen as it would look in real use.
 // It doesn't exist in production.
 export default async function DemoPage() {
   if (process.env.NODE_ENV === "production") notFound();
@@ -23,8 +23,9 @@ export default async function DemoPage() {
         <p className="font-mono text-[13px] uppercase tracking-[0.08em] text-ambtx">Solo en desarrollo</p>
         <h1 className="mt-1 font-display text-[34px] font-bold tracking-tight">Colección de ejemplo</h1>
         <p className="mt-1 text-fg2">
-          Carga {pieces.length} piezas con fotos generadas con IA para ver la app como quedaría con una colección real.
-          Las referencias y los precios son de ejemplo.
+          Carga {pieces.length} piezas con fotos reales de Wikimedia Commons para ver la app como quedaría con una
+          colección real. Las fotos son de los trenes de verdad (el autor está en las notas de cada pieza); las
+          referencias y los precios son de ejemplo.
         </p>
       </div>
       <DemoSeeder

@@ -61,10 +61,10 @@ docs/                   the prompt used for the design
 
 To see the app with a realistic collection:
 
-1. `python scripts/demo-photos.py` generates the photos with AI (Pollinations, free and without an account; about one per minute). They go to `public/demo/`, which isn't committed.
-2. Open `/demo` (or Ajustes → Colección de ejemplo) and press **Cargar colección de ejemplo**.
+1. `python scripts/demo-photos.py` downloads real, freely licensed photos of each train from Wikimedia Commons and crops them around the train. They go to `public/demo/`, which isn't committed.
+2. Open `/demo` (or Ajustes → Colección de ejemplo) and press **Cargar colección de ejemplo**. **Quitar la colección de ejemplo** clears it again, for example after changing the photos.
 
-The page doesn't exist in production. References and prices in `src/app/(app)/demo/pieces.json` are illustrative.
+The page doesn't exist in production. Each photo's author and licence are in `src/app/(app)/demo/pieces.json` and get copied into the piece's notes (the CC licences ask for credit). References and prices are illustrative.
 
 ## Scripts
 
