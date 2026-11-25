@@ -9,7 +9,7 @@ import { completeness, money, shortDate } from "@/lib/format";
 import type { Item, ItemEvent, ItemPhoto } from "@/lib/types";
 import { Card, ScaleBadge, SectionTitle, Tag, btn } from "@/components/ui";
 import { WheelDiagram } from "@/components/wheel-diagram";
-import { AddEventForm, DeleteEventButton, DeleteItemButton, Gallery, StatusSelect } from "./client-parts";
+import { AddEventForm, CompositionPicker, DeleteEventButton, DeleteItemButton, Gallery, StatusSelect } from "./client-parts";
 
 export async function generateMetadata({ params }: PageProps<"/coleccion/[id]">): Promise<Metadata> {
   const { id } = await params;
@@ -23,12 +23,17 @@ export default async function FichaPage({ params }: PageProps<"/coleccion/[id]">
   if (!/^[0-9a-f-]{36}$/i.test(id)) notFound();
   const { supabase } = await requireUser();
 
-  const [{ data: itemData }, { data: photosData }, { data: eventsData }] = await Promise.all([
+  const [{ data: itemData }, { data: photosData }, { data: eventsData }, { data: compsData }, { data: linksData }] = await Promise.all([
     supabase.from("items").select("*").eq("id", id).maybeSingle(),
     supabase.from("item_photos").select("*").eq("item_id", id).order("position"),
     supabase.from("item_events").select("*").eq("item_id", id).order("happened_on", { ascending: false }),
+    supabase.from("compositions").select("id, name").order("name"),
+    supabase.from("composition_items").select("composition_id").eq("item_id", id),
   ]);
   if (!itemData) notFound();
+
+  const inTrains = new Set((linksData ?? []).map((l) => l.composition_id));
+  const compositions = (compsData ?? []).map((c) => ({ ...c, member: inTrains.has(c.id) }));
 
   const item = itemData as Item;
   const d = item.details ?? {};
@@ -68,6 +73,7 @@ export default async function FichaPage({ params }: PageProps<"/coleccion/[id]">
         <div className="ml-auto flex flex-wrap gap-2">
           <Link href={`/coleccion/${item.id}/editar`} className={btn.secondary}><Pencil className="h-[18px] w-[18px]" /> Editar</Link>
           <Link href={`/anadir?duplicar=${item.id}`} className={btn.secondary}><Copy className="h-[18px] w-[18px]" /> Duplicar</Link>
+          <CompositionPicker itemId={item.id} compositions={compositions} />
           <DeleteItemButton itemId={item.id} name={item.name} />
         </div>
       </div>

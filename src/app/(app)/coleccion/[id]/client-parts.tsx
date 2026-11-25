@@ -1,7 +1,9 @@
 "use client";
 
 import { useActionState, useRef, useState, useTransition } from "react";
-import { ChevronLeft, ChevronRight, Plus, Trash2, X } from "lucide-react";
+import Link from "next/link";
+import { Check, ChevronLeft, ChevronRight, Plus, TrainTrack, Trash2, X } from "lucide-react";
+import { addToComposition } from "@/app/(app)/composiciones/actions";
 import { EVENT_KINDS, STATUSES } from "@/lib/catalog";
 import type { Kind } from "@/lib/catalog";
 import { PhotoBox, btn, field, Label } from "@/components/ui";
@@ -141,6 +143,54 @@ export function AddEventForm({ itemId }: { itemId: string }) {
       {state.error && <p className="text-red">{state.error}</p>}
       <button className={btn.primary} disabled={pending}>{pending ? "Guardando…" : "Guardar"}</button>
     </form>
+  );
+}
+
+/** Lists your trains and adds this piece to the end of the one you pick. */
+export function CompositionPicker({ itemId, compositions }: { itemId: string; compositions: { id: string; name: string; member: boolean }[] }) {
+  const dialog = useRef<HTMLDialogElement>(null);
+  const [pending, start] = useTransition();
+  const [added, setAdded] = useState<string[]>([]);
+
+  return (
+    <>
+      <button onClick={() => dialog.current?.showModal()} className={btn.secondary}>
+        <TrainTrack className="h-[18px] w-[18px]" /> Añadir a composición
+      </button>
+      <dialog ref={dialog} className="m-auto w-[min(420px,calc(100%-32px))] rounded-xl border border-ln2 bg-s1 p-5 text-fg backdrop:bg-black/60">
+        <div className="flex items-center justify-between">
+          <h2 className="font-display text-xl font-bold">Añadir a composición</h2>
+          <button onClick={() => dialog.current?.close()} aria-label="Cerrar" className="rounded p-1 text-fg3 hover:text-fg"><X className="h-5 w-5" /></button>
+        </div>
+        {compositions.length === 0 ? (
+          <p className="mt-3 text-fg2">
+            Aún no tienes composiciones. <Link href="/composiciones" className="text-ambtx underline">Crea una</Link>.
+          </p>
+        ) : (
+          <ul className="mt-3 flex flex-col gap-1.5">
+            {compositions.map((c) => {
+              const inside = c.member || added.includes(c.id);
+              return (
+                <li key={c.id} className="flex items-center justify-between gap-3 rounded-lg border border-ln px-3 py-2">
+                  <Link href={`/composiciones/${c.id}`} className="truncate hover:text-ambtx">{c.name}</Link>
+                  {inside ? (
+                    <span className="flex items-center gap-1 text-[14px] text-grn"><Check className="h-4 w-4" /> Dentro</span>
+                  ) : (
+                    <button
+                      disabled={pending}
+                      onClick={() => start(async () => { await addToComposition(c.id, itemId); setAdded((a) => [...a, c.id]); })}
+                      className="rounded-md border border-ln2 px-2.5 py-1 text-[14px] hover:border-amb hover:text-ambtx"
+                    >
+                      Añadir
+                    </button>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        )}
+      </dialog>
+    </>
   );
 }
 
