@@ -24,7 +24,10 @@ export default async function MantenimientoPage({ searchParams }: PageProps<"/ma
   const { supabase } = await requireUser();
 
   const [{ data: eventsData }, { data: tractorsData }] = await Promise.all([
-    supabase.from("item_events").select("id, item_id, happened_on, kind, title, cost, notes, items(name)").order("happened_on", { ascending: false }),
+    supabase
+      .from("item_events")
+      .select("id, item_id, happened_on, kind, title, cost, notes, items(name)")
+      .order("happened_on", { ascending: false }),
     supabase.from("items").select("id, name").in("kind", ["locomotora", "automotor"]).neq("status", "vendida"),
   ]);
   const all = (eventsData ?? []) as unknown as EventRow[];
@@ -39,9 +42,11 @@ export default async function MantenimientoPage({ searchParams }: PageProps<"/ma
   const cutoff = new Date();
   cutoff.setFullYear(cutoff.getFullYear() - 1);
   const lastByItem = new Map<string, string>();
-  all.filter((e) => e.kind === "mantenimiento").forEach((e) => {
-    if (!lastByItem.has(e.item_id)) lastByItem.set(e.item_id, e.happened_on);
-  });
+  all
+    .filter((e) => e.kind === "mantenimiento")
+    .forEach((e) => {
+      if (!lastByItem.has(e.item_id)) lastByItem.set(e.item_id, e.happened_on);
+    });
   const overdue = (tractorsData ?? []).filter((t) => {
     const last = lastByItem.get(t.id);
     return !last || new Date(last) < cutoff;
@@ -64,9 +69,13 @@ export default async function MantenimientoPage({ searchParams }: PageProps<"/ma
       <div className="grid gap-3 xl:grid-cols-[2fr_1fr]">
         <Card className="p-5">
           <div className="flex flex-wrap gap-2" role="navigation" aria-label="Filtrar por tipo">
-            <FilterLink href="/mantenimiento" active={!filter}>Todo</FilterLink>
+            <FilterLink href="/mantenimiento" active={!filter}>
+              Todo
+            </FilterLink>
             {EVENT_KINDS.map((k) => (
-              <FilterLink key={k.id} href={`/mantenimiento?tipo=${k.id}`} active={filter === k.id}>{k.label}</FilterLink>
+              <FilterLink key={k.id} href={`/mantenimiento?tipo=${k.id}`} active={filter === k.id}>
+                {k.label}
+              </FilterLink>
             ))}
           </div>
           {events.length === 0 ? (
@@ -85,7 +94,9 @@ export default async function MantenimientoPage({ searchParams }: PageProps<"/ma
                         {shortDate(e.happened_on)} <Tag>{labelOf(EVENT_KINDS, e.kind)}</Tag>
                       </p>
                       <p className="mt-1 font-semibold">{e.title}</p>
-                      <Link href={`/coleccion/${e.item_id}`} className="text-[15px] text-ambtx hover:underline">{e.items?.name}</Link>
+                      <Link href={`/coleccion/${e.item_id}`} className="text-[15px] text-ambtx hover:underline">
+                        {e.items?.name}
+                      </Link>
                       {e.notes && <p className="text-[15px] text-fg2">{e.notes}</p>}
                     </div>
                     {e.cost !== null && <span className="font-mono">{money(e.cost)}</span>}
@@ -105,8 +116,12 @@ export default async function MantenimientoPage({ searchParams }: PageProps<"/ma
             <ul className="mt-3 flex flex-col gap-2 text-[15px]">
               {overdue.slice(0, 15).map((t) => (
                 <li key={t.id} className="flex justify-between gap-3">
-                  <Link href={`/coleccion/${t.id}`} className="truncate hover:text-ambtx">{t.name}</Link>
-                  <span className="flex-none font-mono text-[13px] text-fg3">{lastByItem.get(t.id) ? shortDate(lastByItem.get(t.id)!) : "nunca"}</span>
+                  <Link href={`/coleccion/${t.id}`} className="truncate hover:text-ambtx">
+                    {t.name}
+                  </Link>
+                  <span className="flex-none font-mono text-[13px] text-fg3">
+                    {lastByItem.get(t.id) ? shortDate(lastByItem.get(t.id)!) : "nunca"}
+                  </span>
                 </li>
               ))}
             </ul>

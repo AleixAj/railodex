@@ -6,7 +6,19 @@ import { Plus, X } from "lucide-react";
 import { DEFAULT_FUNCTIONS } from "@/lib/catalog";
 import { PhotoBox, Tag, btn, field, Label } from "@/components/ui";
 
-export function Choice({ options, value, onChange, big, mono }: { options: { id: string; label: string }[]; value: string; onChange: (v: string) => void; big?: boolean; mono?: boolean }) {
+export function Choice({
+  options,
+  value,
+  onChange,
+  big,
+  mono,
+}: {
+  options: { id: string; label: string }[];
+  value: string;
+  onChange: (v: string) => void;
+  big?: boolean;
+  mono?: boolean;
+}) {
   return (
     <div className={big ? "grid grid-cols-2 gap-3 sm:grid-cols-4" : "flex flex-wrap gap-2"} role="radiogroup">
       {options.map((o) => {
@@ -40,14 +52,22 @@ export function Toggle({ label, value, onChange }: { label: string; value?: bool
         onClick={() => onChange(!value)}
         className={`relative h-7 w-12 flex-none rounded-full transition ${value ? "bg-amb" : "bg-ln2"}`}
       >
-        <span className={`absolute top-1 h-5 w-5 rounded-full bg-white transition-all ${value ? "left-6" : "left-1"}`} />
+        <span
+          className={`absolute top-1 h-5 w-5 rounded-full bg-white transition-all ${value ? "left-6" : "left-1"}`}
+        />
       </button>
       <span className="text-[16px]">{label}</span>
     </label>
   );
 }
 
-export function FunctionsEditor({ value, onChange }: { value: { key: string; label: string }[]; onChange: (v: { key: string; label: string }[]) => void }) {
+export function FunctionsEditor({
+  value,
+  onChange,
+}: {
+  value: { key: string; label: string }[];
+  onChange: (v: { key: string; label: string }[]) => void;
+}) {
   const list = value;
   const update = (i: number, label: string) => onChange(list.map((f, j) => (j === i ? { ...f, label } : f)));
   return (
@@ -55,7 +75,11 @@ export function FunctionsEditor({ value, onChange }: { value: { key: string; lab
       <div className="mb-2 flex items-center justify-between">
         <Label>Tabla de funciones</Label>
         {list.length === 0 && (
-          <button type="button" onClick={() => onChange(DEFAULT_FUNCTIONS)} className="text-[15px] text-ambtx hover:underline">
+          <button
+            type="button"
+            onClick={() => onChange(DEFAULT_FUNCTIONS)}
+            className="text-[15px] text-ambtx hover:underline"
+          >
             Rellenar las habituales
           </button>
         )}
@@ -64,14 +88,29 @@ export function FunctionsEditor({ value, onChange }: { value: { key: string; lab
         {list.map((f, i) => (
           <div key={f.key} className="flex items-center gap-2">
             <span className="w-12 font-mono font-semibold text-ambtx">{f.key}</span>
-            <input aria-label={`Función ${f.key}`} className={`${field} h-10`} value={f.label} onChange={(e) => update(i, e.target.value)} placeholder="Luces, bocina, humo…" />
-            <button type="button" onClick={() => onChange(list.filter((_, j) => j !== i).map((x, j) => ({ ...x, key: `F${j}` })))} aria-label={`Quitar ${f.key}`} className="rounded p-2 text-fg3 hover:text-red">
+            <input
+              aria-label={`Función ${f.key}`}
+              className={`${field} h-10`}
+              value={f.label}
+              onChange={(e) => update(i, e.target.value)}
+              placeholder="Luces, bocina, humo…"
+            />
+            <button
+              type="button"
+              onClick={() => onChange(list.filter((_, j) => j !== i).map((x, j) => ({ ...x, key: `F${j}` })))}
+              aria-label={`Quitar ${f.key}`}
+              className="rounded p-2 text-fg3 hover:text-red"
+            >
               <X className="h-4 w-4" />
             </button>
           </div>
         ))}
         {list.length < 69 && (
-          <button type="button" onClick={() => onChange([...list, { key: `F${list.length}`, label: "" }])} className={`${btn.ghost} self-start`}>
+          <button
+            type="button"
+            onClick={() => onChange([...list, { key: `F${list.length}`, label: "" }])}
+            className={`${btn.ghost} self-start`}
+          >
             <Plus className="h-4 w-4" /> Añadir función F{list.length}
           </button>
         )}
@@ -84,8 +123,16 @@ export function PhotoThumb({ url, first, onRemove }: { url: string; first: boole
   return (
     <div className="relative aspect-[4/3] overflow-hidden rounded-lg border border-ln">
       <PhotoBox src={url} alt="Foto de la pieza" />
-      {first && <span className="absolute left-2 top-2"><Tag tone="amb">Portada</Tag></span>}
-      <button onClick={onRemove} aria-label="Quitar foto" className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full bg-bg/80 text-fg hover:text-red">
+      {first && (
+        <span className="absolute left-2 top-2">
+          <Tag tone="amb">Portada</Tag>
+        </span>
+      )}
+      <button
+        onClick={onRemove}
+        aria-label="Quitar foto"
+        className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full bg-bg/80 text-fg hover:text-red"
+      >
         <X className="h-4 w-4" />
       </button>
     </div>

@@ -78,7 +78,9 @@ export function AppShell({
           <div className="rail-rule" aria-hidden />
         </header>
 
-        <main className="mx-auto w-full max-w-[1400px] flex-1 px-4 py-6 lg:px-8 lg:py-8 print:max-w-none print:p-0">{children}</main>
+        <main className="mx-auto w-full max-w-[1400px] flex-1 px-4 py-6 lg:px-8 lg:py-8 print:max-w-none print:p-0">
+          {children}
+        </main>
       </div>
 
       {!inWizard && (

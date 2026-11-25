@@ -34,12 +34,15 @@ export default async function EtiquetasPage({ searchParams }: PageProps<"/ubicac
   return (
     <div className="flex flex-col gap-5">
       <div className="flex flex-wrap items-center gap-2 print:hidden">
-        <Link href="/ubicaciones" className={btn.ghost}><ChevronLeft className="h-4 w-4" /> Ubicaciones</Link>
+        <Link href="/ubicaciones" className={btn.ghost}>
+          <ChevronLeft className="h-4 w-4" /> Ubicaciones
+        </Link>
         <h1 className="mr-auto font-display text-[28px] font-bold tracking-tight">Etiquetas QR</h1>
         <PrintButton />
       </div>
       <p className="text-fg2 print:hidden">
-        Pega cada etiqueta en su vitrina, estante o caja. Al escanearla con el móvil verás qué piezas hay dentro (hay que tener la sesión abierta).
+        Pega cada etiqueta en su vitrina, estante o caja. Al escanearla con el móvil verás qué piezas hay dentro (hay
+        que tener la sesión abierta).
       </p>
 
       {labels.length === 0 ? (
@@ -47,11 +50,16 @@ export default async function EtiquetasPage({ searchParams }: PageProps<"/ubicac
       ) : (
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 print:grid-cols-3 print:gap-2">
           {labels.map((n) => (
-            <div key={n.path} className="flex break-inside-avoid flex-col items-center gap-2 rounded-lg border border-ln2 bg-white p-4 text-black print:border-black">
+            <div
+              key={n.path}
+              className="flex break-inside-avoid flex-col items-center gap-2 rounded-lg border border-ln2 bg-white p-4 text-black print:border-black"
+            >
               <div className="h-32 w-32" dangerouslySetInnerHTML={{ __html: n.svg }} />
               <p className="text-center text-[15px] font-semibold leading-tight">{n.name}</p>
               <p className="text-center font-mono text-[11px] leading-tight text-neutral-600">{n.path}</p>
-              <p className="font-mono text-[11px] text-neutral-500">RAILODEX · {n.count} {n.count === 1 ? "pieza" : "piezas"}</p>
+              <p className="font-mono text-[11px] text-neutral-500">
+                RAILODEX · {n.count} {n.count === 1 ? "pieza" : "piezas"}
+              </p>
             </div>
           ))}
         </div>

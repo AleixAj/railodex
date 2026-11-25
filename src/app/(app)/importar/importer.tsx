@@ -72,34 +72,53 @@ export function Importer({ existing }: { existing: string[] }) {
             }}
           />
         </label>
-        <a href={`data:text/csv;charset=utf-8,${encodeURIComponent(BOM + COLUMNS.map((c) => c.header).join(";"))}`} download="plantilla-railodex.csv" className={btn.ghost}>
+        <a
+          href={`data:text/csv;charset=utf-8,${encodeURIComponent(BOM + COLUMNS.map((c) => c.header).join(";"))}`}
+          download="plantilla-railodex.csv"
+          className={btn.ghost}
+        >
           Descargar plantilla
         </a>
       </div>
       <p className="text-[15px] text-fg3">
-        Desde Excel: Archivo → Guardar como → CSV. Obligatorias: Fabricante y Escala. Admite fechas como 18/11/2025 y precios como 289,50.
+        Desde Excel: Archivo → Guardar como → CSV. Obligatorias: Fabricante y Escala. Admite fechas como 18/11/2025 y
+        precios como 289,50.
       </p>
 
-      {fileError && <p role="alert" className="rounded-lg border border-red/40 bg-red2 p-3 text-red">{fileError}</p>}
+      {fileError && (
+        <p role="alert" className="rounded-lg border border-red/40 bg-red2 p-3 text-red">
+          {fileError}
+        </p>
+      )}
 
       {result?.imported !== undefined && (
         <p role="status" className="flex items-center gap-2 rounded-lg border border-grn/40 bg-grn2 p-3 text-grn">
           <CircleCheck className="h-5 w-5" />
           {result.imported} {result.imported === 1 ? "pieza importada" : "piezas importadas"}
           {result.skipped ? `, ${result.skipped} sin importar (faltaban datos o se llegó al límite)` : ""}.
-          <Link href="/coleccion" className="ml-auto underline">Ver colección</Link>
+          <Link href="/coleccion" className="ml-auto underline">
+            Ver colección
+          </Link>
         </p>
       )}
-      {result?.error && <p role="alert" className="rounded-lg border border-red/40 bg-red2 p-3 text-red">{result.error}</p>}
+      {result?.error && (
+        <p role="alert" className="rounded-lg border border-red/40 bg-red2 p-3 text-red">
+          {result.error}
+        </p>
+      )}
 
       {preview && checked && !result?.imported && (
         <Card className="overflow-hidden">
           <div className="flex flex-wrap items-center gap-3 border-b border-ln p-4">
             <p className="mr-auto text-[15px]">
               <strong>{okCount}</strong> de {checked.length} filas listas.
-              {preview.ignored.length > 0 && <span className="text-fg3"> Columnas que no se usan: {preview.ignored.join(", ")}.</span>}
+              {preview.ignored.length > 0 && (
+                <span className="text-fg3"> Columnas que no se usan: {preview.ignored.join(", ")}.</span>
+              )}
             </p>
-            <button onClick={() => setPreview(null)} className={btn.ghost}>Cancelar</button>
+            <button onClick={() => setPreview(null)} className={btn.ghost}>
+              Cancelar
+            </button>
             <button
               onClick={() => start(async () => setResult(await importItems(preview.rows)))}
               disabled={pending || okCount === 0}
@@ -124,13 +143,19 @@ export function Importer({ existing }: { existing: string[] }) {
                   <tr key={i}>
                     <td className="px-3 py-2 font-mono text-fg3">{i + 2}</td>
                     <td className="px-3 py-2">{c.item?.name ?? c.raw.name ?? "—"}</td>
-                    <td className="px-3 py-2 font-mono">{[c.raw.manufacturer, c.raw.catalog_ref].filter(Boolean).join(" ") || "—"}</td>
+                    <td className="px-3 py-2 font-mono">
+                      {[c.raw.manufacturer, c.raw.catalog_ref].filter(Boolean).join(" ") || "—"}
+                    </td>
                     <td className="px-3 py-2 font-mono">{c.raw.scale || "—"}</td>
                     <td className="px-3 py-2">
                       {!c.item ? (
-                        <span className="flex items-center gap-1.5 text-red"><TriangleAlert className="h-4 w-4" /> Falta fabricante o escala</span>
+                        <span className="flex items-center gap-1.5 text-red">
+                          <TriangleAlert className="h-4 w-4" /> Falta fabricante o escala
+                        </span>
                       ) : c.dupe ? (
-                        <span className="flex items-center gap-1.5 text-ambtx"><TriangleAlert className="h-4 w-4" /> Puede que ya la tengas</span>
+                        <span className="flex items-center gap-1.5 text-ambtx">
+                          <TriangleAlert className="h-4 w-4" /> Puede que ya la tengas
+                        </span>
                       ) : (
                         <span className="text-grn">Lista</span>
                       )}

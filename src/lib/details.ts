@@ -41,7 +41,18 @@ const SPEC: Record<keyof ItemDetails, Field | "functions"> = {
   hasInstructions: "bool",
 };
 
-const ALWAYS = ["livery", "modelYear", "ean", "lengthMm", "limitedEdition", "coupler", "origin", "seller", "hasBox", "hasInstructions"] as const;
+const ALWAYS = [
+  "livery",
+  "modelYear",
+  "ean",
+  "lengthMm",
+  "limitedEdition",
+  "coupler",
+  "origin",
+  "seller",
+  "hasBox",
+  "hasInstructions",
+] as const;
 const TRACTOR = ["wheelArrangement"] as const;
 const BY_TRACTION: Record<string, readonly (keyof ItemDetails)[]> = {
   vapor: ["tender", "smokeGenerator"],
@@ -50,7 +61,16 @@ const BY_TRACTION: Record<string, readonly (keyof ItemDetails)[]> = {
   electrica: ["pantographs", "catenaryPickup"],
 };
 const ROLLING = ["wagonSubtype", "interiorLighting", "closeCoupling"] as const;
-const DIGITAL = ["protocol", "decoderOrigin", "decoder", "sound", "speaker", "railcom", "firmware", "functions"] as const;
+const DIGITAL = [
+  "protocol",
+  "decoderOrigin",
+  "decoder",
+  "sound",
+  "speaker",
+  "railcom",
+  "firmware",
+  "functions",
+] as const;
 const ANALOGUE = ["current", "digitalReady", "interface", "directionalLights"] as const;
 
 const ENUMS: Partial<Record<keyof ItemDetails, readonly string[]>> = {

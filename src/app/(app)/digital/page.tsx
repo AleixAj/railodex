@@ -31,14 +31,17 @@ export default async function DigitalPage() {
     decoders.set(d, (decoders.get(d) ?? 0) + 1);
   });
 
-  const th = "whitespace-nowrap px-3 py-2.5 text-left font-mono text-[12px] font-normal uppercase tracking-[0.06em] text-fg3";
+  const th =
+    "whitespace-nowrap px-3 py-2.5 text-left font-mono text-[12px] font-normal uppercase tracking-[0.06em] text-fg3";
   const td = "whitespace-nowrap px-3 py-2.5";
 
   return (
     <div className="flex flex-col gap-5">
       <div>
         <h1 className="font-display text-[34px] font-bold tracking-tight">Digital</h1>
-        <p className="mt-1 text-fg2">Direcciones y decoders de tus locomotoras, para no repetir dirección al programarlas.</p>
+        <p className="mt-1 text-fg2">
+          Direcciones y decoders de tus locomotoras, para no repetir dirección al programarlas.
+        </p>
       </div>
 
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
@@ -51,7 +54,8 @@ export default async function DigitalPage() {
       {duplicated.size > 0 && (
         <p role="alert" className="flex items-start gap-2 rounded-lg border border-red/40 bg-red2 p-3 text-red">
           <TriangleAlert className="mt-0.5 h-5 w-5 flex-none" />
-          Direcciones usadas por más de una locomotora: {[...duplicated].join(", ")}. Si van a circular a la vez, cámbiale la dirección a una.
+          Direcciones usadas por más de una locomotora: {[...duplicated].join(", ")}. Si van a circular a la vez,
+          cámbiale la dirección a una.
         </p>
       )}
 
@@ -79,12 +83,20 @@ export default async function DigitalPage() {
                   const dup = t.dcc_address !== null && duplicated.has(t.dcc_address);
                   return (
                     <tr key={t.id} className={dup ? "bg-red2" : "hover:bg-s2/50"}>
-                      <td className={`${td} font-mono text-[17px] ${dup ? "text-red" : "text-ambtx"}`}>{t.dcc_address ?? "—"}</td>
-                      <td className={td}>
-                        <Link href={`/coleccion/${t.id}`} className="font-semibold hover:text-ambtx">{t.name}</Link>
-                        <span className="block font-mono text-[13px] text-fg3">{[t.manufacturer, t.catalog_ref].filter(Boolean).join(" ")}</span>
+                      <td className={`${td} font-mono text-[17px] ${dup ? "text-red" : "text-ambtx"}`}>
+                        {t.dcc_address ?? "—"}
                       </td>
-                      <td className={td}><ScaleBadge scale={t.scale} /></td>
+                      <td className={td}>
+                        <Link href={`/coleccion/${t.id}`} className="font-semibold hover:text-ambtx">
+                          {t.name}
+                        </Link>
+                        <span className="block font-mono text-[13px] text-fg3">
+                          {[t.manufacturer, t.catalog_ref].filter(Boolean).join(" ")}
+                        </span>
+                      </td>
+                      <td className={td}>
+                        <ScaleBadge scale={t.scale} />
+                      </td>
                       <td className={td}>{t.details?.protocol ? <Tag>{t.details.protocol}</Tag> : "—"}</td>
                       <td className={`${td} text-fg2`}>{t.details?.decoder ?? "—"}</td>
                       <td className={td}>{t.details?.sound ? "Sí" : "No"}</td>
@@ -99,9 +111,14 @@ export default async function DigitalPage() {
             <Card className="p-5">
               <h2 className="text-[17px] font-semibold">Decoders instalados</h2>
               <ul className="mt-3 flex flex-col gap-2 text-[15px]">
-                {[...decoders.entries()].sort((a, b) => b[1] - a[1]).map(([d, n]) => (
-                  <li key={d} className="flex justify-between gap-3"><span>{d}</span><span className="font-mono">{n}</span></li>
-                ))}
+                {[...decoders.entries()]
+                  .sort((a, b) => b[1] - a[1])
+                  .map(([d, n]) => (
+                    <li key={d} className="flex justify-between gap-3">
+                      <span>{d}</span>
+                      <span className="font-mono">{n}</span>
+                    </li>
+                  ))}
               </ul>
             </Card>
             {ready.length > 0 && (
@@ -110,7 +127,9 @@ export default async function DigitalPage() {
                 <ul className="mt-3 flex flex-col gap-2 text-[15px]">
                   {ready.map((t) => (
                     <li key={t.id} className="flex justify-between gap-3">
-                      <Link href={`/coleccion/${t.id}`} className="truncate hover:text-ambtx">{t.name}</Link>
+                      <Link href={`/coleccion/${t.id}`} className="truncate hover:text-ambtx">
+                        {t.name}
+                      </Link>
                       <span className="flex-none font-mono text-[13px] text-fg3">{t.details?.interface ?? "—"}</span>
                     </li>
                   ))}

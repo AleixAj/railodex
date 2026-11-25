@@ -16,21 +16,37 @@ const PLANS = [
     name: "Gratis",
     price: "0 €",
     note: "para siempre",
-    features: [`Hasta ${FREE_PLAN_LIMIT} piezas`, "Ficha completa y fotos", "Composiciones y lista de deseos", "Exportar a CSV"],
+    features: [
+      `Hasta ${FREE_PLAN_LIMIT} piezas`,
+      "Ficha completa y fotos",
+      "Composiciones y lista de deseos",
+      "Exportar a CSV",
+    ],
   },
   {
     id: "pro",
     name: "Pro",
     price: "3 €/mes",
     note: "o 29 € al año",
-    features: ["Piezas ilimitadas", "Reconocimiento por foto con IA", "Valor de mercado y su evolución", "Informe para el seguro con tu marca", "Recordatorios de mantenimiento"],
+    features: [
+      "Piezas ilimitadas",
+      "Reconocimiento por foto con IA",
+      "Valor de mercado y su evolución",
+      "Informe para el seguro con tu marca",
+      "Recordatorios de mantenimiento",
+    ],
   },
   {
     id: "profesional",
     name: "Profesional / Club",
     price: "A medida",
     note: "tiendas, restauradores y clubes",
-    features: ["Varias personas en una colección", "Permisos: ver, editar, administrar", "Stock y fichas de venta", "Préstamos entre socios"],
+    features: [
+      "Varias personas en una colección",
+      "Permisos: ver, editar, administrar",
+      "Stock y fichas de venta",
+      "Préstamos entre socios",
+    ],
   },
 ];
 
@@ -46,8 +62,12 @@ export default async function AjustesPage() {
 
       <Card className="p-5">
         <h2 className="text-[17px] font-semibold">Perfil</h2>
-        <p className="mt-1 text-[15px] text-fg3">Entras con <span className="text-fg2">{email}</span>.</p>
-        <div className="mt-4"><NameForm name={name} /></div>
+        <p className="mt-1 text-[15px] text-fg3">
+          Entras con <span className="text-fg2">{email}</span>.
+        </p>
+        <div className="mt-4">
+          <NameForm name={name} />
+        </div>
       </Card>
 
       <Card className="p-5">
@@ -63,13 +83,17 @@ export default async function AjustesPage() {
 
       <Card className="p-5">
         <h2 className="text-[17px] font-semibold">Contraseña</h2>
-        <div className="mt-4"><PasswordForm /></div>
+        <div className="mt-4">
+          <PasswordForm />
+        </div>
       </Card>
 
       <section id="planes" className="flex scroll-mt-24 flex-col gap-3">
         <div className="flex flex-wrap items-baseline justify-between gap-2">
           <h2 className="text-[20px] font-semibold">Tu plan</h2>
-          <span className="font-mono text-[14px] text-fg3">Gratis · {used}/{FREE_PLAN_LIMIT} piezas</span>
+          <span className="font-mono text-[14px] text-fg3">
+            Gratis · {used}/{FREE_PLAN_LIMIT} piezas
+          </span>
         </div>
         <div className="grid gap-3 md:grid-cols-3">
           {PLANS.map((p) => {
@@ -81,7 +105,9 @@ export default async function AjustesPage() {
                 <p className="text-[14px] text-fg3">{p.note}</p>
                 <ul className="mt-4 flex flex-1 flex-col gap-2 text-[15px]">
                   {p.features.map((f) => (
-                    <li key={f} className="flex gap-2"><Check className="mt-0.5 h-4 w-4 flex-none text-grn" /> {f}</li>
+                    <li key={f} className="flex gap-2">
+                      <Check className="mt-0.5 h-4 w-4 flex-none text-grn" /> {f}
+                    </li>
                   ))}
                 </ul>
                 <button disabled className={`${current ? btn.secondary : btn.primary} mt-5 w-full`}>
@@ -97,13 +123,19 @@ export default async function AjustesPage() {
         <h2 className="text-[17px] font-semibold">Tus datos</h2>
         <p className="mt-1 text-[15px] text-fg3">Puedes llevártelos cuando quieras.</p>
         <div className="mt-3 flex flex-wrap gap-2">
-          <a href="/importar/csv" download className={btn.secondary}><FileSpreadsheet className="h-[18px] w-[18px]" /> Descargar CSV</a>
-          <a href="/importar/copia" download className={btn.secondary}><DatabaseBackup className="h-[18px] w-[18px]" /> Copia de seguridad</a>
+          <a href="/importar/csv" download className={btn.secondary}>
+            <FileSpreadsheet className="h-[18px] w-[18px]" /> Descargar CSV
+          </a>
+          <a href="/importar/copia" download className={btn.secondary}>
+            <DatabaseBackup className="h-[18px] w-[18px]" /> Copia de seguridad
+          </a>
         </div>
       </Card>
 
       <form action={signOut}>
-        <button className={btn.ghost}><LogOut className="h-[18px] w-[18px]" /> Cerrar sesión</button>
+        <button className={btn.ghost}>
+          <LogOut className="h-[18px] w-[18px]" /> Cerrar sesión
+        </button>
       </form>
     </div>
   );

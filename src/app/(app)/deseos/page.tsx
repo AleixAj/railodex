@@ -8,22 +8,36 @@ import { CopyListButton, WishActions, WishDialog, type Wish } from "./wish-parts
 
 export const metadata: Metadata = { title: "Deseos y preventas" };
 
-const PRIORITY = { 1: { label: "Alta", tone: "red" }, 2: { label: "Media", tone: "amb" }, 3: { label: "Baja", tone: "neutral" } } as const;
+const PRIORITY = {
+  1: { label: "Alta", tone: "red" },
+  2: { label: "Media", tone: "amb" },
+  3: { label: "Baja", tone: "neutral" },
+} as const;
 
 export default async function DeseosPage() {
   const { supabase } = await requireUser();
-  const { data } = await supabase.from("wishes").select("*").order("priority").order("created_at", { ascending: false });
+  const { data } = await supabase
+    .from("wishes")
+    .select("*")
+    .order("priority")
+    .order("created_at", { ascending: false });
   const wishes = (data ?? []) as Wish[];
-  const reserved = wishes.filter((w) => w.status === "reservada").sort((a, b) => (a.expected_date ?? "9").localeCompare(b.expected_date ?? "9"));
+  const reserved = wishes
+    .filter((w) => w.status === "reservada")
+    .sort((a, b) => (a.expected_date ?? "9").localeCompare(b.expected_date ?? "9"));
   const wanted = wishes.filter((w) => w.status === "deseo");
 
-  const pendingToPay = reserved.reduce((s, w) => s + Math.max(0, Number(w.target_price ?? 0) - Number(w.deposit ?? 0)), 0);
+  const pendingToPay = reserved.reduce(
+    (s, w) => s + Math.max(0, Number(w.target_price ?? 0) - Number(w.deposit ?? 0)),
+    0,
+  );
   const wantedTotal = wanted.reduce((s, w) => s + Number(w.target_price ?? 0), 0);
 
   const listText = [
     "Mi lista de deseos (Railodex)",
-    ...wishes.map((w) =>
-      `- ${w.name}${w.manufacturer || w.catalog_ref ? ` — ${[w.manufacturer, w.catalog_ref].filter(Boolean).join(" ")}` : ""}${w.scale ? ` (${w.scale})` : ""}${w.target_price ? ` · hasta ${money(w.target_price)}` : ""}`,
+    ...wishes.map(
+      (w) =>
+        `- ${w.name}${w.manufacturer || w.catalog_ref ? ` — ${[w.manufacturer, w.catalog_ref].filter(Boolean).join(" ")}` : ""}${w.scale ? ` (${w.scale})` : ""}${w.target_price ? ` · hasta ${money(w.target_price)}` : ""}`,
     ),
   ].join("\n");
 
@@ -32,7 +46,9 @@ export default async function DeseosPage() {
       <div className="flex flex-wrap items-end gap-3">
         <div className="mr-auto">
           <h1 className="font-display text-[34px] font-bold tracking-tight">Deseos y preventas</h1>
-          <p className="mt-1 text-fg2">Lo que quieres y lo que ya has reservado. Cuando llegue, pásalo a tu colección con un botón.</p>
+          <p className="mt-1 text-fg2">
+            Lo que quieres y lo que ya has reservado. Cuando llegue, pásalo a tu colección con un botón.
+          </p>
         </div>
         {wishes.length > 0 && <CopyListButton text={listText} />}
         <WishDialog trigger="nuevo" />
@@ -76,7 +92,13 @@ function Section({ title, wishes }: { title: string; wishes: Wish[] }) {
                   {w.kind && <span className="text-[14px] text-fg3">{labelOf(KINDS, w.kind)}</span>}
                 </div>
                 <p className="mt-1 font-semibold">
-                  {w.url ? <a href={w.url} target="_blank" rel="noopener noreferrer" className="text-fg hover:text-ambtx">{w.name}</a> : w.name}
+                  {w.url ? (
+                    <a href={w.url} target="_blank" rel="noopener noreferrer" className="text-fg hover:text-ambtx">
+                      {w.name}
+                    </a>
+                  ) : (
+                    w.name
+                  )}
                 </p>
                 <p className="truncate text-[14px] text-fg3">
                   <span className="font-mono">{[w.manufacturer, w.catalog_ref].filter(Boolean).join(" ")}</span>
@@ -85,7 +107,8 @@ function Section({ title, wishes }: { title: string; wishes: Wish[] }) {
                 </p>
                 {w.status === "reservada" && (
                   <p className="mt-1 font-mono text-[13px] text-ambtx">
-                    {w.expected_date ? `Llega ${shortDate(w.expected_date)}` : "Sin fecha"} · señal {money(w.deposit ?? 0)}
+                    {w.expected_date ? `Llega ${shortDate(w.expected_date)}` : "Sin fecha"} · señal{" "}
+                    {money(w.deposit ?? 0)}
                   </p>
                 )}
               </div>

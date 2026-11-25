@@ -7,7 +7,9 @@ import { requireUser } from "@/lib/supabase/server";
 export type FormState = { error?: string; name?: string };
 
 export async function createComposition(prev: FormState, formData: FormData): Promise<FormState> {
-  const name = String(formData.get("name") ?? "").trim().slice(0, 120);
+  const name = String(formData.get("name") ?? "")
+    .trim()
+    .slice(0, 120);
   if (!name) return { error: "Ponle un nombre, p. ej. «Talgo III RENFE»." };
   const { supabase } = await requireUser();
   const { data, error } = await supabase.from("compositions").insert({ name }).select("id").single();
@@ -41,7 +43,9 @@ export async function addToComposition(id: string, itemId: string) {
     .order("position", { ascending: false })
     .limit(1)
     .maybeSingle();
-  await supabase.from("composition_items").insert({ composition_id: id, item_id: itemId, position: (last?.position ?? -1) + 1 });
+  await supabase
+    .from("composition_items")
+    .insert({ composition_id: id, item_id: itemId, position: (last?.position ?? -1) + 1 });
   revalidatePath(`/composiciones/${id}`);
 }
 

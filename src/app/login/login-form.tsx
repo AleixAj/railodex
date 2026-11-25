@@ -41,12 +41,27 @@ export function LoginForm({ notice, info, next }: { notice?: string; info?: stri
         {mode === "registro" && (
           <div>
             <Label htmlFor="name">Tu nombre</Label>
-            <input id="name" name="name" autoComplete="name" maxLength={60} className={field} placeholder="p. ej. Javier" />
+            <input
+              id="name"
+              name="name"
+              autoComplete="name"
+              maxLength={60}
+              className={field}
+              placeholder="p. ej. Javier"
+            />
           </div>
         )}
         <div>
           <Label htmlFor="email">Email</Label>
-          <input id="email" name="email" type="email" required autoComplete="email" defaultValue={state.email} className={field} />
+          <input
+            id="email"
+            name="email"
+            type="email"
+            required
+            autoComplete="email"
+            defaultValue={state.email}
+            className={field}
+          />
         </div>
         <div>
           <Label htmlFor="password" hint={mode === "registro" ? "mínimo 8 caracteres" : undefined}>

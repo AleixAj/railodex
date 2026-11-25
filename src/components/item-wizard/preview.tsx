@@ -7,9 +7,24 @@ import type { ItemPayload } from "@/app/(app)/anadir/actions";
 export function Preview({ form, cover }: { form: ItemPayload; cover?: string }) {
   const d = form.details;
   const rows: [string, string | undefined][] = [
-    ["Tipo", [labelOf(KINDS, form.kind), form.traction ? labelOf(TRACTIONS, form.traction).toLowerCase() : d.wagonSubtype?.toLowerCase()].filter(Boolean).join(" ") || undefined],
+    [
+      "Tipo",
+      [
+        labelOf(KINDS, form.kind),
+        form.traction ? labelOf(TRACTIONS, form.traction).toLowerCase() : d.wagonSubtype?.toLowerCase(),
+      ]
+        .filter(Boolean)
+        .join(" ") || undefined,
+    ],
     ["Rodaje", d.wheelArrangement],
-    ["Sistema", form.system === "digital" ? [d.protocol ?? "Digital", d.sound ? "con sonido" : ""].filter(Boolean).join(" · ") : form.system === "analogico" ? `Analógico ${d.current === "ac" ? "AC" : d.current === "dc" ? "DC" : ""}`.trim() : undefined],
+    [
+      "Sistema",
+      form.system === "digital"
+        ? [d.protocol ?? "Digital", d.sound ? "con sonido" : ""].filter(Boolean).join(" · ")
+        : form.system === "analogico"
+          ? `Analógico ${d.current === "ac" ? "AC" : d.current === "dc" ? "DC" : ""}`.trim()
+          : undefined,
+    ],
     ["Decoder", form.system === "digital" ? d.decoder : undefined],
     ["Dirección", form.system === "digital" ? form.dcc_address : undefined],
     ["Compañía", form.railway],
@@ -31,14 +46,18 @@ export function Preview({ form, cover }: { form: ItemPayload; cover?: string }) 
               {form.epoch && <Tag>Ép. {form.epoch}</Tag>}
             </div>
             <p className="mt-2 text-[19px] font-semibold leading-tight">{title}</p>
-            <p className="font-mono text-[14px] text-fg3">{[form.manufacturer, form.catalog_ref].filter(Boolean).join(" · ") || "Fabricante · referencia"}</p>
+            <p className="font-mono text-[14px] text-fg3">
+              {[form.manufacturer, form.catalog_ref].filter(Boolean).join(" · ") || "Fabricante · referencia"}
+            </p>
             <dl className="mt-3 flex flex-col gap-1.5 text-[14px]">
-              {rows.filter(([, v]) => v).map(([k, v]) => (
-                <div key={k} className="flex justify-between gap-3">
-                  <dt className="text-fg3">{k}</dt>
-                  <dd className="text-right font-mono">{v}</dd>
-                </div>
-              ))}
+              {rows
+                .filter(([, v]) => v)
+                .map(([k, v]) => (
+                  <div key={k} className="flex justify-between gap-3">
+                    <dt className="text-fg3">{k}</dt>
+                    <dd className="text-right font-mono">{v}</dd>
+                  </div>
+                ))}
             </dl>
           </div>
         </div>

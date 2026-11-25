@@ -13,7 +13,9 @@ export default async function InicioPage() {
   const [{ data: itemsData }, { data: eventsData }, { data: photoRows }] = await Promise.all([
     supabase
       .from("items")
-      .select("id, kind, name, manufacturer, catalog_ref, scale, epoch, railway, road_number, system, dcc_address, condition, status, purchase_price, purchase_date, estimated_value, location, details, created_at")
+      .select(
+        "id, kind, name, manufacturer, catalog_ref, scale, epoch, railway, road_number, system, dcc_address, condition, status, purchase_price, purchase_date, estimated_value, location, details, created_at",
+      )
       .order("created_at", { ascending: false }),
     supabase
       .from("item_events")
@@ -35,11 +37,16 @@ export default async function InicioPage() {
   const owned = items.filter((i) => i.status !== "vendida");
   const events = (eventsData ?? []) as unknown as (ItemEvent & { items: { name: string } | null })[];
   const latest = owned.slice(0, 5);
-  const covers = await coverUrls(supabase, latest.map((i) => i.id));
+  const covers = await coverUrls(
+    supabase,
+    latest.map((i) => i.id),
+  );
 
   const invested = owned.reduce((s, i) => s + Number(i.purchase_price ?? 0), 0);
   const value = owned.reduce((s, i) => s + Number(i.estimated_value ?? i.purchase_price ?? 0), 0);
-  const avgComplete = owned.length ? Math.round(owned.reduce((s, i) => s + completeness(i, photoCount.get(i.id) ?? 0), 0) / owned.length) : 0;
+  const avgComplete = owned.length
+    ? Math.round(owned.reduce((s, i) => s + completeness(i, photoCount.get(i.id) ?? 0), 0) / owned.length)
+    : 0;
 
   const addresses = owned.filter((i) => i.dcc_address !== null);
   const byAddress = new Map<number, number>();
@@ -71,9 +78,25 @@ export default async function InicioPage() {
       </div>
 
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-        <QuickAction href="/anadir" icon={Plus} title="Añadir una pieza" text="Busca, escanea o rellénala a mano" primary />
-        <QuickAction href="/coleccion" icon={Library} title="Ver mi colección" text={plural(owned.length, "pieza", "piezas")} />
-        <QuickAction href="/anadir?camino=escanear" icon={ScanBarcode} title="Escanear una caja" text="Con el código de barras" />
+        <QuickAction
+          href="/anadir"
+          icon={Plus}
+          title="Añadir una pieza"
+          text="Busca, escanea o rellénala a mano"
+          primary
+        />
+        <QuickAction
+          href="/coleccion"
+          icon={Library}
+          title="Ver mi colección"
+          text={plural(owned.length, "pieza", "piezas")}
+        />
+        <QuickAction
+          href="/anadir?camino=escanear"
+          icon={ScanBarcode}
+          title="Escanear una caja"
+          text="Con el código de barras"
+        />
         <QuickAction href="/importar" icon={FileUp} title="Importar mi lista" text="Desde Excel o CSV" />
       </div>
 
@@ -86,9 +109,17 @@ export default async function InicioPage() {
       ) : (
         <>
           <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-            <Stat label="Piezas en colección" value={String(owned.length)} sub={`${plural(owned.filter((i) => i.kind === "locomotora" || i.kind === "automotor").length, "tractora", "tractoras")} · ${plural(owned.filter((i) => i.kind === "coche" || i.kind === "vagon").length, "remolcada", "remolcadas")}`} />
+            <Stat
+              label="Piezas en colección"
+              value={String(owned.length)}
+              sub={`${plural(owned.filter((i) => i.kind === "locomotora" || i.kind === "automotor").length, "tractora", "tractoras")} · ${plural(owned.filter((i) => i.kind === "coche" || i.kind === "vagon").length, "remolcada", "remolcadas")}`}
+            />
             <Stat label="Valor estimado" value={money(value)} sub={`Invertido ${money(invested)}`} />
-            <Stat label="Ficha completa (media)" value={`${avgComplete} %`} sub="Completa las fichas desde cada pieza" />
+            <Stat
+              label="Ficha completa (media)"
+              value={`${avgComplete} %`}
+              sub="Completa las fichas desde cada pieza"
+            />
             <Stat
               label="Direcciones digitales"
               value={String(addresses.length)}
@@ -99,10 +130,19 @@ export default async function InicioPage() {
 
           <div className="grid gap-3 lg:grid-cols-2 xl:grid-cols-4">
             <Card className="p-5">
-              <SectionTitle aside={<span className="font-mono text-[13px] text-fg3">{plural(owned.length, "pieza", "piezas")}</span>}>Por escala</SectionTitle>
+              <SectionTitle
+                aside={
+                  <span className="font-mono text-[13px] text-fg3">{plural(owned.length, "pieza", "piezas")}</span>
+                }
+              >
+                Por escala
+              </SectionTitle>
               <div className="mt-4 flex h-2 overflow-hidden rounded-full bg-s2">
                 {byScale.map(([s, n]) => (
-                  <div key={s} style={{ width: `${(n / owned.length) * 100}%`, background: scaleInfo(s)?.color ?? "var(--fg3)" }} />
+                  <div
+                    key={s}
+                    style={{ width: `${(n / owned.length) * 100}%`, background: scaleInfo(s)?.color ?? "var(--fg3)" }}
+                  />
                 ))}
               </div>
               <ul className="mt-4 flex flex-col gap-2">
@@ -126,7 +166,10 @@ export default async function InicioPage() {
                       <span className="font-mono">{byKind.get(k.id)}</span>
                     </div>
                     <div className="mt-1 h-1.5 rounded-full bg-s2">
-                      <div className="h-full rounded-full bg-amb" style={{ width: `${((byKind.get(k.id) ?? 0) / owned.length) * 100}%` }} />
+                      <div
+                        className="h-full rounded-full bg-amb"
+                        style={{ width: `${((byKind.get(k.id) ?? 0) / owned.length) * 100}%` }}
+                      />
                     </div>
                   </li>
                 ))}
@@ -142,16 +185,37 @@ export default async function InicioPage() {
               <SectionTitle>Digital / analógico</SectionTitle>
               <Donut pct={Math.round((digital / owned.length) * 100)} />
               <ul className="mt-3 flex flex-col gap-1.5 text-[15px]">
-                <li className="flex justify-between"><span className="flex items-center gap-2"><i className="h-2.5 w-2.5 rounded-sm bg-amb" />Digital</span><span className="font-mono">{digital}</span></li>
-                <li className="flex justify-between"><span className="flex items-center gap-2"><i className="h-2.5 w-2.5 rounded-sm bg-ln2" />Analógico</span><span className="font-mono">{owned.filter((i) => i.system === "analogico").length}</span></li>
-                <li className="flex justify-between text-fg3"><span>Sin indicar</span><span className="font-mono">{owned.filter((i) => !i.system).length}</span></li>
+                <li className="flex justify-between">
+                  <span className="flex items-center gap-2">
+                    <i className="h-2.5 w-2.5 rounded-sm bg-amb" />
+                    Digital
+                  </span>
+                  <span className="font-mono">{digital}</span>
+                </li>
+                <li className="flex justify-between">
+                  <span className="flex items-center gap-2">
+                    <i className="h-2.5 w-2.5 rounded-sm bg-ln2" />
+                    Analógico
+                  </span>
+                  <span className="font-mono">{owned.filter((i) => i.system === "analogico").length}</span>
+                </li>
+                <li className="flex justify-between text-fg3">
+                  <span>Sin indicar</span>
+                  <span className="font-mono">{owned.filter((i) => !i.system).length}</span>
+                </li>
               </ul>
             </Card>
           </div>
 
           <div className="grid gap-3 xl:grid-cols-[2fr_1fr]">
             <Card className="p-5">
-              <SectionTitle aside={<Link href="/coleccion" className="text-[15px] text-ambtx hover:underline">Ver colección</Link>}>
+              <SectionTitle
+                aside={
+                  <Link href="/coleccion" className="text-[15px] text-ambtx hover:underline">
+                    Ver colección
+                  </Link>
+                }
+              >
                 Últimas añadidas
               </SectionTitle>
               <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
@@ -159,10 +223,14 @@ export default async function InicioPage() {
                   <Link key={i.id} href={`/coleccion/${i.id}`} className="group">
                     <div className="relative aspect-[4/3] overflow-hidden rounded-lg border border-ln">
                       <PhotoBox src={covers[i.id]} alt={i.name} kind={i.kind} />
-                      <span className="absolute left-2 top-2"><ScaleBadge scale={i.scale} /></span>
+                      <span className="absolute left-2 top-2">
+                        <ScaleBadge scale={i.scale} />
+                      </span>
                     </div>
                     <p className="mt-2 truncate text-[15px] font-semibold group-hover:text-ambtx">{i.name}</p>
-                    <p className="truncate font-mono text-[13px] text-fg3">{[i.manufacturer, i.catalog_ref].filter(Boolean).join(" ")}</p>
+                    <p className="truncate font-mono text-[13px] text-fg3">
+                      {[i.manufacturer, i.catalog_ref].filter(Boolean).join(" ")}
+                    </p>
                   </Link>
                 ))}
               </div>
@@ -172,14 +240,18 @@ export default async function InicioPage() {
               <Card className="p-5">
                 <SectionTitle>Historial reciente</SectionTitle>
                 {events.length === 0 ? (
-                  <p className="mt-3 text-[15px] text-fg3">Aún no hay mantenimientos apuntados. Se añaden desde la ficha de cada pieza.</p>
+                  <p className="mt-3 text-[15px] text-fg3">
+                    Aún no hay mantenimientos apuntados. Se añaden desde la ficha de cada pieza.
+                  </p>
                 ) : (
                   <ul className="mt-3 flex flex-col gap-3">
                     {events.map((e) => (
                       <li key={e.id}>
                         <Link href={`/coleccion/${e.item_id}`} className="block hover:text-ambtx">
                           <p className="text-[15px] font-semibold">{e.title}</p>
-                          <p className="text-[14px] text-fg3">{labelOf(EVENT_KINDS, e.kind)} · {e.items?.name} · {shortDate(e.happened_on)}</p>
+                          <p className="text-[14px] text-fg3">
+                            {labelOf(EVENT_KINDS, e.kind)} · {e.items?.name} · {shortDate(e.happened_on)}
+                          </p>
                         </Link>
                       </li>
                     ))}
@@ -188,7 +260,13 @@ export default async function InicioPage() {
               </Card>
               {(preorders.length > 0 || (reservedWishes ?? []).length > 0) && (
                 <Card className="p-5">
-                  <SectionTitle aside={<Link href="/deseos" className="text-[15px] text-ambtx hover:underline">Ver todas</Link>}>
+                  <SectionTitle
+                    aside={
+                      <Link href="/deseos" className="text-[15px] text-ambtx hover:underline">
+                        Ver todas
+                      </Link>
+                    }
+                  >
                     Preventas pendientes
                   </SectionTitle>
                   <ul className="mt-3 flex flex-col gap-3">
@@ -207,7 +285,9 @@ export default async function InicioPage() {
                       <li key={p.id}>
                         <Link href={`/coleccion/${p.id}`} className="block hover:text-ambtx">
                           <p className="text-[15px] font-semibold">{p.name}</p>
-                          <p className="font-mono text-[13px] text-fg3">{p.manufacturer} {p.catalog_ref}</p>
+                          <p className="font-mono text-[13px] text-fg3">
+                            {p.manufacturer} {p.catalog_ref}
+                          </p>
                         </Link>
                       </li>
                     ))}
@@ -226,7 +306,19 @@ function plural(n: number, one: string, many: string) {
   return `${n} ${n === 1 ? one : many}`;
 }
 
-function QuickAction({ href, icon: Icon, title, text, primary }: { href: string; icon: typeof Plus; title: string; text: string; primary?: boolean }) {
+function QuickAction({
+  href,
+  icon: Icon,
+  title,
+  text,
+  primary,
+}: {
+  href: string;
+  icon: typeof Plus;
+  title: string;
+  text: string;
+  primary?: boolean;
+}) {
   return (
     <Link
       href={href}
@@ -234,13 +326,13 @@ function QuickAction({ href, icon: Icon, title, text, primary }: { href: string;
         primary ? "border-amb/60 bg-amb2 hover:border-amb" : "border-ln bg-s1 hover:border-ln2"
       }`}
     >
-      <span className={`flex h-12 w-12 flex-none items-center justify-center rounded-[10px] ${primary ? "bg-amb text-[#1a1714]" : "bg-s2 text-fg2"}`}>
+      <span
+        className={`flex h-12 w-12 flex-none items-center justify-center rounded-[10px] ${primary ? "bg-amb text-[#1a1714]" : "bg-s2 text-fg2"}`}
+      >
         <Icon className="h-6 w-6" strokeWidth={1.75} />
       </span>
       <span className="min-w-0">
-        <span className="flex items-center gap-2 text-[17px] font-semibold">
-          {title}
-        </span>
+        <span className="flex items-center gap-2 text-[17px] font-semibold">{title}</span>
         <span className="block text-[15px] text-fg2">{text}</span>
       </span>
     </Link>
@@ -266,7 +358,10 @@ function EpochBars({ counts }: { counts: Map<string, number> }) {
         return (
           <div key={e} className="flex flex-1 flex-col items-center gap-1">
             <span className="font-mono text-[12px] text-fg3">{n || ""}</span>
-            <div className="w-full rounded-t bg-amb" style={{ height: `${(n / max) * 100}px`, opacity: n ? 1 : 0.15, minHeight: 3 }} />
+            <div
+              className="w-full rounded-t bg-amb"
+              style={{ height: `${(n / max) * 100}px`, opacity: n ? 1 : 0.15, minHeight: 3 }}
+            />
             <span className="font-mono text-[13px] text-fg2">{e}</span>
           </div>
         );
@@ -282,7 +377,15 @@ function Donut({ pct }: { pct: number }) {
     <div className="relative mx-auto mt-3 h-[100px] w-[100px]">
       <svg viewBox="0 0 100 100" className="h-full w-full -rotate-90">
         <circle cx="50" cy="50" r={r} fill="none" stroke="var(--s2)" strokeWidth="12" />
-        <circle cx="50" cy="50" r={r} fill="none" stroke="var(--amb)" strokeWidth="12" strokeDasharray={`${(pct / 100) * c} ${c}`} />
+        <circle
+          cx="50"
+          cy="50"
+          r={r}
+          fill="none"
+          stroke="var(--amb)"
+          strokeWidth="12"
+          strokeDasharray={`${(pct / 100) * c} ${c}`}
+        />
       </svg>
       <span className="absolute inset-0 flex items-center justify-center font-display text-xl font-bold">{pct} %</span>
     </div>

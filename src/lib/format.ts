@@ -26,22 +26,30 @@ export function shortDate(value: string | null | undefined) {
 }
 
 export function longToday() {
-  return new Intl.DateTimeFormat("es-ES", { weekday: "long", day: "numeric", month: "long", timeZone: TIME_ZONE }).format(new Date());
+  return new Intl.DateTimeFormat("es-ES", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    timeZone: TIME_ZONE,
+  }).format(new Date());
 }
 
 /** Rough percentage of useful fields filled in, for the completeness bar. */
-export function completeness(item: {
-  catalog_ref: string | null;
-  epoch: string | null;
-  railway: string | null;
-  road_number: string | null;
-  condition: string | null;
-  purchase_price: number | null;
-  purchase_date: string | null;
-  location: string | null;
-  system: string | null;
-  details: Record<string, unknown>;
-}, photoCount = 0) {
+export function completeness(
+  item: {
+    catalog_ref: string | null;
+    epoch: string | null;
+    railway: string | null;
+    road_number: string | null;
+    condition: string | null;
+    purchase_price: number | null;
+    purchase_date: string | null;
+    location: string | null;
+    system: string | null;
+    details: Record<string, unknown>;
+  },
+  photoCount = 0,
+) {
   const checks = [
     item.catalog_ref,
     item.epoch,

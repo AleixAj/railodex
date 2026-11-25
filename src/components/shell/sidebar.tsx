@@ -71,7 +71,11 @@ export function Sidebar({ count, open, onClose }: { count: number; open: boolean
             logo
           </div>
           <span className="font-display text-[22px] font-bold tracking-tight">Railodex</span>
-          <button onClick={onClose} className="ml-auto rounded-md p-2 text-fg3 hover:bg-s2 lg:hidden" aria-label="Cerrar menú">
+          <button
+            onClick={onClose}
+            className="ml-auto rounded-md p-2 text-fg3 hover:bg-s2 lg:hidden"
+            aria-label="Cerrar menú"
+          >
             <X className="h-5 w-5" />
           </button>
         </div>

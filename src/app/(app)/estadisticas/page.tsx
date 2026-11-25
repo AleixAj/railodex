@@ -81,13 +81,21 @@ export default async function EstadisticasPage() {
           label="Diferencia"
           value={`${diff >= 0 ? "+" : ""}${money(diff)}`}
           tone={diff > 0 ? "text-grn" : diff < 0 ? "text-red" : ""}
-          sub={invested ? `${diff >= 0 ? "+" : ""}${((diff / invested) * 100).toLocaleString("es-ES", { maximumFractionDigits: 1 })} %` : undefined}
+          sub={
+            invested
+              ? `${diff >= 0 ? "+" : ""}${((diff / invested) * 100).toLocaleString("es-ES", { maximumFractionDigits: 1 })} %`
+              : undefined
+          }
         />
         <Stat label="Gastado en mantenimiento" value={money(maintenance)} />
       </div>
 
       <Card className="p-5">
-        <SectionTitle aside={undated > 0 ? <span className="text-[14px] text-fg3">{money(undated)} sin fecha de compra</span> : undefined}>
+        <SectionTitle
+          aside={
+            undated > 0 ? <span className="text-[14px] text-fg3">{money(undated)} sin fecha de compra</span> : undefined
+          }
+        >
           Gasto por año
         </SectionTitle>
         {years.length === 0 ? (
@@ -112,7 +120,9 @@ export default async function EstadisticasPage() {
             {topValue.map((i, n) => (
               <li key={i.id} className="flex items-baseline gap-3 text-[15px]">
                 <span className="w-4 font-mono text-fg3">{n + 1}</span>
-                <Link href={`/coleccion/${i.id}`} className="min-w-0 flex-1 truncate hover:text-ambtx">{i.name}</Link>
+                <Link href={`/coleccion/${i.id}`} className="min-w-0 flex-1 truncate hover:text-ambtx">
+                  {i.name}
+                </Link>
                 <span className="font-semibold">{money(value(i))}</span>
               </li>
             ))}

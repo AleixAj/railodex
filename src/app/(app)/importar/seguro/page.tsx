@@ -15,14 +15,14 @@ export const metadata: Metadata = { title: "Informe para el seguro" };
 // Printable inventory. The browser's "Save as PDF" turns it into the PDF for the insurer.
 export default async function SeguroPage() {
   const { supabase, email, name } = await requireUser();
-  const { data } = await supabase
-    .from("items")
-    .select("*")
-    .neq("status", "vendida");
+  const { data } = await supabase.from("items").select("*").neq("status", "vendida");
   // Sorted here because the value falls back to the purchase price when there's no estimate.
   const value = (i: Item) => Number(i.estimated_value ?? i.purchase_price ?? 0);
   const items = ((data ?? []) as Item[]).sort((a, b) => value(b) - value(a));
-  const covers = await coverUrls(supabase, items.map((i) => i.id));
+  const covers = await coverUrls(
+    supabase,
+    items.map((i) => i.id),
+  );
 
   const total = items.reduce((s, i) => s + value(i), 0);
   const today = todayISO(TIME_ZONE);
@@ -30,7 +30,9 @@ export default async function SeguroPage() {
   return (
     <div className="flex flex-col gap-5">
       <div className="flex flex-wrap items-center gap-2 print:hidden">
-        <Link href="/importar" className={btn.ghost}><ChevronLeft className="h-4 w-4" /> Importar y exportar</Link>
+        <Link href="/importar" className={btn.ghost}>
+          <ChevronLeft className="h-4 w-4" /> Importar y exportar
+        </Link>
         <p className="mr-auto text-fg3">Para guardarlo en PDF, pulsa Imprimir y elige «Guardar como PDF».</p>
         <PrintButton label="Imprimir o guardar PDF" />
       </div>
@@ -38,9 +40,13 @@ export default async function SeguroPage() {
       <article className="rounded-xl border border-ln bg-white p-6 text-black sm:p-8 print:rounded-none print:border-0 print:p-0">
         <header className="flex flex-wrap items-end justify-between gap-3 border-b-2 border-black pb-4">
           <div>
-            <p className="font-mono text-[12px] uppercase tracking-[0.08em] text-neutral-500">Railodex · Inventario de colección</p>
+            <p className="font-mono text-[12px] uppercase tracking-[0.08em] text-neutral-500">
+              Railodex · Inventario de colección
+            </p>
             <h1 className="font-display text-[28px] font-bold">Informe para el seguro</h1>
-            <p className="text-[14px] text-neutral-600">Titular: {name || email} · Fecha: {shortDate(today)}</p>
+            <p className="text-[14px] text-neutral-600">
+              Titular: {name || email} · Fecha: {shortDate(today)}
+            </p>
           </div>
           <div className="text-right">
             <p className="text-[14px] text-neutral-600">{items.length} piezas</p>

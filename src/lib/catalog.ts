@@ -76,30 +76,124 @@ export const SCALES = [
 export const EPOCHS = ["I", "II", "III", "IV", "V", "VI"] as const;
 
 export const MANUFACTURERS = [
-  "Märklin", "Trix", "Minitrix", "Roco", "Fleischmann", "Piko", "Arnold", "Electrotren", "Ibertren", "Mabar",
-  "Rivarossi", "Lima", "Jouef", "ACME", "Os.Kar", "ESU", "Brawa", "Liliput", "LS Models", "Sudexpress",
-  "Hornby", "Bachmann", "Dapol", "Kato", "Tomix", "Mehano", "Tillig", "Hobbytrain", "Kühn", "LGB",
-  "Atlas", "Athearn", "Walthers", "Lionel", "MTH", "Otro",
+  "Märklin",
+  "Trix",
+  "Minitrix",
+  "Roco",
+  "Fleischmann",
+  "Piko",
+  "Arnold",
+  "Electrotren",
+  "Ibertren",
+  "Mabar",
+  "Rivarossi",
+  "Lima",
+  "Jouef",
+  "ACME",
+  "Os.Kar",
+  "ESU",
+  "Brawa",
+  "Liliput",
+  "LS Models",
+  "Sudexpress",
+  "Hornby",
+  "Bachmann",
+  "Dapol",
+  "Kato",
+  "Tomix",
+  "Mehano",
+  "Tillig",
+  "Hobbytrain",
+  "Kühn",
+  "LGB",
+  "Atlas",
+  "Athearn",
+  "Walthers",
+  "Lionel",
+  "MTH",
+  "Otro",
 ] as const;
 
 export const RAILWAYS = [
-  "RENFE", "Renfe Operadora", "FEVE", "FGC", "Euskotren", "CP", "DB", "DB AG", "DR", "SNCF", "FS", "SBB",
-  "ÖBB", "NS", "SNCB", "CFL", "ČSD", "PKP", "BR", "Privada", "Otra",
+  "RENFE",
+  "Renfe Operadora",
+  "FEVE",
+  "FGC",
+  "Euskotren",
+  "CP",
+  "DB",
+  "DB AG",
+  "DR",
+  "SNCF",
+  "FS",
+  "SBB",
+  "ÖBB",
+  "NS",
+  "SNCB",
+  "CFL",
+  "ČSD",
+  "PKP",
+  "BR",
+  "Privada",
+  "Otra",
 ] as const;
 
 export const WAGON_SUBTYPES = {
-  coche: ["Primera", "Segunda", "Mixto", "Cafetería", "Restaurante", "Coche cama", "Litera", "Furgón", "Furgón generador", "Panorámico"],
-  vagon: ["Cerrado", "Tolva", "Plataforma", "Cisterna", "Frigorífico", "Portacontenedores", "Portacoches", "Bordes altos", "Jaula", "Grúa / servicio"],
+  coche: [
+    "Primera",
+    "Segunda",
+    "Mixto",
+    "Cafetería",
+    "Restaurante",
+    "Coche cama",
+    "Litera",
+    "Furgón",
+    "Furgón generador",
+    "Panorámico",
+  ],
+  vagon: [
+    "Cerrado",
+    "Tolva",
+    "Plataforma",
+    "Cisterna",
+    "Frigorífico",
+    "Portacontenedores",
+    "Portacoches",
+    "Bordes altos",
+    "Jaula",
+    "Grúa / servicio",
+  ],
 } as const;
 
 export const PROTOCOLS = ["DCC", "mfx", "Motorola", "Selectrix", "Multiprotocolo"] as const;
 
 export const DECODER_BRANDS = [
-  "ESU LokSound 5", "ESU LokPilot 5", "Zimo MX", "Zimo MS", "Märklin mLD3", "Märklin mSD3",
-  "Doehler & Haass", "Lenz", "Uhlenbrock", "Piko SmartDecoder", "Roco", "TCS", "Digitrax", "Otro",
+  "ESU LokSound 5",
+  "ESU LokPilot 5",
+  "Zimo MX",
+  "Zimo MS",
+  "Märklin mLD3",
+  "Märklin mSD3",
+  "Doehler & Haass",
+  "Lenz",
+  "Uhlenbrock",
+  "Piko SmartDecoder",
+  "Roco",
+  "TCS",
+  "Digitrax",
+  "Otro",
 ] as const;
 
-export const INTERFACES = ["NEM 651", "NEM 652", "PluX12", "PluX16", "PluX22", "Next18", "21MTC", "Sin interfaz"] as const;
+export const INTERFACES = [
+  "NEM 651",
+  "NEM 652",
+  "PluX12",
+  "PluX16",
+  "PluX22",
+  "Next18",
+  "21MTC",
+  "Sin interfaz",
+] as const;
 
 export const ORIGINS = [
   { id: "tienda", label: "Tienda física" },
@@ -134,7 +228,15 @@ export const EVENT_KINDS = [
   { id: "otro", label: "Otro" },
 ] as const;
 
-export const COUPLERS = ["NEM 362", "NEM 362 con cinemática", "Märklin Relex", "Kadee", "Rapido", "Tornillo", "Otro"] as const;
+export const COUPLERS = [
+  "NEM 362",
+  "NEM 362 con cinemática",
+  "Märklin Relex",
+  "Kadee",
+  "Rapido",
+  "Tornillo",
+  "Otro",
+] as const;
 
 export const DEFAULT_FUNCTIONS: { key: string; label: string }[] = [
   { key: "F0", label: "Luces" },

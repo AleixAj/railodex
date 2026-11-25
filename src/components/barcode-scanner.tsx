@@ -38,7 +38,10 @@ export function BarcodeScanner({ onCode, onClose }: { onCode: (code: string) => 
         timer = setInterval(async () => {
           if (!video.current || video.current.readyState < 2) return;
           const found = await detector.detect(video.current).catch(() => []);
+          // The scanner may have been closed while that detect() was still running.
+          if (stopped) return;
           if (found[0]?.rawValue) {
+            stopped = true;
             clearInterval(timer);
             onCode(found[0].rawValue);
           }
@@ -59,19 +62,29 @@ export function BarcodeScanner({ onCode, onClose }: { onCode: (code: string) => 
   return (
     <div className="flex flex-col gap-4 rounded-xl border border-ln2 bg-s1 p-4">
       <div className="flex items-center justify-between">
-        <p className="flex items-center gap-2 font-semibold"><ScanBarcode className="h-5 w-5 text-ambtx" /> Escanear código de barras</p>
-        <button onClick={onClose} aria-label="Cerrar escáner" className="rounded p-1.5 text-fg3 hover:text-fg"><X className="h-5 w-5" /></button>
+        <p className="flex items-center gap-2 font-semibold">
+          <ScanBarcode className="h-5 w-5 text-ambtx" /> Escanear código de barras
+        </p>
+        <button onClick={onClose} aria-label="Cerrar escáner" className="rounded p-1.5 text-fg3 hover:text-fg">
+          <X className="h-5 w-5" />
+        </button>
       </div>
 
       {supported && !cameraError ? (
         <div className="relative aspect-[4/3] max-w-md overflow-hidden rounded-lg bg-black">
           <video ref={video} muted playsInline className="h-full w-full object-cover" />
-          <div className="pointer-events-none absolute inset-x-8 top-1/2 h-0.5 -translate-y-1/2 bg-amb/80" aria-hidden />
-          <p className="absolute inset-x-0 bottom-2 text-center text-[14px] text-white/80">Apunta al código de la caja</p>
+          <div
+            className="pointer-events-none absolute inset-x-8 top-1/2 h-0.5 -translate-y-1/2 bg-amb/80"
+            aria-hidden
+          />
+          <p className="absolute inset-x-0 bottom-2 text-center text-[14px] text-white/80">
+            Apunta al código de la caja
+          </p>
         </div>
       ) : (
         <p className="text-[15px] text-fg2">
-          {cameraError || "Este navegador no puede leer códigos con la cámara. Escribe los números que hay debajo de las barras."}
+          {cameraError ||
+            "Este navegador no puede leer códigos con la cámara. Escribe los números que hay debajo de las barras."}
         </p>
       )}
 
@@ -93,7 +106,9 @@ export function BarcodeScanner({ onCode, onClose }: { onCode: (code: string) => 
             placeholder="p. ej. 9005033738454"
           />
         </div>
-        <button className={btn.primary} disabled={typed.length < 8}>Usar código</button>
+        <button className={btn.primary} disabled={typed.length < 8}>
+          Usar código
+        </button>
       </form>
     </div>
   );

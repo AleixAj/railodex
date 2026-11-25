@@ -45,46 +45,89 @@ export function WishDialog({ wish, trigger }: { wish?: Wish; trigger: "nuevo" | 
           <Plus className="h-[18px] w-[18px]" /> Añadir deseo
         </button>
       ) : (
-        <button onClick={() => dialog.current?.showModal()} className="rounded-md p-2 text-fg3 hover:bg-s2 hover:text-fg" aria-label={`Editar ${wish?.name}`}>
+        <button
+          onClick={() => dialog.current?.showModal()}
+          className="rounded-md p-2 text-fg3 hover:bg-s2 hover:text-fg"
+          aria-label={`Editar ${wish?.name}`}
+        >
           <Pencil className="h-4 w-4" />
         </button>
       )}
-      <dialog ref={dialog} className="m-auto max-h-[90dvh] w-[min(640px,calc(100%-24px))] overflow-y-auto rounded-xl border border-ln2 bg-s1 p-5 text-fg backdrop:bg-black/60 sm:p-6">
+      <dialog
+        ref={dialog}
+        className="m-auto max-h-[90dvh] w-[min(640px,calc(100%-24px))] overflow-y-auto rounded-xl border border-ln2 bg-s1 p-5 text-fg backdrop:bg-black/60 sm:p-6"
+      >
         <form action={action} className="flex flex-col gap-4">
           <h2 className="font-display text-2xl font-bold">{wish ? "Editar deseo" : "Nuevo deseo"}</h2>
           {wish && <input type="hidden" name="id" value={wish.id} />}
           <div>
-            <Label htmlFor="w-name" hint="obligatorio">¿Qué pieza quieres?</Label>
-            <input id="w-name" name="name" required defaultValue={initial("name")} className={field} placeholder="p. ej. RENFE 333.3 «Faraona»" />
+            <Label htmlFor="w-name" hint="obligatorio">
+              ¿Qué pieza quieres?
+            </Label>
+            <input
+              id="w-name"
+              name="name"
+              required
+              defaultValue={initial("name")}
+              className={field}
+              placeholder="p. ej. RENFE 333.3 «Faraona»"
+            />
           </div>
           <div className="grid gap-3 sm:grid-cols-2">
             <div>
               <Label htmlFor="w-mf">Fabricante</Label>
-              <input id="w-mf" name="manufacturer" list="w-mfs" defaultValue={initial("manufacturer")} className={field} />
-              <datalist id="w-mfs">{MANUFACTURERS.map((m) => <option key={m} value={m} />)}</datalist>
+              <input
+                id="w-mf"
+                name="manufacturer"
+                list="w-mfs"
+                defaultValue={initial("manufacturer")}
+                className={field}
+              />
+              <datalist id="w-mfs">
+                {MANUFACTURERS.map((m) => (
+                  <option key={m} value={m} />
+                ))}
+              </datalist>
             </div>
             <div>
               <Label htmlFor="w-ref">Referencia</Label>
-              <input id="w-ref" name="catalog_ref" defaultValue={initial("catalog_ref")} className={`${field} font-mono`} />
+              <input
+                id="w-ref"
+                name="catalog_ref"
+                defaultValue={initial("catalog_ref")}
+                className={`${field} font-mono`}
+              />
             </div>
             <div>
               <Label htmlFor="w-kind">Tipo</Label>
               <select id="w-kind" name="kind" defaultValue={initial("kind")} className={field}>
                 <option value="">Sin indicar</option>
-                {KINDS.map((k) => <option key={k.id} value={k.id}>{k.label}</option>)}
+                {KINDS.map((k) => (
+                  <option key={k.id} value={k.id}>
+                    {k.label}
+                  </option>
+                ))}
               </select>
             </div>
             <div>
               <Label htmlFor="w-scale">Escala</Label>
               <select id="w-scale" name="scale" defaultValue={initial("scale")} className={field}>
                 <option value="">Sin indicar</option>
-                {SCALES.map((s) => <option key={s.id} value={s.id}>{s.label} · {s.ratio}</option>)}
+                {SCALES.map((s) => (
+                  <option key={s.id} value={s.id}>
+                    {s.label} · {s.ratio}
+                  </option>
+                ))}
               </select>
             </div>
             <div>
               <Label htmlFor="w-rw">Compañía</Label>
               <input id="w-rw" name="railway" list="w-rws" defaultValue={initial("railway")} className={field} />
-              <datalist id="w-rws">{RAILWAYS.map((r) => <option key={r} value={r} />)}</datalist>
+              <datalist id="w-rws">
+                {RAILWAYS.map((r) => (
+                  <option key={r} value={r} />
+                ))}
+              </datalist>
             </div>
             <div>
               <Label htmlFor="w-prio">Prioridad</Label>
@@ -96,7 +139,13 @@ export function WishDialog({ wish, trigger }: { wish?: Wish; trigger: "nuevo" | 
             </div>
             <div>
               <Label htmlFor="w-price">Precio objetivo (€)</Label>
-              <input id="w-price" name="target_price" inputMode="decimal" defaultValue={initial("target_price")} className={field} />
+              <input
+                id="w-price"
+                name="target_price"
+                inputMode="decimal"
+                defaultValue={initial("target_price")}
+                className={field}
+              />
             </div>
             <div>
               <Label htmlFor="w-shop">Tienda</Label>
@@ -104,7 +153,14 @@ export function WishDialog({ wish, trigger }: { wish?: Wish; trigger: "nuevo" | 
             </div>
             <div className="sm:col-span-2">
               <Label htmlFor="w-url">Enlace</Label>
-              <input id="w-url" name="url" type="url" defaultValue={initial("url")} className={field} placeholder="https://…" />
+              <input
+                id="w-url"
+                name="url"
+                type="url"
+                defaultValue={initial("url")}
+                className={field}
+                placeholder="https://…"
+              />
             </div>
           </div>
 
@@ -130,11 +186,23 @@ export function WishDialog({ wish, trigger }: { wish?: Wish; trigger: "nuevo" | 
             <div className="grid gap-3 sm:grid-cols-2">
               <div>
                 <Label htmlFor="w-dep">Señal pagada (€)</Label>
-                <input id="w-dep" name="deposit" inputMode="decimal" defaultValue={initial("deposit")} className={field} />
+                <input
+                  id="w-dep"
+                  name="deposit"
+                  inputMode="decimal"
+                  defaultValue={initial("deposit")}
+                  className={field}
+                />
               </div>
               <div>
                 <Label htmlFor="w-date">Llegada prevista</Label>
-                <input id="w-date" name="expected_date" type="date" defaultValue={initial("expected_date")} className={field} />
+                <input
+                  id="w-date"
+                  name="expected_date"
+                  type="date"
+                  defaultValue={initial("expected_date")}
+                  className={field}
+                />
               </div>
             </div>
           )}
@@ -143,10 +211,18 @@ export function WishDialog({ wish, trigger }: { wish?: Wish; trigger: "nuevo" | 
             <input id="w-notes" name="notes" defaultValue={initial("notes")} className={field} />
           </div>
 
-          {state.error && <p role="alert" className="text-red">{state.error}</p>}
+          {state.error && (
+            <p role="alert" className="text-red">
+              {state.error}
+            </p>
+          )}
           <div className="flex justify-end gap-2">
-            <button type="button" onClick={() => dialog.current?.close()} className={btn.secondary}>Cancelar</button>
-            <button className={btn.primary} disabled={pending}>{pending ? "Guardando…" : "Guardar"}</button>
+            <button type="button" onClick={() => dialog.current?.close()} className={btn.secondary}>
+              Cancelar
+            </button>
+            <button className={btn.primary} disabled={pending}>
+              {pending ? "Guardando…" : "Guardar"}
+            </button>
           </div>
         </form>
       </dialog>
@@ -161,7 +237,12 @@ export function WishActions({ wish }: { wish: Wish }) {
     <div className="flex flex-col items-end gap-1">
       <div className="flex items-center gap-1">
         <button
-          onClick={() => start(async () => { const r = await wishToCollection(wish.id); if (r?.error) setError(r.error); })}
+          onClick={() =>
+            start(async () => {
+              const r = await wishToCollection(wish.id);
+              if (r?.error) setError(r.error);
+            })
+          }
           disabled={pending}
           className="inline-flex h-9 items-center gap-1.5 rounded-md border border-grn/40 bg-grn2 px-2.5 text-[14px] font-medium text-grn hover:brightness-110"
           title="Pasar a la colección"

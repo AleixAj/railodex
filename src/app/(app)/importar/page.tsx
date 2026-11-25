@@ -55,7 +55,19 @@ export default async function ImportarPage() {
   );
 }
 
-function ExportCard({ href, icon: Icon, title, text, download }: { href: string; icon: typeof ShieldCheck; title: string; text: string; download?: boolean }) {
+function ExportCard({
+  href,
+  icon: Icon,
+  title,
+  text,
+  download,
+}: {
+  href: string;
+  icon: typeof ShieldCheck;
+  title: string;
+  text: string;
+  download?: boolean;
+}) {
   const className = "flex items-start gap-3 rounded-xl border border-ln bg-s1 p-4 transition hover:border-ln2";
   const body = (
     <>
@@ -70,8 +82,12 @@ function ExportCard({ href, icon: Icon, title, text, download }: { href: string;
   );
   // Downloads need a plain <a>, otherwise the client router tries to render the file as a page.
   return download ? (
-    <a href={href} download className={className}>{body}</a>
+    <a href={href} download className={className}>
+      {body}
+    </a>
   ) : (
-    <Link href={href} className={className}>{body}</Link>
+    <Link href={href} className={className}>
+      {body}
+    </Link>
   );
 }

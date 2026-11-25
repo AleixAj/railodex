@@ -72,7 +72,9 @@ export function ItemWizard({ userId, initial, existingPhotos = [], addresses, mo
   }, [tractor, rolling]);
   const idx = steps.indexOf(step);
 
-  const missing = [!form.kind && "tipo", !form.manufacturer.trim() && "fabricante", !form.scale && "escala"].filter(Boolean);
+  const missing = [!form.kind && "tipo", !form.manufacturer.trim() && "fabricante", !form.scale && "escala"].filter(
+    Boolean,
+  );
   const canSave = missing.length === 0;
 
   const go = (to: number) => {
@@ -107,10 +109,21 @@ export function ItemWizard({ userId, initial, existingPhotos = [], addresses, mo
       // The piece is already saved, so go to its page even if a photo failed;
       // staying here would create it a second time on the next save.
       if (failed) {
-        alert(`La pieza se ha guardado, pero ${failed} foto(s) no se han podido subir. Puedes volver a añadirlas desde Editar.`);
-      } else if (andAnother) {
+        router.push(`/coleccion/${res.id}?fotos_fallidas=${failed}`);
+        router.refresh();
+        return;
+      }
+      if (andAnother) {
         // Keep the shared fields (type, maker, scale, railway, epoch, purchase) so a set of coaches goes in quickly.
-        setForm((f) => ({ ...f, name: "", catalog_ref: "", road_number: "", dcc_address: "", notes: "", details: { ...f.details, ean: undefined } }));
+        setForm((f) => ({
+          ...f,
+          name: "",
+          catalog_ref: "",
+          road_number: "",
+          dcc_address: "",
+          notes: "",
+          details: { ...f.details, ean: undefined },
+        }));
         setNewPhotos([]);
         setKeptPhotos([]);
         setStep("identificacion");
@@ -126,7 +139,9 @@ export function ItemWizard({ userId, initial, existingPhotos = [], addresses, mo
   return (
     <div className="flex flex-col gap-5">
       <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
-        <h1 className="font-display text-[34px] font-bold tracking-tight">{mode === "editar" ? "Editar pieza" : "Nueva pieza"}</h1>
+        <h1 className="font-display text-[34px] font-bold tracking-tight">
+          {mode === "editar" ? "Editar pieza" : "Nueva pieza"}
+        </h1>
         <span className="text-fg3">Solo son obligatorios tipo, fabricante y escala.</span>
       </div>
 
@@ -134,7 +149,9 @@ export function ItemWizard({ userId, initial, existingPhotos = [], addresses, mo
 
       <div className="grid gap-6 lg:grid-cols-[1fr_340px]">
         <div className="min-w-0 rounded-xl border border-ln bg-s1 p-5 sm:p-7">
-          <p className="font-mono text-[13px] text-fg3">Paso {idx + 1} de {steps.length}</p>
+          <p className="font-mono text-[13px] text-fg3">
+            Paso {idx + 1} de {steps.length}
+          </p>
           <h2 className="mt-1 font-display text-[28px] font-bold tracking-tight">{STEP_LABELS[step]}</h2>
 
           <div className="mt-5 flex flex-col gap-6">
@@ -145,7 +162,13 @@ export function ItemWizard({ userId, initial, existingPhotos = [], addresses, mo
             {step === "identificacion" && <StepIdentity {...stepProps} />}
             {step === "compra" && <StepPurchase {...stepProps} />}
             {step === "fotos" && (
-              <StepPhotos {...stepProps} keptPhotos={keptPhotos} setKeptPhotos={setKeptPhotos} newPhotos={newPhotos} setNewPhotos={setNewPhotos} />
+              <StepPhotos
+                {...stepProps}
+                keptPhotos={keptPhotos}
+                setKeptPhotos={setKeptPhotos}
+                newPhotos={newPhotos}
+                setNewPhotos={setNewPhotos}
+              />
             )}
             {step === "revision" && (
               <>
@@ -163,7 +186,11 @@ export function ItemWizard({ userId, initial, existingPhotos = [], addresses, mo
               </>
             )}
 
-            {error && <p role="alert" className="rounded-lg border border-red/40 bg-red2 p-3 text-red">{error}</p>}
+            {error && (
+              <p role="alert" className="rounded-lg border border-red/40 bg-red2 p-3 text-red">
+                {error}
+              </p>
+            )}
           </div>
 
           <div className="mt-8 flex items-center justify-between gap-2 border-t border-ln pt-5">
@@ -178,7 +205,8 @@ export function ItemWizard({ userId, initial, existingPhotos = [], addresses, mo
               )}
               {step === "revision" ? (
                 <button onClick={() => save()} disabled={saving || !canSave} className={btn.primary}>
-                  <Check className="h-[18px] w-[18px]" /> {saving ? "Guardando…" : mode === "editar" ? "Guardar cambios" : "Guardar pieza"}
+                  <Check className="h-[18px] w-[18px]" />{" "}
+                  {saving ? "Guardando…" : mode === "editar" ? "Guardar cambios" : "Guardar pieza"}
                 </button>
               ) : (
                 <button onClick={() => go(idx + 1)} disabled={step === "tipo" && !form.kind} className={btn.primary}>
@@ -209,7 +237,9 @@ function Stepper({ steps, current, onPick }: { steps: StepId[]; current: StepId;
               aria-current={active ? "step" : undefined}
               className={`flex h-10 items-center gap-2 rounded-full px-3 text-[15px] ${active ? "bg-amb2 font-semibold text-ambtx" : done ? "text-fg2 hover:bg-s2" : "text-fg3 hover:bg-s2"}`}
             >
-              <span className={`flex h-6 w-6 items-center justify-center rounded-full font-mono text-[12px] ${active ? "bg-amb text-[#1a1714]" : done ? "bg-grn text-[#12110f]" : "border border-ln2"}`}>
+              <span
+                className={`flex h-6 w-6 items-center justify-center rounded-full font-mono text-[12px] ${active ? "bg-amb text-[#1a1714]" : done ? "bg-grn text-[#12110f]" : "border border-ln2"}`}
+              >
                 {done ? <Check className="h-3.5 w-3.5" /> : i + 1}
               </span>
               {STEP_LABELS[s]}

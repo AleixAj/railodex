@@ -33,7 +33,15 @@ export function WheelDiagram({ uic }: { uic: string }) {
     <svg viewBox={`0 0 ${width} 46`} className="h-12 w-full max-w-[320px]" role="img" aria-label={`Rodaje ${uic}`}>
       <rect x="4" y="2" width={width - 8} height="16" rx="3" fill="none" stroke="var(--ln2)" />
       {circles.map((c, i) => (
-        <circle key={i} cx={c.cx} cy={28} r={R} fill={c.driven ? "var(--amb)" : "none"} stroke={c.driven ? "var(--amb)" : "var(--fg3)"} strokeWidth="1.5" />
+        <circle
+          key={i}
+          cx={c.cx}
+          cy={28}
+          r={R}
+          fill={c.driven ? "var(--amb)" : "none"}
+          stroke={c.driven ? "var(--amb)" : "var(--fg3)"}
+          strokeWidth="1.5"
+        />
       ))}
       {bogies.map((b, i) => (
         <line key={i} x1={b.x1} x2={b.x2} y1={40} y2={40} stroke="var(--fg3)" strokeWidth="2" />

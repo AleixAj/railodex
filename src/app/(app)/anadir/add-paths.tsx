@@ -42,7 +42,10 @@ export function AddPaths({ startScanning }: { startScanning: boolean }) {
 
 function Soon({ icon: Icon, title, text }: { icon: typeof Search; title: string; text: string }) {
   return (
-    <div className="hidden items-center gap-3 rounded-xl border border-dashed border-ln2 p-3.5 text-fg3 sm:flex" aria-disabled>
+    <div
+      className="hidden items-center gap-3 rounded-xl border border-dashed border-ln2 p-3.5 text-fg3 sm:flex"
+      aria-disabled
+    >
       <Icon className="h-6 w-6 flex-none" strokeWidth={1.5} />
       <span className="min-w-0">
         <span className="flex items-center gap-2 font-semibold text-fg2">

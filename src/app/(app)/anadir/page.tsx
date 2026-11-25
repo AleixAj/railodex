@@ -19,14 +19,23 @@ export default async function AnadirPage({ searchParams }: PageProps<"/anadir">)
   const [{ data: addr }, { data: source }, { data: owned }] = await Promise.all([
     supabase.from("items").select("id, name, dcc_address").not("dcc_address", "is", null).neq("status", "vendida"),
     duplicar ? supabase.from("items").select("*").eq("id", duplicar).maybeSingle() : Promise.resolve({ data: null }),
-    ean ? supabase.from("items").select("id, name").eq("details->>ean", ean).limit(1).maybeSingle() : Promise.resolve({ data: null }),
+    ean
+      ? supabase.from("items").select("id, name").eq("details->>ean", ean).limit(1).maybeSingle()
+      : Promise.resolve({ data: null }),
   ]);
 
   // When duplicating, copy everything except what identifies that particular unit.
   let initial: Partial<Item> | undefined;
   if (source) {
     const s = source as Item;
-    initial = { ...s, id: undefined, name: "", road_number: null, dcc_address: null, details: { ...s.details, ean: undefined } };
+    initial = {
+      ...s,
+      id: undefined,
+      name: "",
+      road_number: null,
+      dcc_address: null,
+      details: { ...s.details, ean: undefined },
+    };
   } else if (ean) {
     initial = { details: { ean } };
   }
@@ -36,9 +45,15 @@ export default async function AnadirPage({ searchParams }: PageProps<"/anadir">)
       <AddPaths startScanning={sp.camino === "escanear"} />
 
       {ean && owned && (
-        <p role="status" className="flex flex-wrap items-center gap-2 rounded-lg border border-amb/50 bg-amb2 p-3 text-ambtx">
+        <p
+          role="status"
+          className="flex flex-wrap items-center gap-2 rounded-lg border border-amb/50 bg-amb2 p-3 text-ambtx"
+        >
           <Info className="h-5 w-5" /> Ya tienes una pieza con el código {ean}:
-          <Link href={`/coleccion/${owned.id}`} className="font-semibold underline">{owned.name}</Link>. Si es otra unidad, sigue abajo.
+          <Link href={`/coleccion/${owned.id}`} className="font-semibold underline">
+            {owned.name}
+          </Link>
+          . Si es otra unidad, sigue abajo.
         </p>
       )}
       {ean && !owned && (

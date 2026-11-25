@@ -6,18 +6,25 @@ export const PHOTO_BUCKET = "item-photos";
 
 /** Returns { itemId: cover photo url }. Signed URLs, valid for an hour. */
 export async function coverUrls(supabase: SupabaseClient, itemIds: string[]) {
-  if (itemIds.length === 0) return {} as Record<string, string>;
-  const { data: photos } = await supabase
-    .from("item_photos")
-    .select("item_id, path, position")
-    .in("item_id", itemIds)
-    .order("position", { ascending: true });
-
   const firstByItem = new Map<string, string>();
-  for (const p of (photos ?? []) as Pick<ItemPhoto, "item_id" | "path">[]) {
-    if (!firstByItem.has(p.item_id)) firstByItem.set(p.item_id, p.path);
+  // The ids go in the URL, so ask in batches; one big list breaks after a few hundred pieces.
+  for (const ids of chunks(itemIds, 100)) {
+    const { data: photos } = await supabase
+      .from("item_photos")
+      .select("item_id, path, position")
+      .in("item_id", ids)
+      .order("position", { ascending: true });
+    for (const p of (photos ?? []) as Pick<ItemPhoto, "item_id" | "path">[]) {
+      if (!firstByItem.has(p.item_id)) firstByItem.set(p.item_id, p.path);
+    }
   }
   return signPaths(supabase, firstByItem);
+}
+
+function chunks<T>(list: T[], size: number) {
+  const out: T[][] = [];
+  for (let i = 0; i < list.length; i += size) out.push(list.slice(i, i + size));
+  return out;
 }
 
 export async function photoUrls(supabase: SupabaseClient, photos: ItemPhoto[]) {

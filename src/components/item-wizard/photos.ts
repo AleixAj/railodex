@@ -12,11 +12,23 @@ type Kept = { id: string; path: string };
  */
 export async function syncPhotos(
   supabase: SupabaseClient,
-  { userId, itemId, before, kept, added }: { userId: string; itemId: string; before: Kept[]; kept: Kept[]; added: File[] },
+  {
+    userId,
+    itemId,
+    before,
+    kept,
+    added,
+  }: { userId: string; itemId: string; before: Kept[]; kept: Kept[]; added: File[] },
 ) {
   const removed = before.filter((p) => !kept.some((k) => k.id === p.id));
   if (removed.length) {
-    await supabase.from("item_photos").delete().in("id", removed.map((p) => p.id));
+    await supabase
+      .from("item_photos")
+      .delete()
+      .in(
+        "id",
+        removed.map((p) => p.id),
+      );
     await supabase.storage.from(BUCKET).remove(removed.map((p) => p.path));
   }
 

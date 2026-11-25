@@ -61,7 +61,8 @@ export async function saveItem(payload: ItemPayload, itemId?: string): Promise<{
   if (Number.isNaN(address) || (address !== null && (address < 1 || address > 10239 || !Number.isInteger(address)))) {
     return { error: "La dirección digital tiene que ser un número entre 1 y 10239." };
   }
-  if (payload.purchase_date && !/^\d{4}-\d{2}-\d{2}$/.test(payload.purchase_date)) return { error: "Fecha de compra no válida." };
+  if (payload.purchase_date && !/^\d{4}-\d{2}-\d{2}$/.test(payload.purchase_date))
+    return { error: "Fecha de compra no válida." };
 
   const name =
     text(payload.name) ??
@@ -86,7 +87,14 @@ export async function saveItem(payload: ItemPayload, itemId?: string): Promise<{
     estimated_value: value,
     purchase_date: text(payload.purchase_date),
     location: text(payload.location),
-    tags: [...new Set(payload.tags.split(",").map((t) => t.trim().slice(0, 40)).filter(Boolean))].slice(0, 20),
+    tags: [
+      ...new Set(
+        payload.tags
+          .split(",")
+          .map((t) => t.trim().slice(0, 40))
+          .filter(Boolean),
+      ),
+    ].slice(0, 20),
     notes: text(payload.notes, 4000),
     details: sanitizeDetails(payload.details, { kind: payload.kind, traction, system }),
   };

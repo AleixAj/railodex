@@ -4,7 +4,9 @@ export const TIME_ZONE = "Europe/Madrid";
 
 /** Today as YYYY-MM-DD in the given time zone (the browser's own one if left out). */
 export function todayISO(timeZone?: string) {
-  return new Intl.DateTimeFormat("en-CA", { timeZone, year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
+  return new Intl.DateTimeFormat("en-CA", { timeZone, year: "numeric", month: "2-digit", day: "2-digit" }).format(
+    new Date(),
+  );
 }
 
 /** True for a real calendar date written as YYYY-MM-DD (rejects 2025-02-30 and the like). */

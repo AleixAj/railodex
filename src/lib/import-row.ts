@@ -43,7 +43,9 @@ export function toItemRow(r: ImportRow) {
   const system = /digit/i.test(r.system ?? "") ? "digital" : /anal/i.test(r.system ?? "") ? "analogico" : null;
   const address = Number((r.dcc_address ?? "").trim());
   const name =
-    text(r.name) ?? ([text(r.railway), text(r.road_number)].filter(Boolean).join(" ") || `${manufacturer} ${r.catalog_ref ?? ""}`.trim());
+    text(r.name) ??
+    ([text(r.railway), text(r.road_number)].filter(Boolean).join(" ") ||
+      `${manufacturer} ${r.catalog_ref ?? ""}`.trim());
 
   return {
     kind,

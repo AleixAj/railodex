@@ -18,6 +18,8 @@ const ORDER: Record<string, { column: string; ascending: boolean }> = {
   compra: { column: "purchase_date", ascending: false },
 };
 
+const worth = (i: Item) => Number(i.estimated_value ?? i.purchase_price ?? 0);
+
 export default async function ColeccionPage({ searchParams }: PageProps<"/coleccion">) {
   const sp = await searchParams;
   const get = (k: string) => (typeof sp[k] === "string" ? (sp[k] as string) : "");
@@ -25,13 +27,19 @@ export default async function ColeccionPage({ searchParams }: PageProps<"/colecc
 
   let query = supabase
     .from("items")
-    .select("id, kind, traction, system, name, manufacturer, catalog_ref, scale, epoch, railway, road_number, dcc_address, status, purchase_price, estimated_value, location, details");
+    .select(
+      "id, kind, traction, system, name, manufacturer, catalog_ref, scale, epoch, railway, road_number, dcc_address, status, purchase_price, estimated_value, location, details",
+    );
 
   // Strip characters that mean something inside a PostgREST filter.
-  const q = get("q").replace(/[%,()"\\*]/g, " ").trim();
+  const q = get("q")
+    .replace(/[%,()"\\*]/g, " ")
+    .trim();
   if (q) {
     const like = `"%${q}%"`;
-    query = query.or(`name.ilike.${like},catalog_ref.ilike.${like},road_number.ilike.${like},manufacturer.ilike.${like},railway.ilike.${like}`);
+    query = query.or(
+      `name.ilike.${like},catalog_ref.ilike.${like},road_number.ilike.${like},manufacturer.ilike.${like},railway.ilike.${like}`,
+    );
   }
   if (get("escala")) query = query.eq("scale", get("escala"));
   if (get("tipo")) query = query.eq("kind", get("tipo"));
@@ -47,11 +55,16 @@ export default async function ColeccionPage({ searchParams }: PageProps<"/colecc
     supabase.from("items").select("manufacturer, railway"),
   ]);
   const items = (data ?? []) as Item[];
+  // The value shown falls back to the purchase price, so sort by that same number.
+  if (get("orden") === "valor") items.sort((a, b) => worth(b) - worth(a));
   const manufacturers = [...new Set((facets ?? []).map((f) => f.manufacturer).filter(Boolean))].sort();
   const railways = [...new Set((facets ?? []).map((f) => f.railway).filter(Boolean) as string[])].sort();
   const total = facets?.length ?? 0;
-  const covers = await coverUrls(supabase, items.map((i) => i.id));
-  const value = items.reduce((s, i) => s + Number(i.estimated_value ?? i.purchase_price ?? 0), 0);
+  const covers = await coverUrls(
+    supabase,
+    items.map((i) => i.id),
+  );
+  const value = items.filter((i) => i.status !== "vendida").reduce((s, i) => s + worth(i), 0);
   const view = get("vista") || "cuadricula";
 
   return (
@@ -99,12 +112,24 @@ function GridView({ items, covers }: { items: Item[]; covers: Record<string, str
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
       {items.map((i) => (
-        <Link key={i.id} href={`/coleccion/${i.id}`} className="group overflow-hidden rounded-xl border border-ln bg-s1 transition hover:border-ln2">
+        <Link
+          key={i.id}
+          href={`/coleccion/${i.id}`}
+          className="group overflow-hidden rounded-xl border border-ln bg-s1 transition hover:border-ln2"
+        >
           <div className="relative aspect-[4/3] border-b border-ln">
             <PhotoBox src={covers[i.id]} alt={i.name} kind={i.kind} />
-            {!covers[i.id] && <span className="absolute bottom-3 left-3 font-mono text-[12px] tracking-[0.06em] text-fg3">SIN FOTO</span>}
+            {!covers[i.id] && (
+              <span className="absolute bottom-3 left-3 font-mono text-[12px] tracking-[0.06em] text-fg3">
+                SIN FOTO
+              </span>
+            )}
             {i.status !== "coleccion" && (
-              <span className="absolute right-3 top-3"><Tag tone="amb">{i.status === "preventa" ? "Preventa" : i.status === "prestada" ? "Prestada" : "Vendida"}</Tag></span>
+              <span className="absolute right-3 top-3">
+                <Tag tone="amb">
+                  {i.status === "preventa" ? "Preventa" : i.status === "prestada" ? "Prestada" : "Vendida"}
+                </Tag>
+              </span>
             )}
           </div>
           <div className="p-4">
@@ -115,7 +140,9 @@ function GridView({ items, covers }: { items: Item[]; covers: Record<string, str
               <span className="ml-auto font-semibold">{money(i.estimated_value ?? i.purchase_price)}</span>
             </div>
             <p className="mt-2.5 truncate text-[18px] font-semibold group-hover:text-ambtx">{i.name}</p>
-            <p className="truncate font-mono text-[14px] text-fg3">{[i.manufacturer, i.catalog_ref].filter(Boolean).join(" ")}</p>
+            <p className="truncate font-mono text-[14px] text-fg3">
+              {[i.manufacturer, i.catalog_ref].filter(Boolean).join(" ")}
+            </p>
           </div>
         </Link>
       ))}
@@ -134,7 +161,8 @@ function ListView({ items, covers }: { items: Item[]; covers: Record<string, str
           <div className="min-w-0 flex-1">
             <p className="truncate font-semibold">{i.name}</p>
             <p className="truncate text-[14px] text-fg3">
-              <span className="font-mono">{[i.manufacturer, i.catalog_ref].filter(Boolean).join(" ")}</span> · {subtitle(i)}
+              <span className="font-mono">{[i.manufacturer, i.catalog_ref].filter(Boolean).join(" ")}</span> ·{" "}
+              {subtitle(i)}
               {i.railway ? ` · ${i.railway}` : ""}
             </p>
           </div>
@@ -150,7 +178,8 @@ function ListView({ items, covers }: { items: Item[]; covers: Record<string, str
 }
 
 function TableView({ items }: { items: Item[] }) {
-  const th = "whitespace-nowrap px-3 py-2.5 text-left font-mono text-[12px] font-normal uppercase tracking-[0.06em] text-fg3";
+  const th =
+    "whitespace-nowrap px-3 py-2.5 text-left font-mono text-[12px] font-normal uppercase tracking-[0.06em] text-fg3";
   const td = "whitespace-nowrap px-3 py-2.5";
   return (
     <Card className="overflow-x-auto">
@@ -173,17 +202,25 @@ function TableView({ items }: { items: Item[] }) {
         <tbody className="divide-y divide-ln">
           {items.map((i) => (
             <tr key={i.id} className="hover:bg-s2/50">
-              <td className={td}><ScaleBadge scale={i.scale} /></td>
+              <td className={td}>
+                <ScaleBadge scale={i.scale} />
+              </td>
               <td className={`${td} font-mono`}>{[i.manufacturer, i.catalog_ref].filter(Boolean).join(" ")}</td>
               <td className={td}>
-                <Link href={`/coleccion/${i.id}`} className="font-semibold hover:text-ambtx">{i.name}</Link>
+                <Link href={`/coleccion/${i.id}`} className="font-semibold hover:text-ambtx">
+                  {i.name}
+                </Link>
               </td>
               <td className={`${td} text-fg2`}>{subtitle(i)}</td>
               <td className={td}>{i.railway ?? "—"}</td>
               <td className={td}>{i.epoch ?? "—"}</td>
               <td className={`${td} font-mono`}>{i.road_number ?? "—"}</td>
               <td className={`${td} text-fg2`}>
-                {i.system === "digital" ? i.details?.protocol ?? "Digital" : i.system === "analogico" ? `Analóg. ${i.details?.current === "ac" ? "AC" : "DC"}` : "—"}
+                {i.system === "digital"
+                  ? (i.details?.protocol ?? "Digital")
+                  : i.system === "analogico"
+                    ? `Analóg. ${i.details?.current === "ac" ? "AC" : "DC"}`
+                    : "—"}
               </td>
               <td className={`${td} font-mono`}>{i.dcc_address ?? "—"}</td>
               <td className={`${td} text-fg2`}>{i.location ?? "—"}</td>

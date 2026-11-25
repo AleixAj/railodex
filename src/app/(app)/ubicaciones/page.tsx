@@ -23,12 +23,16 @@ export default async function UbicacionesPage({ searchParams }: PageProps<"/ubic
   const items = (data ?? []) as Item[];
   const { roots, unassigned } = buildTree(items.map((i) => i.location));
 
-  const inside = selected === "__sin__"
-    ? items.filter((i) => splitLocation(i.location).length === 0)
-    : selected
-      ? items.filter((i) => isInside(i.location, selected))
-      : [];
-  const covers = await coverUrls(supabase, inside.slice(0, 60).map((i) => i.id));
+  const inside =
+    selected === "__sin__"
+      ? items.filter((i) => splitLocation(i.location).length === 0)
+      : selected
+        ? items.filter((i) => isInside(i.location, selected))
+        : [];
+  const covers = await coverUrls(
+    supabase,
+    inside.slice(0, 60).map((i) => i.id),
+  );
   const crumbs = selected && selected !== "__sin__" ? splitLocation(selected) : [];
 
   return (
@@ -50,7 +54,9 @@ export default async function UbicacionesPage({ searchParams }: PageProps<"/ubic
       {roots.length === 0 && unassigned === 0 ? (
         <Card className="flex flex-col items-center gap-2 px-6 py-12 text-center">
           <MapPin className="h-10 w-10 text-ln2" strokeWidth={1.25} />
-          <p className="text-fg2">Aún no hay piezas. Al añadirlas, indica su ubicación en el paso «Fotos y ubicación».</p>
+          <p className="text-fg2">
+            Aún no hay piezas. Al añadirlas, indica su ubicación en el paso «Fotos y ubicación».
+          </p>
         </Card>
       ) : (
         <div className="grid gap-3 lg:grid-cols-[320px_1fr]">
@@ -81,7 +87,10 @@ export default async function UbicacionesPage({ searchParams }: PageProps<"/ubic
                       {crumbs.map((c, i) => (
                         <span key={i} className="flex items-center gap-1">
                           {i > 0 && <ChevronRight className="h-4 w-4 text-fg3" />}
-                          <Link href={`/ubicaciones?l=${encodeURIComponent(joinLocation(crumbs.slice(0, i + 1)))}`} className="hover:text-ambtx">
+                          <Link
+                            href={`/ubicaciones?l=${encodeURIComponent(joinLocation(crumbs.slice(0, i + 1)))}`}
+                            className="hover:text-ambtx"
+                          >
                             {c}
                           </Link>
                         </span>
@@ -93,7 +102,10 @@ export default async function UbicacionesPage({ searchParams }: PageProps<"/ubic
                     {money(inside.reduce((s, i) => s + Number(i.estimated_value ?? i.purchase_price ?? 0), 0))}
                   </span>
                   {selected !== "__sin__" && (
-                    <Link href={`/ubicaciones/etiquetas?l=${encodeURIComponent(selected)}`} className={`${btn.ghost} ml-auto`}>
+                    <Link
+                      href={`/ubicaciones/etiquetas?l=${encodeURIComponent(selected)}`}
+                      className={`${btn.ghost} ml-auto`}
+                    >
                       <QrCode className="h-4 w-4" /> Etiqueta
                     </Link>
                   )}

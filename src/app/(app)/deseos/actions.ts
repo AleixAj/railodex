@@ -11,10 +11,27 @@ import { KINDS, SCALES } from "@/lib/catalog";
 // `values` goes back on errors so the dialog can refill itself (React clears forms after submitting).
 export type WishState = { error?: string; ok?: number; values?: Record<string, string> };
 
-const FIELDS = ["name", "kind", "manufacturer", "catalog_ref", "scale", "railway", "priority", "target_price", "shop", "url", "status", "deposit", "expected_date", "notes"];
+const FIELDS = [
+  "name",
+  "kind",
+  "manufacturer",
+  "catalog_ref",
+  "scale",
+  "railway",
+  "priority",
+  "target_price",
+  "shop",
+  "url",
+  "status",
+  "deposit",
+  "expected_date",
+  "notes",
+];
 
 const text = (v: FormDataEntryValue | null, max = 200) => {
-  const t = String(v ?? "").trim().slice(0, max);
+  const t = String(v ?? "")
+    .trim()
+    .slice(0, max);
   return t || null;
 };
 const num = (v: FormDataEntryValue | null) => parseAmount(String(v ?? ""));
@@ -47,7 +64,8 @@ async function validateAndSave(fd: FormData): Promise<WishState> {
   const status = fd.get("status") === "reservada" ? "reservada" : "deseo";
   const target_price = num(fd.get("target_price"));
   const deposit = num(fd.get("deposit"));
-  if (Number.isNaN(target_price) || Number.isNaN(deposit)) return { error: "Revisa los precios: tienen que ser números." };
+  if (Number.isNaN(target_price) || Number.isNaN(deposit))
+    return { error: "Revisa los precios: tienen que ser números." };
   const url = text(fd.get("url"), 500);
   if (url && !isWebUrl(url)) return { error: "El enlace tiene que ser una dirección web (https://…)." };
   const expected_date = text(fd.get("expected_date"), 10);
@@ -71,7 +89,9 @@ async function validateAndSave(fd: FormData): Promise<WishState> {
   };
 
   const { supabase } = await requireUser();
-  const { error } = id ? await supabase.from("wishes").update(row).eq("id", id) : await supabase.from("wishes").insert(row);
+  const { error } = id
+    ? await supabase.from("wishes").update(row).eq("id", id)
+    : await supabase.from("wishes").insert(row);
   if (error) return { error: "No se ha podido guardar." };
   revalidatePath("/deseos");
   return { ok: Date.now() };

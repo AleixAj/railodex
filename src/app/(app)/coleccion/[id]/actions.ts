@@ -30,11 +30,16 @@ export type EventState = { error?: string; ok?: number; values?: Record<string, 
 
 export async function addEvent(itemId: string, prev: EventState, formData: FormData): Promise<EventState> {
   const { supabase } = await requireUser();
-  const title = String(formData.get("title") ?? "").trim().slice(0, 200);
+  const title = String(formData.get("title") ?? "")
+    .trim()
+    .slice(0, 200);
   const kind = String(formData.get("kind") ?? "mantenimiento");
   const happened_on = String(formData.get("happened_on") ?? "") || todayISO(TIME_ZONE);
   const cost = parseAmount(String(formData.get("cost") ?? ""));
-  const notes = String(formData.get("notes") ?? "").trim().slice(0, 2000) || null;
+  const notes =
+    String(formData.get("notes") ?? "")
+      .trim()
+      .slice(0, 2000) || null;
 
   const values = {
     title,
@@ -48,7 +53,9 @@ export async function addEvent(itemId: string, prev: EventState, formData: FormD
   if (!isISODate(happened_on)) return { values, error: "La fecha no es válida." };
   if (Number.isNaN(cost)) return { values, error: "El coste no es un número válido." };
 
-  const { error } = await supabase.from("item_events").insert({ item_id: itemId, title, kind, happened_on, cost, notes });
+  const { error } = await supabase
+    .from("item_events")
+    .insert({ item_id: itemId, title, kind, happened_on, cost, notes });
   if (error) return { values, error: "No se ha podido guardar." };
   revalidatePath(`/coleccion/${itemId}`);
   return { ok: Date.now() };

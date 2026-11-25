@@ -44,7 +44,8 @@ export function itemsToCsv(items: Item[]) {
       COLUMNS.map((c) => {
         if (c.key === "kind") return escape(labelOf(KINDS, item.kind));
         if (c.key === "condition") return escape(labelOf(CONDITIONS, item.condition));
-        if (c.key === "system") return escape(item.system === "digital" ? "Digital" : item.system === "analogico" ? "Analógico" : "");
+        if (c.key === "system")
+          return escape(item.system === "digital" ? "Digital" : item.system === "analogico" ? "Analógico" : "");
         const v = item[c.key];
         // Excel reads "289.5" as text with Spanish settings, so use a comma.
         if (typeof v === "number" && !Number.isInteger(v)) return escape(String(v).replace(".", ","));
@@ -98,7 +99,11 @@ export function parseCsv(text: string): string[][] {
 }
 
 const normalize = (s: string) =>
-  s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]/g, "");
+  s
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .replace(/[^a-z0-9]/g, "");
 
 // A few alternative names people tend to use in their own spreadsheets.
 const ALIASES: Record<string, ColumnKey> = {

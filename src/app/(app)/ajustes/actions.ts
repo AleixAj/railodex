@@ -6,7 +6,9 @@ import { requireUser } from "@/lib/supabase/server";
 export type SettingsState = { error?: string; ok?: string; name?: string };
 
 export async function updateName(prev: SettingsState, fd: FormData): Promise<SettingsState> {
-  const name = String(fd.get("name") ?? "").trim().slice(0, 60);
+  const name = String(fd.get("name") ?? "")
+    .trim()
+    .slice(0, 60);
   const { supabase } = await requireUser();
   const { error } = await supabase.auth.updateUser({ data: { name } });
   if (error) return { name, error: "No se ha podido guardar el nombre." };

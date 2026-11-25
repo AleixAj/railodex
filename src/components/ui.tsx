@@ -16,14 +16,24 @@ export function ScaleBadge({ scale }: { scale: string }) {
   return (
     <span
       className="inline-flex h-6 items-center rounded-md border px-1.5 font-mono text-[13px] font-semibold"
-      style={{ color, borderColor: `color-mix(in oklab, ${color} 45%, transparent)`, background: `color-mix(in oklab, ${color} 12%, transparent)` }}
+      style={{
+        color,
+        borderColor: `color-mix(in oklab, ${color} 45%, transparent)`,
+        background: `color-mix(in oklab, ${color} 12%, transparent)`,
+      }}
     >
       {info?.label ?? scale}
     </span>
   );
 }
 
-export function Tag({ children, tone = "neutral" }: { children: React.ReactNode; tone?: "neutral" | "amb" | "grn" | "red" }) {
+export function Tag({
+  children,
+  tone = "neutral",
+}: {
+  children: React.ReactNode;
+  tone?: "neutral" | "amb" | "grn" | "red";
+}) {
   const tones = {
     neutral: "border-ln2 text-fg2",
     amb: "border-amb/50 bg-amb2 text-ambtx",
@@ -73,14 +83,27 @@ export function Label({ children, htmlFor, hint }: { children: React.ReactNode; 
   );
 }
 
-export function PhotoBox({ src, alt, className = "", kind }: { src?: string | null; alt: string; className?: string; kind?: Kind }) {
+export function PhotoBox({
+  src,
+  alt,
+  className = "",
+  kind,
+}: {
+  src?: string | null;
+  alt: string;
+  className?: string;
+  kind?: Kind;
+}) {
   const Icon = kind ? KIND_ICONS[kind] : TrainFront;
   if (src) {
     // eslint-disable-next-line @next/next/no-img-element -- URLs firmadas de Supabase, temporales
     return <img src={src} alt={alt} className={`h-full w-full object-cover ${className}`} />;
   }
   return (
-    <div className={`photo-placeholder flex h-full w-full items-center justify-center ${className}`} aria-label="Sin foto">
+    <div
+      className={`photo-placeholder flex h-full w-full items-center justify-center ${className}`}
+      aria-label="Sin foto"
+    >
       <Icon className="h-10 w-10 text-ln2" strokeWidth={1.25} />
     </div>
   );

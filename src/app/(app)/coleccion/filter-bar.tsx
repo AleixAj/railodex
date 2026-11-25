@@ -61,18 +61,40 @@ export function FilterBar({ manufacturers, railways }: { manufacturers: string[]
             className="h-11 w-full rounded-[10px] border border-ln2 bg-s1 pl-10 pr-3 text-[15px] placeholder:text-fg3 focus:border-amb focus:outline-none"
           />
         </form>
-        {select("escala", "Escala", SCALES.map((s) => ({ value: s.id, label: `${s.label} · ${s.ratio}` })))}
-        {select("tipo", "Tipo", KINDS.map((k) => ({ value: k.id, label: k.label })))}
-        {select("compania", "Compañía", railways.map((r) => ({ value: r, label: r })))}
-        {select("epoca", "Época", EPOCHS.map((e) => ({ value: e, label: `Época ${e}` })))}
+        {select(
+          "escala",
+          "Escala",
+          SCALES.map((s) => ({ value: s.id, label: `${s.label} · ${s.ratio}` })),
+        )}
+        {select(
+          "tipo",
+          "Tipo",
+          KINDS.map((k) => ({ value: k.id, label: k.label })),
+        )}
+        {select(
+          "compania",
+          "Compañía",
+          railways.map((r) => ({ value: r, label: r })),
+        )}
+        {select(
+          "epoca",
+          "Época",
+          EPOCHS.map((e) => ({ value: e, label: `Época ${e}` })),
+        )}
         {select("sistema", "Sistema", [
           { value: "digital", label: "Digital" },
           { value: "analogico", label: "Analógico" },
         ])}
-        {select("fabricante", "Fabricante", manufacturers.map((m) => ({ value: m, label: m })))}
+        {select(
+          "fabricante",
+          "Fabricante",
+          manufacturers.map((m) => ({ value: m, label: m })),
+        )}
         {active && (
           <button
-            onClick={() => startTransition(() => router.replace(`${pathname}${view !== "cuadricula" ? `?vista=${view}` : ""}`))}
+            onClick={() =>
+              startTransition(() => router.replace(`${pathname}${view !== "cuadricula" ? `?vista=${view}` : ""}`))
+            }
             className="inline-flex h-11 items-center gap-1.5 rounded-[10px] px-3 text-[15px] text-ambtx hover:bg-s2"
           >
             <X className="h-4 w-4" /> Quitar filtros

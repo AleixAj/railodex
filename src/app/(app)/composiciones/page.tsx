@@ -29,7 +29,10 @@ export default async function ComposicionesPage() {
       .sort((a, b) => a.position - b.position)
       .map((m) => m.items!),
   }));
-  const covers = await coverUrls(supabase, rows.flatMap((r) => r.members.slice(0, 8).map((m) => m.id)));
+  const covers = await coverUrls(
+    supabase,
+    rows.flatMap((r) => r.members.slice(0, 8).map((m) => m.id)),
+  );
 
   return (
     <div className="flex flex-col gap-5">
@@ -50,7 +53,11 @@ export default async function ComposicionesPage() {
       ) : (
         <div className="grid gap-3 lg:grid-cols-2">
           {rows.map((c) => (
-            <Link key={c.id} href={`/composiciones/${c.id}`} className="rounded-xl border border-ln bg-s1 p-4 transition hover:border-ln2">
+            <Link
+              key={c.id}
+              href={`/composiciones/${c.id}`}
+              className="rounded-xl border border-ln bg-s1 p-4 transition hover:border-ln2"
+            >
               <div className="flex items-baseline justify-between gap-3">
                 <p className="truncate text-[18px] font-semibold">{c.name}</p>
                 <span className="flex-none font-mono text-[13px] text-fg3">

@@ -1,0 +1,8 @@
+.next
+node_modules
+design
+docs
+package-lock.json
+supabase/.temp
+next-env.d.ts
+AGENTS.md

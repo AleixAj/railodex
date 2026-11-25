@@ -18,9 +18,13 @@ const MESSAGES: Record<string, string> = {
 
 export async function authenticate(prev: AuthState, formData: FormData): Promise<AuthState> {
   const mode = formData.get("mode") === "registro" ? "registro" : "entrar";
-  const email = String(formData.get("email") ?? "").trim().toLowerCase();
+  const email = String(formData.get("email") ?? "")
+    .trim()
+    .toLowerCase();
   const password = String(formData.get("password") ?? "");
-  const name = String(formData.get("name") ?? "").trim().slice(0, 60);
+  const name = String(formData.get("name") ?? "")
+    .trim()
+    .slice(0, 60);
   const next = safeNext(formData.get("next"));
 
   // `email` goes back with every error so the form doesn't wipe it.

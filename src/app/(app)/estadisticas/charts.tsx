@@ -29,7 +29,10 @@ export function SpendChart({ data }: { data: { label: string; total: number }[] 
       {data.map((d) => (
         <div key={d.label} className="flex min-w-[48px] flex-1 flex-col items-center gap-1.5">
           <span className="font-mono text-[12px] text-fg2">{money(d.total)}</span>
-          <div className="w-full max-w-[64px] rounded-t-md bg-amb" style={{ height: `${Math.max(3, (d.total / max) * 150)}px` }} />
+          <div
+            className="w-full max-w-[64px] rounded-t-md bg-amb"
+            style={{ height: `${Math.max(3, (d.total / max) * 150)}px` }}
+          />
           <span className="font-mono text-[13px] text-fg3">{d.label}</span>
         </div>
       ))}
