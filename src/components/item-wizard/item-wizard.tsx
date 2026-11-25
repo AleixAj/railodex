@@ -240,7 +240,7 @@ export function ItemWizard({
                       <select id="wa" className={field} value={form.details.wheelArrangement ?? ""} onChange={(e) => setD("wheelArrangement", e.target.value || undefined)}>
                         <option value="">Sin indicar</option>
                         {WHEEL_ARRANGEMENTS[form.traction as Traction].map((w) => (
-                          <option key={w.uic} value={w.uic}>{w.uic}{w.alt ? `  ·  ${w.alt}` : ""}</option>
+                          <option key={w.uic} value={w.uic}>{w.uic}{w.alt && w.alt !== w.uic ? `  ·  ${w.alt}` : ""}</option>
                         ))}
                       </select>
                     </div>

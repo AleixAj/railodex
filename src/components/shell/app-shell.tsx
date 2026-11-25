@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { LogOut, Menu, Moon, Plus, Search, Sun } from "lucide-react";
 import { Sidebar } from "./sidebar";
 import { signOut, toggleTheme } from "@/app/actions";
@@ -18,6 +19,9 @@ export function AppShell({
   userLabel: string;
 }) {
   const [open, setOpen] = useState(false);
+  // En el asistente el botón flotante tapaba «Siguiente» en el móvil.
+  const pathname = usePathname();
+  const inWizard = pathname === "/anadir" || pathname.endsWith("/editar");
 
   return (
     <div className="flex min-h-dvh">
@@ -77,13 +81,15 @@ export function AppShell({
         <main className="mx-auto w-full max-w-[1400px] flex-1 px-4 py-6 lg:px-8 lg:py-8">{children}</main>
       </div>
 
-      <Link
-        href="/anadir"
-        className="fixed bottom-5 right-5 z-20 flex h-14 w-14 items-center justify-center rounded-full bg-amb text-[#1a1714] shadow-lg sm:hidden"
-        aria-label="Añadir pieza"
-      >
-        <Plus className="h-6 w-6" />
-      </Link>
+      {!inWizard && (
+        <Link
+          href="/anadir"
+          className="fixed bottom-5 right-5 z-20 flex h-14 w-14 items-center justify-center rounded-full bg-amb text-[#1a1714] shadow-lg sm:hidden"
+          aria-label="Añadir pieza"
+        >
+          <Plus className="h-6 w-6" />
+        </Link>
+      )}
     </div>
   );
 }

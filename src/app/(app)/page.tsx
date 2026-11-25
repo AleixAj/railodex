@@ -10,7 +10,7 @@ import { Card, EmptyState, PhotoBox, ScaleBadge, SectionTitle } from "@/componen
 export default async function InicioPage() {
   const { supabase, name } = await requireUser();
 
-  const [{ data: itemsData }, { data: eventsData }] = await Promise.all([
+  const [{ data: itemsData }, { data: eventsData }, { data: photoRows }] = await Promise.all([
     supabase
       .from("items")
       .select("id, kind, name, manufacturer, catalog_ref, scale, epoch, railway, road_number, system, dcc_address, condition, status, purchase_price, purchase_date, estimated_value, location, details, created_at")
@@ -20,7 +20,10 @@ export default async function InicioPage() {
       .select("id, item_id, happened_on, kind, title, cost, items(name)")
       .order("happened_on", { ascending: false })
       .limit(4),
+    supabase.from("item_photos").select("item_id"),
   ]);
+  const photoCount = new Map<string, number>();
+  (photoRows ?? []).forEach((p) => photoCount.set(p.item_id, (photoCount.get(p.item_id) ?? 0) + 1));
 
   const items = (itemsData ?? []) as Item[];
   const owned = items.filter((i) => i.status !== "vendida");
@@ -30,7 +33,7 @@ export default async function InicioPage() {
 
   const invested = owned.reduce((s, i) => s + Number(i.purchase_price ?? 0), 0);
   const value = owned.reduce((s, i) => s + Number(i.estimated_value ?? i.purchase_price ?? 0), 0);
-  const avgComplete = owned.length ? Math.round(owned.reduce((s, i) => s + completeness(i), 0) / owned.length) : 0;
+  const avgComplete = owned.length ? Math.round(owned.reduce((s, i) => s + completeness(i, photoCount.get(i.id) ?? 0), 0) / owned.length) : 0;
 
   const addresses = owned.filter((i) => i.dcc_address !== null);
   const byAddress = new Map<number, number>();
@@ -63,7 +66,7 @@ export default async function InicioPage() {
 
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
         <QuickAction href="/anadir" icon={Plus} title="Añadir una pieza" text="Busca, escanea o rellénala a mano" primary />
-        <QuickAction href="/coleccion" icon={Library} title="Ver mi colección" text={`${owned.length} piezas`} />
+        <QuickAction href="/coleccion" icon={Library} title="Ver mi colección" text={plural(owned.length, "pieza", "piezas")} />
         <QuickAction href="/anadir?camino=escanear" icon={ScanBarcode} title="Escanear una caja" text="Con el código de barras" soon />
         <QuickAction href="/importar" icon={FileUp} title="Importar mi lista" text="Desde Excel o CSV" soon />
       </div>
@@ -77,7 +80,7 @@ export default async function InicioPage() {
       ) : (
         <>
           <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-            <Stat label="Piezas en colección" value={String(owned.length)} sub={`${owned.filter((i) => i.kind === "locomotora" || i.kind === "automotor").length} tractoras · ${owned.filter((i) => i.kind === "coche" || i.kind === "vagon").length} remolcadas`} />
+            <Stat label="Piezas en colección" value={String(owned.length)} sub={`${plural(owned.filter((i) => i.kind === "locomotora" || i.kind === "automotor").length, "tractora", "tractoras")} · ${plural(owned.filter((i) => i.kind === "coche" || i.kind === "vagon").length, "remolcada", "remolcadas")}`} />
             <Stat label="Valor estimado" value={money(value)} sub={`Invertido ${money(invested)}`} />
             <Stat label="Ficha completa (media)" value={`${avgComplete} %`} sub="Completa las fichas desde cada pieza" />
             <Stat
@@ -90,7 +93,7 @@ export default async function InicioPage() {
 
           <div className="grid gap-3 lg:grid-cols-2 xl:grid-cols-4">
             <Card className="p-5">
-              <SectionTitle aside={<span className="font-mono text-[13px] text-fg3">{owned.length} piezas</span>}>Por escala</SectionTitle>
+              <SectionTitle aside={<span className="font-mono text-[13px] text-fg3">{plural(owned.length, "pieza", "piezas")}</span>}>Por escala</SectionTitle>
               <div className="mt-4 flex h-2 overflow-hidden rounded-full bg-s2">
                 {byScale.map(([s, n]) => (
                   <div key={s} style={{ width: `${(n / owned.length) * 100}%`, background: scaleInfo(s)?.color ?? "var(--fg3)" }} />
@@ -198,6 +201,10 @@ export default async function InicioPage() {
       )}
     </div>
   );
+}
+
+function plural(n: number, one: string, many: string) {
+  return `${n} ${n === 1 ? one : many}`;
 }
 
 function QuickAction({ href, icon: Icon, title, text, primary, soon }: { href: string; icon: typeof Plus; title: string; text: string; primary?: boolean; soon?: boolean }) {

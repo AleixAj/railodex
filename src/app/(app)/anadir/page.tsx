@@ -31,7 +31,7 @@ export default async function AnadirPage({ searchParams }: PageProps<"/anadir">)
 
   return (
     <div className="flex flex-col gap-5">
-      <div className="grid gap-3 sm:grid-cols-3">
+      <div className="hidden gap-3 sm:grid sm:grid-cols-3">
         {[
           { icon: Search, title: "Buscar en el catálogo", text: "Escribe «Roco 73845» y se rellena solo" },
           { icon: ScanBarcode, title: "Escanear código de barras", text: "Apunta al EAN de la caja" },
