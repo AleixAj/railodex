@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import { Card } from "@/components/ui";
 
 const SECTIONS: Record<string, { title: string; text: string }> = {
-  ubicaciones: { title: "Ubicaciones", text: "Vitrinas, estantes y cajas con etiquetas QR. De momento la ubicación se escribe en cada pieza." },
   estadisticas: { title: "Estadísticas", text: "Evolución del valor, gasto por año y fabricante, y progreso de series." },
   importar: { title: "Importar y exportar", text: "Importar desde Excel/CSV con vista previa, y exportar a CSV o PDF para el seguro." },
   ajustes: { title: "Ajustes y perfil", text: "Idioma, moneda, privacidad y tu plan (Gratis o Pro)." },

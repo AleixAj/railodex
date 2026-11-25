@@ -62,7 +62,7 @@ export function Sidebar({ count, open, onClose }: { count: number; open: boolean
     <>
       {open && <div className="fixed inset-0 z-30 bg-black/50 lg:hidden" onClick={onClose} aria-hidden />}
       <aside
-        className={`fixed inset-y-0 left-0 z-40 flex w-[260px] flex-col border-r border-ln bg-bg transition-transform lg:sticky lg:top-0 lg:h-dvh lg:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-40 flex w-[260px] flex-col print:hidden border-r border-ln bg-bg transition-transform lg:sticky lg:top-0 lg:h-dvh lg:translate-x-0 ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
       >

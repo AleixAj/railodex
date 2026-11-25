@@ -28,7 +28,7 @@ export function AppShell({
       <Sidebar count={count} open={open} onClose={() => setOpen(false)} />
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="sticky top-0 z-20 border-b border-ln bg-bg/90 backdrop-blur">
+        <header className="sticky top-0 z-20 border-b border-ln bg-bg/90 backdrop-blur print:hidden">
           <div className="flex h-[72px] items-center gap-3 px-4 lg:px-8">
             <button
               onClick={() => setOpen(true)}
@@ -78,13 +78,13 @@ export function AppShell({
           <div className="rail-rule" aria-hidden />
         </header>
 
-        <main className="mx-auto w-full max-w-[1400px] flex-1 px-4 py-6 lg:px-8 lg:py-8">{children}</main>
+        <main className="mx-auto w-full max-w-[1400px] flex-1 px-4 py-6 lg:px-8 lg:py-8 print:max-w-none print:p-0">{children}</main>
       </div>
 
       {!inWizard && (
         <Link
           href="/anadir"
-          className="fixed bottom-5 right-5 z-20 flex h-14 w-14 items-center justify-center rounded-full bg-amb text-[#1a1714] shadow-lg sm:hidden"
+          className="fixed bottom-5 right-5 z-20 flex h-14 w-14 items-center justify-center rounded-full bg-amb text-[#1a1714] shadow-lg sm:hidden print:hidden"
           aria-label="Añadir pieza"
         >
           <Plus className="h-6 w-6" />

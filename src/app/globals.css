@@ -124,3 +124,11 @@ body {
   border: 3px solid transparent;
   background-clip: content-box;
 }
+
+@media print {
+  html,
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+}
