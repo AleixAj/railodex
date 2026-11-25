@@ -1,9 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
-  cacheComponents: true,
-  partialPrefetching: true,
+  // Desactivado: casi todas las pantallas dependen del usuario con sesión, así que se
+  // renderizan en cada petición. Se puede activar más adelante para páginas públicas.
+  cacheComponents: false,
   turbopack: {
     rules: {
       "*.css": {

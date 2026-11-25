@@ -1,36 +1,31 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Railodex
 
-## Getting Started
+App para catalogar colecciones de modelismo ferroviario. Web primero (Next.js), con la app móvil (Expo) más adelante. Datos, login y fotos en Supabase.
 
-First, run the development server:
+## Puesta en marcha
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+1. Crea un proyecto gratis en [supabase.com](https://supabase.com).
+2. En el proyecto, abre **SQL Editor**, pega el contenido de `supabase/migrations/20261125025818_init_coleccion.sql` y ejecútalo. Crea las tablas, los permisos y el almacén de fotos.
+3. En **Project Settings → API Keys** copia la URL del proyecto y la clave *publishable*, y ponlas en `.env.local` (usa `.env.example` como modelo).
+4. En **Authentication → URL Configuration** añade `http://localhost:3000/auth/callback` a las *Redirect URLs*.
+5. Arranca la web:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+   ```bash
+   npm install
+   npm run dev
+   ```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+   y abre http://localhost:3000.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Qué hay
 
-## Learn More
+- `src/app/login`: entrar y crear cuenta.
+- `src/app/(app)/page.tsx`: Inicio con resumen de la colección.
+- `src/app/(app)/coleccion`: colección (cuadrícula, lista y tabla, con filtros) y ficha de cada pieza.
+- `src/components/item-wizard`: asistente de alta y edición; los campos cambian según tipo, tracción y digital/analógico.
+- `src/lib/catalog.ts`: listas de fabricantes, escalas, rodajes, decoders, etc.
+- `supabase/migrations`: esquema de la base de datos con seguridad por usuario (RLS).
+- `design/`: maquetas exportadas de Claude Design (referencia visual).
+- `docs/`: el prompt usado para el diseño.
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Pendiente: composiciones, deseos, mantenimiento con recordatorios, ubicaciones con QR, vista digital, estadísticas, importar/exportar, planes, búsqueda en catálogo, escáner y foto con IA.
