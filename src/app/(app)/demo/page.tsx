@@ -4,6 +4,7 @@ import { requireUser } from "@/lib/supabase/server";
 import type { ItemPayload } from "@/app/(app)/anadir/actions";
 import { DemoSeeder } from "./demo-seeder";
 import pieces from "./pieces.json";
+import wishes from "./wishes.json";
 
 export const metadata: Metadata = { title: "Colección de ejemplo" };
 
@@ -15,7 +16,11 @@ export type DemoPiece = { slug: string; item: ItemPayload };
 export default async function DemoPage() {
   if (process.env.NODE_ENV === "production") notFound();
   const { supabase, userId } = await requireUser();
-  const { data } = await supabase.from("items").select("id, name");
+  const [{ data }, { data: wishRows }] = await Promise.all([
+    supabase.from("items").select("id, name"),
+    supabase.from("wishes").select("name"),
+  ]);
+  const demoWishes = new Set(wishes.map((w) => w.name));
 
   return (
     <div className="flex max-w-3xl flex-col gap-5">
@@ -25,13 +30,16 @@ export default async function DemoPage() {
         <p className="mt-1 text-fg2">
           Carga {pieces.length} piezas con fotos reales de Wikimedia Commons para ver la app como quedaría con una
           colección real. Las fotos son de los trenes y accesorios de verdad (el autor está en las notas de cada pieza).
-          Las referencias son de modelos que existen; los precios, fechas y ubicaciones son de ejemplo.
+          Las referencias son de modelos que existen; los precios, fechas y ubicaciones son de ejemplo. También añade{" "}
+          {wishes.filter((w) => w.status === "reservada").length} preventas y{" "}
+          {wishes.filter((w) => w.status === "deseo").length} deseos.
         </p>
       </div>
       <DemoSeeder
         userId={userId}
         pieces={pieces as unknown as DemoPiece[]}
         existing={(data ?? []).map((i) => ({ id: i.id, name: i.name }))}
+        wishesLoaded={(wishRows ?? []).filter((w) => demoWishes.has(w.name)).length}
       />
     </div>
   );
