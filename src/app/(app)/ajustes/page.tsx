@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
-import { Check, DatabaseBackup, FileSpreadsheet, LogOut, Moon, Sun } from "lucide-react";
+import { Check, DatabaseBackup, FileSpreadsheet, LogOut } from "lucide-react";
 import { requireUser } from "@/lib/supabase/server";
 import { FREE_PLAN_LIMIT } from "@/lib/catalog";
-import { signOut, toggleTheme } from "@/app/actions";
+import { signOut } from "@/app/actions";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { Card, btn } from "@/components/ui";
 import { NameForm, PasswordForm } from "./forms";
 
@@ -72,13 +73,7 @@ export default async function AjustesPage() {
 
       <Card className="p-5">
         <h2 className="text-[17px] font-semibold">Apariencia</h2>
-        <form action={toggleTheme} className="mt-3 flex flex-wrap items-center gap-3">
-          <span className="text-fg2">Ahora estás en modo {theme}.</span>
-          <button className={btn.secondary}>
-            {theme === "oscuro" ? <Sun className="h-[18px] w-[18px]" /> : <Moon className="h-[18px] w-[18px]" />}
-            Cambiar a modo {theme === "oscuro" ? "claro" : "oscuro"}
-          </button>
-        </form>
+        <ThemeToggle initial={theme} withLabel className={`${btn.secondary} mt-3`} />
       </Card>
 
       <Card className="p-5">

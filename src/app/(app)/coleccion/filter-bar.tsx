@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import { LayoutGrid, List, Search, Table2, X } from "lucide-react";
 import { EPOCHS, KINDS, SCALES } from "@/lib/catalog";
 
@@ -15,10 +15,21 @@ export function FilterBar({ manufacturers, railways }: { manufacturers: string[]
   const [pending, startTransition] = useTransition();
 
   const set = (key: string, value: string) => {
-    const next = new URLSearchParams(params);
+    // Read the live URL: a delayed search mustn't undo a filter picked in the meantime.
+    const next = new URLSearchParams(window.location.search);
     if (value) next.set(key, value);
     else next.delete(key);
     startTransition(() => router.replace(`${pathname}?${next.toString()}`, { scroll: false }));
+  };
+
+  // Search as you type, but wait until they stop for a moment so each letter isn't a request.
+  const [text, setText] = useState(params.get("q") ?? "");
+  const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
+  useEffect(() => () => clearTimeout(timer.current), []);
+  const search = (value: string) => {
+    setText(value);
+    clearTimeout(timer.current);
+    timer.current = setTimeout(() => set("q", value.trim()), 300);
   };
 
   const view = params.get("vista") ?? "cuadricula";
@@ -48,14 +59,16 @@ export function FilterBar({ manufacturers, railways }: { manufacturers: string[]
           className="relative min-w-[220px] flex-1 sm:max-w-[300px]"
           onSubmit={(e) => {
             e.preventDefault();
-            set("q", String(new FormData(e.currentTarget).get("q") ?? "").trim());
+            clearTimeout(timer.current);
+            set("q", text.trim());
           }}
         >
           <Search className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-fg3" />
           <input
             name="q"
-            key={params.get("q") ?? ""}
-            defaultValue={params.get("q") ?? ""}
+            type="search"
+            value={text}
+            onChange={(e) => search(e.target.value)}
             placeholder="Buscar en la colección"
             aria-label="Buscar en la colección"
             className="h-11 w-full rounded-[10px] border border-ln2 bg-s1 pl-10 pr-3 text-[15px] placeholder:text-fg3 focus:border-amb focus:outline-none"
@@ -92,9 +105,11 @@ export function FilterBar({ manufacturers, railways }: { manufacturers: string[]
         )}
         {active && (
           <button
-            onClick={() =>
-              startTransition(() => router.replace(`${pathname}${view !== "cuadricula" ? `?vista=${view}` : ""}`))
-            }
+            onClick={() => {
+              setText("");
+              clearTimeout(timer.current);
+              startTransition(() => router.replace(`${pathname}${view !== "cuadricula" ? `?vista=${view}` : ""}`));
+            }}
             className="inline-flex h-11 items-center gap-1.5 rounded-[10px] px-3 text-[15px] text-ambtx hover:bg-s2"
           >
             <X className="h-4 w-4" /> Quitar filtros

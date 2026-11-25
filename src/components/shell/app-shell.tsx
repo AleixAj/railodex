@@ -3,9 +3,10 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LogOut, Menu, Moon, Plus, Search, Sun } from "lucide-react";
+import { LogOut, Menu, Plus, Search } from "lucide-react";
 import { Sidebar } from "./sidebar";
-import { signOut, toggleTheme } from "@/app/actions";
+import { signOut } from "@/app/actions";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export function AppShell({
   children,
@@ -48,15 +49,10 @@ export function AppShell({
               />
             </form>
 
-            <form action={toggleTheme}>
-              <button
-                className="flex h-11 w-11 items-center justify-center rounded-[10px] border border-ln2 bg-s1 text-fg2 hover:text-fg"
-                aria-label={theme === "oscuro" ? "Cambiar a modo claro" : "Cambiar a modo oscuro"}
-                title={theme === "oscuro" ? "Modo claro" : "Modo oscuro"}
-              >
-                {theme === "oscuro" ? <Sun className="h-[18px] w-[18px]" /> : <Moon className="h-[18px] w-[18px]" />}
-              </button>
-            </form>
+            <ThemeToggle
+              initial={theme}
+              className="flex h-11 w-11 items-center justify-center rounded-[10px] border border-ln2 bg-s1 text-fg2 hover:text-fg"
+            />
 
             <Link
               href="/anadir"

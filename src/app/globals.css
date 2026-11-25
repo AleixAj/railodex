@@ -132,3 +132,13 @@ body {
     color: #000 !important;
   }
 }
+
+/* Long lists: the browser skips laying out off-screen cards until they're scrolled near. */
+.lazy-card {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 340px;
+}
+.lazy-row {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 80px;
+}
