@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { requireUser } from "@/lib/supabase/server";
+import { remainingSlots, LIMIT_MESSAGE } from "@/lib/plan";
 import { CONDITIONS, KINDS, SCALES, STATUSES, TRACTIONS } from "@/lib/catalog";
 import type { ItemDetails } from "@/lib/types";
 
@@ -42,6 +43,7 @@ const num = (v: string) => {
 export async function saveItem(payload: ItemPayload, itemId?: string): Promise<{ id?: string; error?: string }> {
   const { supabase } = await requireUser();
 
+  if (!itemId && (await remainingSlots(supabase)) === 0) return { error: LIMIT_MESSAGE };
   if (!KINDS.some((k) => k.id === payload.kind)) return { error: "Elige el tipo de pieza." };
   if (!text(payload.manufacturer)) return { error: "Falta el fabricante." };
   if (!SCALES.some((s) => s.id === payload.scale)) return { error: "Falta la escala." };

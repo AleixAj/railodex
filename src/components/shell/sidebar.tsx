@@ -91,7 +91,7 @@ export function Sidebar({ count, open, onClose }: { count: number; open: boolean
             <div className="h-full rounded-full bg-amb" style={{ width: `${pct}%` }} />
           </div>
           <Link
-            href="/ajustes"
+            href="/ajustes#planes"
             className="flex h-10 items-center justify-center gap-2 rounded-[10px] border border-ln2 text-[15px] font-medium hover:bg-s2"
           >
             <Gem className="h-4 w-4 text-ambtx" /> Pasar a Pro

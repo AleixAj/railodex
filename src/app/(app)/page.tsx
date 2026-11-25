@@ -74,7 +74,7 @@ export default async function InicioPage() {
         <QuickAction href="/anadir" icon={Plus} title="Añadir una pieza" text="Busca, escanea o rellénala a mano" primary />
         <QuickAction href="/coleccion" icon={Library} title="Ver mi colección" text={plural(owned.length, "pieza", "piezas")} />
         <QuickAction href="/anadir?camino=escanear" icon={ScanBarcode} title="Escanear una caja" text="Con el código de barras" soon />
-        <QuickAction href="/importar" icon={FileUp} title="Importar mi lista" text="Desde Excel o CSV" soon />
+        <QuickAction href="/importar" icon={FileUp} title="Importar mi lista" text="Desde Excel o CSV" />
       </div>
 
       {owned.length === 0 ? (

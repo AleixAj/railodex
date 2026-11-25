@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/supabase/server";
+import { remainingSlots, LIMIT_MESSAGE } from "@/lib/plan";
 import { KINDS, SCALES } from "@/lib/catalog";
 
 export type WishState = { error?: string; ok?: number };
@@ -75,6 +76,7 @@ export async function wishToCollection(id: string) {
   if (!w.manufacturer || !w.scale || !w.kind) {
     return { error: "Para pasarla a la colección indica antes el tipo, el fabricante y la escala." };
   }
+  if ((await remainingSlots(supabase)) === 0) return { error: LIMIT_MESSAGE };
   const { data: item, error } = await supabase
     .from("items")
     .insert({
