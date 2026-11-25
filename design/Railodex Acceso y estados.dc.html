@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@400..700&family=Atkinson+Hyperlegible+Next:wght@400..800&family=Bricolage+Grotesque:opsz,wght@12..96,500..800&display=swap">
+<link rel="stylesheet" href="https://unpkg.com/lucide-static@0.460.0/font/lucide.css">
+<style>
+:root,[data-theme="oscuro"]{--bg:#12110F;--s1:#1C1A17;--s2:#25231F;--s3:#161512;--ln:#38342E;--ln2:#544E46;--fg:#F6F1E7;--fg2:#D3CCBF;--fg3:#AFA799;--amb:#E8701A;--ambtx:#F59245;--amb2:rgba(232,112,26,.13);--grn:#5DAA84;--grn2:rgba(93,170,132,.14);--red:#E5604F;--red2:rgba(229,96,79,.14);--ph:#1B1916;--ph2:#22201C;--sc-h0:oklch(.78 .09 250);--sc-n:oklch(.78 .09 165);--sc-tt:oklch(.78 .09 300);--sc-z:oklch(.78 .09 10);--sc-0:oklch(.78 .09 60);--sc-1:oklch(.78 .09 120);--sc-g:oklch(.78 .09 210);--canvas:#0A0908;--dot:rgba(255,236,210,.05);--rail:#5C554B}
+[data-theme="claro"]{--bg:#F3EEE4;--s1:#FFFDF8;--s2:#EBE5D9;--s3:#F9F6EF;--ln:#DDD5C6;--ln2:#BDB3A2;--fg:#1A1714;--fg2:#433D35;--fg3:#5E574D;--amb:#E8701A;--ambtx:#A4470B;--amb2:rgba(232,112,26,.16);--grn:#2F6B4F;--grn2:rgba(47,107,79,.11);--red:#C8372D;--red2:rgba(200,55,45,.1);--ph:#EAE3D6;--ph2:#E1D9CA;--sc-h0:oklch(.5 .11 250);--sc-n:oklch(.5 .1 165);--sc-tt:oklch(.5 .11 300);--sc-z:oklch(.5 .11 10);--sc-0:oklch(.5 .1 60);--sc-1:oklch(.5 .1 120);--sc-g:oklch(.5 .1 210);--canvas:#E3DCCF;--dot:rgba(70,45,20,.08);--rail:#B5AA97}
+body{margin:0;background:#0A0908}
+*::-webkit-scrollbar{width:10px;height:10px}*::-webkit-scrollbar-thumb{background:var(--amb);border-radius:10px;border:3px solid transparent;background-clip:content-box}
+button,input{font:inherit;color:inherit}
+a{color:var(--ambtx);text-decoration:none}a:hover{text-decoration:underline}
+@keyframes rxShimmer{0%{background-position:-600px 0}100%{background-position:600px 0}}
+</style>
+</helmet>
+<div data-theme="{{ theme }}" style="background:var(--canvas);color:var(--fg);font-family:'Atkinson Hyperlegible Next',system-ui,sans-serif;font-size:17px;padding:48px;display:flex;flex-direction:column;gap:56px;min-width:1536px;-webkit-font-smoothing:antialiased">
+  <div style="display:flex;align-items:center;gap:16px"><span style="font:700 24px 'Bricolage Grotesque';letter-spacing:-.02em">Railodex · Acceso, onboarding, planes y estados</span><span style="font:400 15px 'Atkinson Hyperlegible Mono';color:var(--fg3)">Escritorio 1440 px</span><div style="flex:1"></div><button onClick="{{ toggleTheme }}" style="height:44px;padding:0 12px;border:1px solid var(--ln2);border-radius:10px;background:var(--s1);cursor:pointer;display:flex;gap:8px;align-items:center;font:500 15px 'Atkinson Hyperlegible Next'"><i class="{{ themeIcon }}"></i>{{ themeLabel }}</button></div>
+
+  <!-- LOGIN -->
+  <div id="login" style="display:flex;flex-direction:column;gap:10px">
+    <div style="font:500 14px 'Atkinson Hyperlegible Mono';color:var(--fg3);letter-spacing:.06em">01 · BIENVENIDA / ENTRAR / CREAR CUENTA</div>
+    <div style="width:1440px;height:900px;background:var(--bg);border-radius:10px;overflow:hidden;display:grid;grid-template-columns:1fr 560px;border:1px solid var(--ln)">
+      <div style="position:relative;background:repeating-linear-gradient(135deg,var(--ph) 0 14px,var(--ph2) 14px 28px);display:flex;flex-direction:column;justify-content:space-between;padding:48px">
+        <div style="display:flex;align-items:center;gap:12px"><div style="width:46px;height:46px;border-radius:50%;background:var(--amb);display:grid;place-items:center;flex:none;box-shadow:inset 0 0 0 3px var(--bg),0 0 0 2px var(--amb)"><span style="font:800 23px/1 'Bricolage Grotesque';color:#1A1410">R</span></div><span style="font:700 24px 'Bricolage Grotesque';letter-spacing:-.02em">Railodex</span></div>
+        <span style="position:absolute;left:48px;top:50%;font:400 14px 'Atkinson Hyperlegible Mono';letter-spacing:.04em;color:var(--fg3)">FOTO DE AMBIENTE · LOCOMOTORA EN VITRINA, LUZ LATERAL</span>
+        <div style="max-width:560px"><div style="height:14px;background:linear-gradient(var(--amb),var(--amb)) top/100% 2px no-repeat,linear-gradient(var(--amb),var(--amb)) bottom/100% 2px no-repeat,repeating-linear-gradient(90deg,var(--rail) 0 5px,transparent 5px 16px);width:240px;margin-bottom:24px"></div><div style="font:800 56px/1 'Bricolage Grotesque';letter-spacing:-.045em;text-wrap:balance">El índice completo de tu colección ferroviaria.</div><div style="font:400 19px/1.5 'Atkinson Hyperlegible Next';color:var(--fg2);margin-top:16px">Qué tienes, dónde está, cuánto vale y qué te falta. H0, N, TT, Z y más; de Ibertren a Märklin.</div></div>
+      </div>
+      <div style="padding:64px 64px;display:flex;flex-direction:column;justify-content:center;gap:22px;background:var(--bg)">
+        <div style="display:flex;padding:4px;border:1px solid var(--ln2);border-radius:10px;background:var(--s1)"><sc-for list="{{ tabs }}" as="t" hint-placeholder-count="2"><button onClick="{{ t.go }}" style="flex:1;height:46px;border:0;border-radius:7px;background:{{ t.bg }};color:{{ t.fg }};font:500 16px 'Atkinson Hyperlegible Next';cursor:pointer">{{ t.label }}</button></sc-for></div>
+        <div><div style="font:700 30px/1.2 'Bricolage Grotesque';letter-spacing:-.02em">{{ auth.title }}</div><div style="font:400 16px 'Atkinson Hyperlegible Next';color:var(--fg2);margin-top:6px">{{ auth.sub }}</div></div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <button style="height:44px;border:1px solid var(--ln2);border-radius:9px;background:var(--s1);font:500 16px 'Atkinson Hyperlegible Next';cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px"><span style="width:18px;height:18px;border-radius:4px;border:1px dashed var(--ln2)"></span>Continuar con Google</button>
+          <button style="height:44px;border:1px solid var(--ln2);border-radius:9px;background:var(--s1);font:500 16px 'Atkinson Hyperlegible Next';cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px"><span style="width:18px;height:18px;border-radius:4px;border:1px dashed var(--ln2)"></span>Continuar con Apple</button>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;font:400 15px 'Atkinson Hyperlegible Next';color:var(--fg3)"><span style="flex:1;height:1px;background:var(--ln)"></span>o con tu correo<span style="flex:1;height:1px;background:var(--ln)"></span></div>
+        <sc-if value="{{ auth.reg }}"><div><div style="font:500 15px 'Atkinson Hyperlegible Next';color:var(--fg2);margin-bottom:8px">Nombre</div><input value="Javier Ortega" style="width:100%;box-sizing:border-box;height:44px;padding:0 14px;border:1px solid var(--ln2);border-radius:9px;background:var(--s3);font:400 17px 'Atkinson Hyperlegible Next';outline:none"></div></sc-if>
+        <div><div style="font:500 15px 'Atkinson Hyperlegible Next';color:var(--fg2);margin-bottom:8px">Correo electrónico</div><input value="javier.ortega@correo.es" style="width:100%;box-sizing:border-box;height:44px;padding:0 14px;border:1px solid var(--ln2);border-radius:9px;background:var(--s3);font:400 17px 'Atkinson Hyperlegible Next';outline:none"></div>
+        <div><div style="display:flex;justify-content:space-between;font:500 15px 'Atkinson Hyperlegible Next';color:var(--fg2);margin-bottom:8px"><span>Contraseña</span><sc-if value="{{ auth.login }}" hint-placeholder-val="{{ true }}"><a href="#login">¿La has olvidado?</a></sc-if></div><input type="password" value="locomotora333" style="width:100%;box-sizing:border-box;height:44px;padding:0 14px;border:1px solid var(--ln2);border-radius:9px;background:var(--s3);font:400 17px 'Atkinson Hyperlegible Next';outline:none"></div>
+        <button onClick="{{ auth.go }}" style="height:46px;border:0;border-radius:9px;background:var(--amb);color:#1A1410;box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 3px 0 #B0500E;font:600 17px 'Atkinson Hyperlegible Next';cursor:pointer">{{ auth.cta }}</button>
+        <div style="font:400 15px/1.5 'Atkinson Hyperlegible Next';color:var(--fg3);text-align:center">{{ auth.foot }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ONBOARDING -->
+  <div id="onboarding" style="display:flex;flex-direction:column;gap:10px">
+    <div style="font:500 14px 'Atkinson Hyperlegible Mono';color:var(--fg3);letter-spacing:.06em">02 · ONBOARDING EN 3 PASOS (CLICABLE)</div>
+    <div style="width:1440px;height:900px;background:var(--bg);border-radius:10px;overflow:hidden;border:1px solid var(--ln);display:flex;flex-direction:column">
+      <div style="height:64px;display:flex;align-items:center;gap:12px;padding:0 40px;border-bottom:1px solid var(--ln);position:relative"><span style="font:650 20px 'Atkinson Hyperlegible Next';letter-spacing:-.02em">Railodex</span><div style="flex:1"></div><span style="font:500 15px 'Atkinson Hyperlegible Mono';color:var(--fg3)">{{ ob.stepT }}</span><button onClick="{{ ob.skip }}" style="border:0;background:none;color:var(--fg2);font:500 16px 'Atkinson Hyperlegible Next';cursor:pointer;margin-left:16px">Saltar</button>
+        <div style="position:absolute;left:0;bottom:-1px;height:2px;width:{{ ob.prog }};background:var(--amb);transition:width .3s"></div></div>
+      <div style="flex:1;display:flex;justify-content:center;padding:64px 40px;overflow:auto">
+        <div style="width:760px;display:flex;flex-direction:column;gap:28px">
+          <sc-if value="{{ ob.s1 }}" hint-placeholder-val="{{ true }}">
+            <div><div style="font:700 36px/1.1 'Bricolage Grotesque';letter-spacing:-.03em">¿Qué escalas coleccionas?</div><div style="font:400 18px 'Atkinson Hyperlegible Next';color:var(--fg2);margin-top:10px">Elegimos por ti los anchos de vía, filtros y catálogo. Puedes cambiarlo cuando quieras.</div></div>
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+              <sc-for list="{{ ob.scales }}" as="s" hint-placeholder-count="7"><button onClick="{{ s.go }}" style="text-align:left;padding:18px;border-radius:16px;border:1.5px solid {{ s.bd }};background:{{ s.bg }};cursor:pointer;display:flex;flex-direction:column;gap:10px"><span style="font:700 32px/1 'Atkinson Hyperlegible Mono';color:{{ s.c }}">{{ s.k }}</span><span style="font:400 15px 'Atkinson Hyperlegible Mono';color:var(--fg2)">{{ s.d }}</span></button></sc-for>
+            </div>
+          </sc-if>
+          <sc-if value="{{ ob.s2 }}">
+            <div><div style="font:700 36px/1.1 'Bricolage Grotesque';letter-spacing:-.03em">Fabricantes y compañías que te interesan</div><div style="font:400 18px 'Atkinson Hyperlegible Next';color:var(--fg2);margin-top:10px">Los pondremos primero en las búsquedas y en el alta de piezas.</div></div>
+            <div><div style="font:500 13px 'Atkinson Hyperlegible Mono';letter-spacing:.04em;color:var(--fg3);margin-bottom:10px">FABRICANTES</div><div style="display:flex;flex-wrap:wrap;gap:8px"><sc-for list="{{ ob.makers }}" as="o" hint-placeholder-count="12"><button onClick="{{ o.go }}" style="height:40px;padding:0 14px 0 8px;border-radius:10px;border:1px solid {{ o.bd }};background:{{ o.bg }};color:{{ o.fg }};font:500 16px 'Atkinson Hyperlegible Next';cursor:pointer;display:flex;align-items:center;gap:9px"><span style="width:26px;height:34px;border-radius:6px;border:1px dashed var(--ln2);display:grid;place-items:center;font:600 9px 'Atkinson Hyperlegible Mono';color:var(--fg3)">{{ o.logo }}</span>{{ o.label }}</button></sc-for></div></div>
+            <div><div style="font:500 13px 'Atkinson Hyperlegible Mono';letter-spacing:.04em;color:var(--fg3);margin-bottom:10px">COMPAÑÍAS</div><div style="display:flex;flex-wrap:wrap;gap:8px"><sc-for list="{{ ob.cos }}" as="o" hint-placeholder-count="10"><button onClick="{{ o.go }}" style="height:40px;padding:0 16px;border-radius:999px;border:1px solid {{ o.bd }};background:{{ o.bg }};color:{{ o.fg }};font:600 16px 'Atkinson Hyperlegible Mono';cursor:pointer">{{ o.label }}</button></sc-for></div></div>
+          </sc-if>
+          <sc-if value="{{ ob.s3 }}">
+            <div><div style="font:700 36px/1.1 'Bricolage Grotesque';letter-spacing:-.03em">¿Cómo quieres empezar?</div><div style="font:400 18px 'Atkinson Hyperlegible Next';color:var(--fg2);margin-top:10px">Si ya tienes tu colección en una hoja de cálculo o en JMRI, la traemos con vista previa y detección de duplicados.</div></div>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+              <sc-for list="{{ ob.starts }}" as="o" hint-placeholder-count="3"><button onClick="{{ o.go }}" style="text-align:left;padding:22px;border-radius:14px;border:1.5px solid {{ o.bd }};background:{{ o.bg }};cursor:pointer;display:flex;flex-direction:column;gap:16px;min-height:190px"><i class="{{ o.ic }}" style="font-size:28px;color:{{ o.icC }}"></i><div><div style="font:600 19px 'Atkinson Hyperlegible Next';color:var(--fg)">{{ o.t }}</div><div style="font:400 16px/1.45 'Atkinson Hyperlegible Next';color:var(--fg2);margin-top:6px">{{ o.d }}</div></div></button></sc-for>
+            </div>
+          </sc-if>
+          <div style="display:flex;gap:10px;padding-top:8px"><sc-if value="{{ ob.canBack }}"><button onClick="{{ ob.back }}" style="height:46px;padding:0 18px;border:1px solid var(--ln2);border-radius:9px;background:var(--s1);font:500 16px 'Atkinson Hyperlegible Next';cursor:pointer">Atrás</button></sc-if><div style="flex:1"></div><button onClick="{{ ob.next }}" style="height:46px;padding:0 24px;border:0;border-radius:9px;background:var(--amb);color:#1A1410;box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 3px 0 #B0500E;font:600 17px 'Atkinson Hyperlegible Next';cursor:pointer;display:flex;align-items:center;gap:8px">{{ ob.cta }}<i class="icon-arrow-right"></i></button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PLANES -->
+  <div id="planes" style="display:flex;flex-direction:column;gap:10px">
+    <div style="font:500 14px 'Atkinson Hyperlegible Mono';color:var(--fg3);letter-spacing:.06em">03 · PLANES Y PRECIOS</div>
+    <div style="width:1440px;min-height:900px;background:var(--bg);border-radius:10px;overflow:hidden;border:1px solid var(--ln);padding:64px 96px;box-sizing:border-box;display:flex;flex-direction:column;gap:36px;align-items:center">
+      <div style="text-align:center;max-width:720px"><div style="font:500 14px 'Atkinson Hyperlegible Mono';letter-spacing:.06em;color:var(--fg3)">PLANES</div><div style="font:700 40px/1.1 'Bricolage Grotesque';letter-spacing:-.035em;margin-top:12px">Gratis de verdad para empezar.</div><div style="font:400 18px/1.5 'Atkinson Hyperlegible Next';color:var(--fg2);margin-top:12px">Hasta 100 piezas con la ficha completa. Pasa a Pro cuando tu colección lo pida.</div></div>
+      <div style="display:flex;padding:4px;border:1px solid var(--ln2);border-radius:10px;background:var(--s1)"><sc-for list="{{ per }}" as="p" hint-placeholder-count="3"><button onClick="{{ p.go }}" style="height:44px;padding:0 16px;border:0;border-radius:7px;background:{{ p.bg }};color:{{ p.fg }};font:500 16px 'Atkinson Hyperlegible Next';cursor:pointer;display:flex;gap:8px;align-items:center">{{ p.label }}<sc-if value="{{ p.hasB }}"><span style="font:600 13px 'Atkinson Hyperlegible Mono';color:var(--grn)">{{ p.b }}</span></sc-if></button></sc-for></div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;width:100%;align-items:stretch">
+        <sc-for list="{{ plans }}" as="p" hint-placeholder-count="3">
+          <div style="border:1.5px solid {{ p.bd }};border-radius:16px;background:var(--s1);padding:28px;display:flex;flex-direction:column;gap:20px;position:relative">
+            <sc-if value="{{ p.hl }}"><span style="position:absolute;top:-12px;left:28px;font:600 13px 'Atkinson Hyperlegible Mono';letter-spacing:.04em;padding:4px 10px;border-radius:6px;background:var(--amb);color:#1A1410;box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 3px 0 #B0500E">RECOMENDADO</span></sc-if>
+            <div><div style="font:600 20px 'Atkinson Hyperlegible Next'">{{ p.name }}</div><div style="font:400 16px 'Atkinson Hyperlegible Next';color:var(--fg2);margin-top:4px">{{ p.who }}</div></div>
+            <div style="display:flex;align-items:baseline;gap:8px"><span style="font:700 40px/1 'Bricolage Grotesque';letter-spacing:-.03em">{{ p.price }}</span><span style="font:400 16px 'Atkinson Hyperlegible Next';color:var(--fg3)">{{ p.unit }}</span></div>
+            <button style="height:44px;border:{{ p.btnBd }};border-radius:9px;background:{{ p.btnBg }};color:{{ p.btnFg }};font:600 16px 'Atkinson Hyperlegible Next';cursor:pointer">{{ p.cta }}</button>
+            <div style="height:5px;background:repeating-linear-gradient(90deg,var(--ln2) 0 1px,transparent 1px 8px)"></div>
+            <div style="display:flex;flex-direction:column;gap:10px"><sc-for list="{{ p.feats }}" as="f"><div style="display:flex;gap:10px;font:400 16px/1.4 'Atkinson Hyperlegible Next'"><i class="icon-check" style="color:var(--grn);margin-top:2px"></i>{{ f.t }}</div></sc-for></div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="font:400 15px 'Atkinson Hyperlegible Next';color:var(--fg3)">Precios con IVA. Cancela cuando quieras; tus datos siempre se pueden exportar.</div>
+    </div>
+  </div>
+
+  <!-- ESTADOS -->
+  <div id="estados" style="display:flex;flex-direction:column;gap:10px">
+    <div style="font:500 14px 'Atkinson Hyperlegible Mono';color:var(--fg3);letter-spacing:.06em">04 · ESTADOS ESPECIALES</div>
+    <div style="width:1440px;background:var(--bg);border-radius:10px;border:1px solid var(--ln);padding:40px;box-sizing:border-box;display:grid;grid-template-columns:repeat(3,1fr);gap:20px">
+
+      <div style="border:1px solid var(--ln);border-radius:16px;background:var(--s1);height:400px;display:flex;flex-direction:column">
+        <div style="padding:12px 16px;border-bottom:1px solid var(--ln);font:500 13px 'Atkinson Hyperlegible Mono';letter-spacing:.04em;color:var(--fg3)">COLECCIÓN VACÍA · PRIMER USO</div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px;text-align:center">
+          <div style="display:flex;gap:6px;align-items:flex-end"><div style="width:64px;height:34px;border:1.5px dashed var(--ln2);border-radius:5px"></div><div style="width:64px;height:34px;border:1.5px dashed var(--ln2);border-radius:5px"></div><div style="width:64px;height:34px;border:1.5px solid var(--amb);border-radius:5px;background:var(--amb2)"></div></div>
+          <div style="width:220px;height:3px;background:var(--fg3);margin-top:-8px"></div>
+          <div style="font:600 20px 'Atkinson Hyperlegible Next';margin-top:8px">Tu andén está vacío</div>
+          <div style="font:400 16px/1.5 'Atkinson Hyperlegible Next';color:var(--fg2);max-width:300px">Añade tu primera pieza escaneando la caja o buscando su referencia. Tardas menos de un minuto.</div>
+          <div style="display:flex;gap:8px"><button style="height:38px;padding:0 14px;border:0;border-radius:10px;background:var(--amb);color:#1A1410;box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 3px 0 #B0500E;font:600 15px 'Atkinson Hyperlegible Next';cursor:pointer;display:flex;gap:6px;align-items:center"><i class="icon-scan-barcode"></i>Escanear</button><button style="height:38px;padding:0 14px;border:1px solid var(--ln2);border-radius:10px;background:transparent;font:500 15px 'Atkinson Hyperlegible Next';cursor:pointer">Importar CSV</button></div>
+        </div>
+      </div>
+
+      <div style="border:1px solid var(--ln);border-radius:16px;background:var(--s1);height:400px;display:flex;flex-direction:column">
+        <div style="padding:12px 16px;border-bottom:1px solid var(--ln);font:500 13px 'Atkinson Hyperlegible Mono';letter-spacing:.04em;color:var(--fg3)">CARGANDO</div>
+        <div style="flex:1;padding:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <sc-for list="{{ skel }}" as="s" hint-placeholder-count="4"><div style="display:flex;flex-direction:column;gap:8px"><div style="flex:1;border-radius:10px;background:linear-gradient(90deg,var(--s2) 0,var(--ln) 50%,var(--s2) 100%) 0 0/600px 100%;animation:rxShimmer 1.4s linear infinite"></div><div style="height:10px;width:70%;border-radius:4px;background:var(--s2)"></div><div style="height:10px;width:45%;border-radius:4px;background:var(--s2)"></div></div></sc-for>
+        </div>
+      </div>
+
+      <div style="border:1px solid var(--ln);border-radius:16px;background:var(--s1);height:400px;display:flex;flex-direction:column">
+        <div style="padding:12px 16px;border-bottom:1px solid var(--ln);font:500 13px 'Atkinson Hyperlegible Mono';letter-spacing:.04em;color:var(--fg3)">SIN RESULTADOS</div>
+        <div style="padding:16px"><div style="height:38px;border:1px solid var(--amb);border-radius:10px;display:flex;align-items:center;gap:10px;padding:0 12px;font:500 16px 'Atkinson Hyperlegible Mono'"><i class="icon-search" style="color:var(--fg3)"></i>BR 232 Ludmilla</div></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:0 24px 24px;text-align:center">
+          <i class="icon-search-x" style="font-size:28px;color:var(--fg3)"></i><div style="font:600 19px 'Atkinson Hyperlegible Next'">No tienes ninguna «BR 232»</div><div style="font:400 16px/1.5 'Atkinson Hyperlegible Next';color:var(--fg2);max-width:300px">Está en tu lista de deseos como Piko 52220. ¿Quieres buscarla en el catálogo?</div>
+          <div style="display:flex;gap:8px"><button style="height:46px;padding:0 12px;border:1px solid var(--ln2);border-radius:10px;background:transparent;font:500 15px 'Atkinson Hyperlegible Next';cursor:pointer">Ver en deseos</button><button style="height:46px;padding:0 12px;border:1px solid var(--ln2);border-radius:10px;background:transparent;font:500 15px 'Atkinson Hyperlegible Next';cursor:pointer">Buscar en catálogo</button></div>
+        </div>
+      </div>
+
+      <div style="border:1px solid var(--ln);border-radius:16px;background:var(--s1);height:400px;display:flex;flex-direction:column">
+        <div style="padding:12px 16px;border-bottom:1px solid var(--ln);font:500 13px 'Atkinson Hyperlegible Mono';letter-spacing:.04em;color:var(--fg3)">ERROR</div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:24px;text-align:center">
+          <span style="width:48px;height:48px;border-radius:16px;background:var(--red2);color:var(--red);display:grid;place-items:center"><i class="icon-triangle-alert" style="font-size:22px"></i></span>
+          <div style="font:600 19px 'Atkinson Hyperlegible Next'">No hemos podido sincronizar</div><div style="font:400 16px/1.5 'Atkinson Hyperlegible Next';color:var(--fg2);max-width:320px">Tus 3 cambios están guardados en este dispositivo y se enviarán al reintentar.</div>
+          <div style="font:400 14px 'Atkinson Hyperlegible Mono';color:var(--fg3)">Código SYNC-503 · 23 nov 2026 10:42</div>
+          <button style="height:38px;padding:0 14px;border:0;border-radius:10px;background:var(--amb);color:#1A1410;box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 3px 0 #B0500E;font:600 15px 'Atkinson Hyperlegible Next';cursor:pointer;display:flex;gap:6px;align-items:center"><i class="icon-refresh-cw"></i>Reintentar</button>
+        </div>
+      </div>
+
+      <div style="border:1px solid var(--ln);border-radius:16px;background:var(--s1);height:400px;display:flex;flex-direction:column;position:relative;overflow:hidden">
+        <div style="padding:12px 16px;border-bottom:1px solid var(--ln);font:500 13px 'Atkinson Hyperlegible Mono';letter-spacing:.04em;color:var(--fg3)">CONFIRMAR BORRADO + DESHACER</div>
+        <div style="flex:1;display:grid;place-items:center;background:rgba(8,9,11,.35);padding:20px">
+          <div style="width:100%;max-width:340px;background:var(--s1);border:1px solid var(--ln2);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:12px;box-shadow:0 16px 40px rgba(0,0,0,.35)">
+            <div style="font:600 18px 'Atkinson Hyperlegible Next'">¿Borrar 3 piezas?</div>
+            <div style="font:400 16px/1.5 'Atkinson Hyperlegible Next';color:var(--fg2)">Se borrarán sus fichas, fotos e historial. Podrás deshacerlo durante 30 días desde la papelera.</div>
+            <div style="font:400 14px 'Atkinson Hyperlegible Mono';color:var(--fg3)">Electrotren E3321 · E3322 · E5560</div>
+            <div style="display:flex;gap:8px;justify-content:flex-end"><button style="height:46px;padding:0 14px;border:1px solid var(--ln2);border-radius:10px;background:transparent;font:500 15px 'Atkinson Hyperlegible Next';cursor:pointer">Cancelar</button><button style="height:46px;padding:0 14px;border:0;border-radius:10px;background:var(--red);color:#fff;font:600 15px 'Atkinson Hyperlegible Next';cursor:pointer">Borrar 3 piezas</button></div>
+          </div>
+        </div>
+        <div style="position:absolute;left:16px;right:16px;bottom:14px;display:flex;align-items:center;gap:12px;padding:10px 10px 10px 14px;border-radius:10px;background:var(--fg);color:var(--bg);font:500 15px 'Atkinson Hyperlegible Next'"><i class="icon-trash-2"></i><span style="flex:1">3 piezas borradas</span><button style="height:38px;padding:0 10px;border:0;border-radius:6px;background:var(--amb);color:#1A1410;box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 3px 0 #B0500E;font:600 15px 'Atkinson Hyperlegible Next';cursor:pointer">Deshacer</button></div>
+      </div>
+
+      <div style="border:1px solid var(--ln);border-radius:16px;background:var(--s1);height:400px;display:flex;flex-direction:column">
+        <div style="padding:12px 16px;border-bottom:1px solid var(--ln);font:500 13px 'Atkinson Hyperlegible Mono';letter-spacing:.04em;color:var(--fg3)">LÍMITE GRATIS · INVITACIÓN A PRO</div>
+        <div style="flex:1;padding:20px;display:flex;flex-direction:column;gap:14px;justify-content:center">
+          <div style="padding:16px;border:1px solid var(--amb);border-radius:16px;background:var(--amb2);display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font:600 17px 'Atkinson Hyperlegible Next'">Has llegado a 100 piezas</span><span style="font:600 15px 'Atkinson Hyperlegible Mono';color:var(--ambtx)">100/100</span></div>
+            <div style="height:4px;background:var(--s2);border-radius:4px"><div style="height:100%;width:100%;background:var(--amb);border-radius:4px"></div></div>
+            <div style="font:400 16px/1.5 'Atkinson Hyperlegible Next';color:var(--fg2)">Todo lo que ya tienes sigue disponible. Para añadir la 101 y siguientes, pasa a Pro o archiva piezas vendidas.</div>
+            <div style="display:flex;gap:8px"><button style="height:46px;padding:0 14px;border:0;border-radius:10px;background:var(--amb);color:#1A1410;box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 3px 0 #B0500E;font:600 15px 'Atkinson Hyperlegible Next';cursor:pointer">Ver Pro · 39 €/año</button><button style="height:46px;padding:0 12px;border:0;background:none;color:var(--fg2);font:500 15px 'Atkinson Hyperlegible Next';cursor:pointer">Ahora no</button></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;border:1px solid var(--ln);border-radius:10px;font:400 15px 'Atkinson Hyperlegible Next';color:var(--fg2)"><i class="icon-lock" style="color:var(--fg3)"></i><span style="flex:1">PDF para el seguro</span><span style="font:600 13px 'Atkinson Hyperlegible Mono';letter-spacing:.04em;padding:2px 6px;border-radius:4px;background:var(--amb2);color:var(--ambtx)">PRO</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;tema&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;oscuro&quot;,&quot;claro&quot;],&quot;default&quot;:&quot;oscuro&quot;,&quot;tsType&quot;:&quot;'oscuro'|'claro'&quot;}}">
+class Component extends DCLogic {
+  state = { theme:null, tab:'login', ob:0, sc:['H0','N'], mk:['Roco','Electrotren','Märklin','Arnold','Fleischmann'], co:['RENFE','DB'], start:'import', per:'anual' };
+  renderVals(){
+    const S=this.state, theme=S.theme||(this.props.tema==='claro'?'claro':'oscuro');
+    const pal=on=>({bg:on?'var(--amb2)':'var(--s1)',bd:on?'var(--amb)':'var(--ln2)',fg:on?'var(--ambtx)':'var(--fg)'});
+    const tgl=(k,v)=>()=>this.setState(s=>({[k]:s[k].includes(v)?s[k].filter(x=>x!==v):[...s[k],v]}));
+    const reg=S.tab==='reg';
+    const SC=[['H0','1:87 · 16,5 mm','--sc-h0'],['N','1:160 · 9 mm','--sc-n'],['TT','1:120 · 12 mm','--sc-tt'],['Z','1:220 · 6,5 mm','--sc-z'],['0','1:43,5 · 32 mm','--sc-0'],['1','1:32 · 45 mm','--sc-1'],['G','1:22,5 · 45 mm','--sc-g']];
+    const steps=3, i=S.ob;
+    const prices={mensual:['4,99 €','/ mes','29 €','/ mes'],anual:['39 €','/ año','290 €','/ año'],vida:['119 €','pago único','—','solo anual']}[S.per];
+    return {theme,themeIcon:theme==='oscuro'?'icon-sun':'icon-moon',themeLabel:theme==='oscuro'?'Modo claro':'Modo oscuro',toggleTheme:()=>this.setState({theme:theme==='oscuro'?'claro':'oscuro'}),
+      tabs:[['login','Entrar'],['reg','Crear cuenta']].map(([k,label])=>({label,bg:S.tab===k?'var(--s2)':'transparent',fg:S.tab===k?'var(--fg)':'var(--fg2)',go:()=>this.setState({tab:k})})),
+      auth:{reg,login:!reg,title:reg?'Crea tu cuenta':'Hola de nuevo',sub:reg?'Gratis hasta 100 piezas. Sin tarjeta.':'Tu colección te espera, también sin conexión.',cta:reg?'Crear cuenta gratis':'Entrar',foot:reg?'Al continuar aceptas las condiciones y la política de privacidad.':'¿Primera vez? Crea una cuenta gratis en menos de un minuto.',go:()=>this.setState({tab:reg?'login':'reg'})},
+      ob:{stepT:`Paso ${i+1} de ${steps}`,prog:((i+1)/steps*100)+'%',s1:i===0,s2:i===1,s3:i===2,canBack:i>0,back:()=>this.setState({ob:i-1}),next:()=>this.setState({ob:(i+1)%steps}),skip:()=>this.setState({ob:2}),cta:i===2?'Empezar':'Continuar',
+        scales:SC.map(([k,d,v])=>{const on=S.sc.includes(k); return {k,d,c:`var(${v})`,bg:on?`color-mix(in oklch, var(${v}) 12%, var(--s1))`:'var(--s1)',bd:on?`var(${v})`:'var(--ln2)',go:tgl('sc',k)};}),
+        makers:['Roco','Märklin','Electrotren','Fleischmann','Piko','Arnold','Mabar','Ibertren','LS Models','Trix','Brawa','ACME','Rivarossi','Jouef','Lima','Minitrix'].map(l=>({label:l,logo:l.slice(0,2).toUpperCase(),...pal(S.mk.includes(l)),go:tgl('mk',l)})),
+        cos:['RENFE','FEVE','DB','SNCF','FS','SBB','ÖBB','NS','SNCB','CP'].map(l=>({label:l,...pal(S.co.includes(l)),go:tgl('co',l)})),
+        starts:[['import','icon-file-spreadsheet','Importar desde Excel o CSV','Vista previa, mapeo de columnas, duplicados y deshacer.'],['jmri','icon-cpu','Importar desde JMRI','Trae el roster con direcciones y decoders.'],['cero','icon-plus','Empezar desde cero','Escanea la primera caja o busca una referencia.']].map(([k,ic,t,d])=>{const on=S.start===k; return {ic,t,d,...pal(on),icC:on?'var(--ambtx)':'var(--fg2)',go:()=>this.setState({start:k})};})},
+      per:[['mensual','Mensual',''],['anual','Anual','−35 %'],['vida','De por vida','']].map(([k,label,b])=>({label,b,hasB:!!b,bg:S.per===k?'var(--s2)':'transparent',fg:S.per===k?'var(--fg)':'var(--fg2)',go:()=>this.setState({per:k})})),
+      plans:[
+        {name:'Gratis',who:'Para empezar a catalogar',price:'0 €',unit:'para siempre',cta:'Empezar gratis',btnBg:'transparent',btnFg:'var(--fg)',btnBd:'1px solid var(--ln2)',bd:'var(--ln)',hl:false,feats:['Hasta 100 piezas','Ficha completa','Hasta 3 fotos por pieza','Lista de deseos','Búsqueda en catálogo y escáner','Exportar a CSV']},
+        {name:'Pro · Coleccionista',who:'Para colecciones que crecen',price:prices[0],unit:prices[1],cta:'Probar 14 días gratis',btnBg:'var(--amb)',btnFg:'#16191D',btnBd:'0',bd:'var(--amb)',hl:true,feats:['Piezas y fotos ilimitadas','Reconocimiento por foto con IA','Valor de mercado y evolución','PDF para el seguro','Mantenimiento con recordatorios','Ubicaciones con etiquetas QR','Composiciones avanzadas y estadísticas','Copias de seguridad y perfil público']},
+        {name:'Profesional / Club',who:'Tiendas, restauradores, tasadores y asociaciones',price:prices[2],unit:prices[3],cta:'Hablar con nosotros',btnBg:'transparent',btnFg:'var(--fg)',btnBd:'1px solid var(--ln2)',bd:'var(--ln)',hl:false,feats:['Todo lo de Pro','Varias personas con permisos: ver, editar, administrar','Inventario de stock y fichas de venta imprimibles','Préstamos entre socios con fecha de devolución','Marca propia en los informes']}].map(p=>({...p,feats:p.feats.map(t=>({t}))})),
+      skel:[1,2,3,4].map(n=>({n}))};
+  }
+}
+</script>
+</body>
+</html>

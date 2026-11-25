@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@400..700&family=Atkinson+Hyperlegible+Next:wght@400..800&family=Bricolage+Grotesque:opsz,wght@12..96,500..800&display=swap">
+<link rel="stylesheet" href="https://unpkg.com/lucide-static@0.460.0/font/lucide.css">
+<style>
+:root,[data-theme="oscuro"]{--bg:#12110F;--s1:#1C1A17;--s2:#25231F;--s3:#161512;--ln:#38342E;--ln2:#544E46;--fg:#F6F1E7;--fg2:#D3CCBF;--fg3:#AFA799;--amb:#E8701A;--ambtx:#F59245;--amb2:rgba(232,112,26,.13);--grn:#5DAA84;--grn2:rgba(93,170,132,.14);--red:#E5604F;--red2:rgba(229,96,79,.14);--ph:#1B1916;--ph2:#22201C;--sc-h0:oklch(.78 .09 250);--sc-n:oklch(.78 .09 165);--canvas:#0A0908;--dot:rgba(255,236,210,.05);--rail:#5C554B}
+[data-theme="claro"]{--bg:#F3EEE4;--s1:#FFFDF8;--s2:#EBE5D9;--s3:#F9F6EF;--ln:#DDD5C6;--ln2:#BDB3A2;--fg:#1A1714;--fg2:#433D35;--fg3:#5E574D;--amb:#E8701A;--ambtx:#A4470B;--amb2:rgba(232,112,26,.16);--grn:#2F6B4F;--grn2:rgba(47,107,79,.11);--red:#C8372D;--red2:rgba(200,55,45,.1);--ph:#EAE3D6;--ph2:#E1D9CA;--sc-h0:oklch(.5 .11 250);--sc-n:oklch(.5 .1 165);--canvas:#E3DCCF;--dot:rgba(70,45,20,.08);--rail:#B5AA97}
+body{margin:0;background:#0A0908}
+*::-webkit-scrollbar{width:10px;height:10px}*::-webkit-scrollbar-thumb{background:var(--amb);border-radius:10px;border:3px solid transparent;background-clip:content-box}
+button,input{font:inherit;color:inherit}
+a{color:var(--ambtx);text-decoration:none}a:hover{text-decoration:underline}
+@keyframes rxScan{0%,100%{top:22%}50%{top:72%}}
+</style>
+</helmet>
+<div data-theme="{{ theme }}" style="background:var(--canvas);color:var(--fg);font-family:'Atkinson Hyperlegible Next',system-ui,sans-serif;padding:48px;display:flex;flex-direction:column;gap:56px;min-width:1800px;-webkit-font-smoothing:antialiased">
+  <div style="display:flex;align-items:center;gap:16px"><span style="font:700 22px 'Bricolage Grotesque';letter-spacing:-.02em">Railodex · App móvil</span><span style="font:400 15px 'Atkinson Hyperlegible Mono';color:var(--fg3)">iOS / Android · 390 × 844</span><div style="flex:1"></div><button onClick="{{ toggleTheme }}" style="height:34px;padding:0 12px;border:1px solid var(--ln2);border-radius:10px;background:var(--s1);cursor:pointer;display:flex;gap:8px;align-items:center;font:500 15px 'Atkinson Hyperlegible Next'"><i class="{{ themeIcon }}"></i>{{ themeLabel }}</button></div>
+
+  <!-- FILA 1 · INICIO Y COLECCIÓN -->
+  <section style="display:flex;flex-direction:column;gap:16px">
+    <div style="font:500 14px 'Atkinson Hyperlegible Mono';letter-spacing:.04em;color:var(--fg3)">01 · ACCESO, INICIO Y COLECCIÓN</div>
+    <div style="display:flex;gap:40px;flex-wrap:wrap;align-items:flex-start">
+
+      <div style="display:flex;flex-direction:column;gap:10px"><span style="font:500 15px 'Atkinson Hyperlegible Next';color:var(--fg2)">Bienvenida</span>
+      <div style="width:390px;height:844px;border-radius:44px;border:1px solid var(--ln2);background:var(--bg);position:relative;overflow:hidden">
+        <div style="position:absolute;inset:0 0 48% 0;background:repeating-linear-gradient(135deg,var(--ph) 0 12px,var(--ph2) 12px 24px)"><span style="position:absolute;left:24px;bottom:20px;font:400 14px 'Atkinson Hyperlegible Mono';letter-spacing:.04em;color:var(--fg3)">FOTO DE AMBIENTE</span></div>
+        <div style="height:50px;display:flex;align-items:center;justify-content:space-between;padding:0 30px;font:600 16px 'Atkinson Hyperlegible Next';position:relative"><span>9:41</span><span style="display:flex;gap:6px"><i class="icon-signal"></i><i class="icon-wifi"></i><i class="icon-battery-full"></i></span></div>
+        <div style="position:absolute;left:0;right:0;bottom:0;padding:28px 24px 44px;display:flex;flex-direction:column;gap:14px;background:var(--bg)">
+          <div style="display:flex;align-items:center;gap:10px"><div style="width:32px;height:32px;border-radius:50%;background:var(--amb);display:grid;place-items:center;flex:none;box-shadow:inset 0 0 0 3px var(--bg),0 0 0 2px var(--amb)"><span style="font:800 16px/1 'Bricolage Grotesque';color:#1A1410">R</span></div><span style="font:700 22px 'Bricolage Grotesque';letter-spacing:-.02em">Railodex</span></div>
+          <div style="font:700 28px/1.12 'Bricolage Grotesque';letter-spacing:-.03em">El índice completo de tu colección ferroviaria.</div>
+          <div style="font:400 16px/1.5 'Atkinson Hyperlegible Next';color:var(--fg2)">Funciona sin conexión y se sincroniza después.</div>
+          <button style="height:52px;border:0;border-radius:16px;background:var(--amb);color:#1A1410;box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 3px 0 #B0500E;font:600 16px 'Atkinson Hyperlegible Next';margin-top:6px">Crear cuenta gratis</button>
+          <button style="height:52px;border:1px solid var(--ln2);border-radius:16px;background:var(--s1);font:500 16px 'Atkinson Hyperlegible Next'">Ya tengo cuenta</button>
+        </div>
+      </div></div>
+
+      <div style="display:flex;flex-direction:column;gap:10px"><span style="font:500 15px 'Atkinson Hyperlegible Next';color:var(--fg2)">Onboarding · paso 1 de 3</span>
+      <div style="width:390px;height:844px;border-radius:44px;border:1px solid var(--ln2);background:var(--bg);position:relative;overflow:hidden">
+        <div style="height:50px;display:flex;align-items:center;justify-content:space-between;padding:0 30px;font:600 16px 'Atkinson Hyperlegible Next'"><span>9:41</span><span style="display:flex;gap:6px"><i class="icon-signal"></i><i class="icon-wifi"></i><i class="icon-battery-full"></i></span></div>
+        <div style="padding:10px 24px;display:flex;flex-direction:column;gap:22px">
+          <div style="display:flex;gap:6px"><span style="flex:1;height:4px;border-radius:2px;background:var(--amb)"></span><span style="flex:1;height:4px;border-radius:2px;background:var(--ln2)"></span><span style="flex:1;height:4px;border-radius:2px;background:var(--ln2)"></span></div>
+          <div><div style="font:700 28px/1.12 'Bricolage Grotesque';letter-spacing:-.03em">¿Qué escalas coleccionas?</div><div style="font:400 16px/1.5 'Atkinson Hyperlegible Next';color:var(--fg2);margin-top:8px">Puedes cambiarlo cuando quieras.</div></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+            <sc-for list="{{ obScales }}" as="s" hint-placeholder-count="6"><div style="padding:16px;border-radius:16px;border:1.5px solid {{ s.bd }};background:{{ s.bg }};display:flex;flex-direction:column;gap:6px"><span style="font:700 24px/1 'Atkinson Hyperlegible Mono';color:{{ s.c }}">{{ s.k }}</span><span style="font:400 15px 'Atkinson Hyperlegible Mono';color:var(--fg2)">{{ s.d }}</span></div></sc-for>
+          </div>
+        </div>
+        <div style="position:absolute;left:24px;right:24px;bottom:44px;display:flex;gap:10px"><button style="height:52px;padding:0 18px;border:0;background:none;color:var(--fg2);font:500 16px 'Atkinson Hyperlegible Next'">Saltar</button><button style="flex:1;height:52px;border:0;border-radius:16px;background:var(--amb);color:#1A1410;box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 3px 0 #B0500E;font:600 16px 'Atkinson Hyperlegible Next'">Continuar</button></div>
+      </div></div>
+
+      <div style="display:flex;flex-direction:column;gap:10px"><span style="font:500 15px 'Atkinson Hyperlegible Next';color:var(--fg2)">Inicio</span>
+      <div style="width:390px;height:844px;border-radius:44px;border:1px solid var(--ln2);background:var(--bg);position:relative;overflow:hidden">
+        <div style="height:50px;display:flex;align-items:center;justify-content:space-between;padding:0 30px;font:600 16px 'Atkinson Hyperlegible Next'"><span>9:41</span><span style="display:flex;gap:6px"><i class="icon-signal"></i><i class="icon-wifi"></i><i class="icon-battery-full"></i></span></div>
+        <div style="padding:6px 20px 0;display:flex;flex-direction:column;gap:14px">
+          <div style="display:flex;align-items:center;justify-content:space-between"><span style="display:flex;align-items:center;gap:8px"><span style="width:30px;height:30px;border-radius:50%;background:var(--amb);display:grid;place-items:center;box-shadow:inset 0 0 0 2.5px var(--bg),0 0 0 2px var(--amb);font:800 15px/1 'Bricolage Grotesque';color:#1A1410">R</span><span style="font:800 22px 'Bricolage Grotesque';letter-spacing:-.03em">Railodex</span></span><div style="display:flex;gap:8px"><span style="width:44px;height:44px;border-radius:16px;border:1px solid var(--ln2);display:grid;place-items:center"><i class="icon-search" style="font-size:19px"></i></span><span style="width:44px;height:44px;border-radius:16px;border:1px solid var(--ln2);display:grid;place-items:center"><i class="icon-bell" style="font-size:19px"></i></span></div></div>
+          <div style="position:relative;overflow:hidden;padding:18px 18px 0;border-radius:20px;background:#191714;color:#F6F1E7">
+            <div style="position:absolute;right:-70px;top:-90px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(232,112,26,.38),transparent 65%)"></div>
+            <div style="position:relative;font:600 14px 'Atkinson Hyperlegible Mono';letter-spacing:.08em;color:#F59245">VALOR ESTIMADO</div>
+            <div style="position:relative;display:flex;align-items:baseline;gap:8px;margin-top:8px"><span style="font:800 40px/1 'Bricolage Grotesque';letter-spacing:-.04em">{{ k.val }}</span><span style="font:600 15px 'Atkinson Hyperlegible Mono';color:#7CC49F">{{ k.gain }}</span></div>
+            <div style="position:relative;font:400 15px 'Atkinson Hyperlegible Next';color:#D3CCBF;margin-top:6px">Invertido {{ k.buy }} · {{ k.n }} piezas</div>
+            <div style="position:relative;display:flex;gap:16px;margin-top:12px;font:600 15px 'Atkinson Hyperlegible Mono';color:#D3CCBF"><span>H0 · 26</span><span>N · 13</span><span style="margin-left:auto;color:#F59245">33 % digital</span></div>
+            <div style="margin:14px -18px 0;height:12px;background:linear-gradient(var(--amb),var(--amb)) top/100% 2px no-repeat,linear-gradient(var(--amb),var(--amb)) bottom/100% 2px no-repeat,repeating-linear-gradient(90deg,#5C554B 0 4px,transparent 4px 14px)"></div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
+            <sc-for list="{{ quick }}" as="q" hint-placeholder-count="4"><div style="height:76px;border:1px solid var(--ln);border-radius:16px;background:var(--s1);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px"><i class="{{ q.icon }}" style="font-size:20px;color:var(--ambtx)"></i><span style="font:500 15px 'Atkinson Hyperlegible Next';text-align:center">{{ q.label }}</span></div></sc-for>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font:600 16px 'Atkinson Hyperlegible Next'">Últimas añadidas</span><span style="font:500 15px 'Atkinson Hyperlegible Next';color:var(--ambtx)">Ver todas</span></div>
+          <div style="display:flex;gap:10px;overflow:hidden;margin-right:-20px">
+            <sc-for list="{{ items }}" as="p" hint-placeholder-count="3"><div style="width:140px;flex:none;display:flex;flex-direction:column;gap:6px"><div style="height:100px;border-radius:10px;border:1px solid var(--ln);background:{{ p.phBg }};display:grid;place-items:center"><sc-if value="{{ p.noPh }}"><div style="width:64%;aspect-ratio:200/76;background:url('{{ p.sil }}') center/contain no-repeat"></div></sc-if></div><span style="font:500 15px 'Atkinson Hyperlegible Next';white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ p.n }}</span></div></sc-for>
+          </div>
+          <div style="padding:14px 16px;border:1px solid var(--ln);border-radius:16px;background:var(--s1);display:flex;gap:12px;align-items:center"><i class="icon-wrench" style="color:var(--red);font-size:18px"></i><div style="flex:1"><div style="font:500 16px 'Atkinson Hyperlegible Next'">Cambio de escobillas</div><div style="font:400 15px 'Atkinson Hyperlegible Next';color:var(--fg3)">DB BR 103 245-7 · vencido</div></div><i class="icon-chevron-right" style="color:var(--fg3)"></i></div>
+        </div>
+        <dc-import name="RxTabBar" active="inicio" hint-size="390px,86px"></dc-import>
+      </div></div>
+
+      <div style="display:flex;flex-direction:column;gap:10px"><span style="font:500 15px 'Atkinson Hyperlegible Next';color:var(--fg2)">Colección · cuadrícula</span>
+      <div style="width:390px;height:844px;border-radius:44px;border:1px solid var(--ln2);background:var(--bg);position:relative;overflow:hidden">
+        <div style="height:50px;display:flex;align-items:center;justify-content:space-between;padding:0 30px;font:600 16px 'Atkinson Hyperlegible Next'"><span>9:41</span><span style="display:flex;gap:6px"><i class="icon-signal"></i><i class="icon-wifi"></i><i class="icon-battery-full"></i></span></div>
+        <div style="padding:6px 20px 0;display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;align-items:baseline;justify-content:space-between"><span style="font:700 26px 'Bricolage Grotesque';letter-spacing:-.025em">Colección</span><span style="font:500 15px 'Atkinson Hyperlegible Mono';color:var(--fg3)">39 · 5.480 €</span></div>
+          <div style="display:flex;gap:8px"><div style="flex:1;height:44px;border:1px solid var(--ln2);border-radius:16px;background:var(--s1);display:flex;align-items:center;gap:8px;padding:0 12px;color:var(--fg3);font:400 16px 'Atkinson Hyperlegible Next'"><i class="icon-search"></i>Referencia, matrícula…</div><span style="width:44px;height:44px;border-radius:16px;border:1px solid var(--ln2);display:grid;place-items:center"><i class="icon-scan-barcode" style="font-size:19px"></i></span></div>
+          <div style="display:flex;gap:8px;overflow:hidden;margin-right:-20px">
+            <span style="height:36px;padding:0 14px;border-radius:999px;border:1px solid var(--amb);background:var(--amb2);color:var(--ambtx);font:500 15px 'Atkinson Hyperlegible Next';display:flex;align-items:center;gap:6px;flex:none"><i class="icon-sliders-horizontal"></i>Filtros · 2</span>
+            <span style="height:36px;padding:0 14px;border-radius:999px;border:1px solid var(--amb);background:var(--amb2);color:var(--ambtx);font:500 15px 'Atkinson Hyperlegible Next';display:flex;align-items:center;flex:none">RENFE</span>
+            <span style="height:36px;padding:0 14px;border-radius:999px;border:1px solid var(--amb);background:var(--amb2);color:var(--ambtx);font:500 15px 'Atkinson Hyperlegible Next';display:flex;align-items:center;flex:none">Digital</span>
+            <span style="height:36px;padding:0 14px;border-radius:999px;border:1px solid var(--ln2);font:500 15px 'Atkinson Hyperlegible Next';display:flex;align-items:center;flex:none">Escala</span>
+            <span style="height:36px;padding:0 14px;border-radius:999px;border:1px solid var(--ln2);font:500 15px 'Atkinson Hyperlegible Next';display:flex;align-items:center;flex:none">Época</span>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <sc-for list="{{ items }}" as="p" hint-placeholder-count="6"><div style="border:1px solid var(--ln);border-radius:16px;background:var(--s1);overflow:hidden"><div style="aspect-ratio:4/3;background:{{ p.phBg }};display:grid;place-items:center;border-bottom:1px solid var(--ln)"><sc-if value="{{ p.noPh }}"><div style="width:64%;aspect-ratio:200/76;background:url('{{ p.sil }}') center/contain no-repeat"></div></sc-if></div><div style="padding:10px 12px 12px;display:flex;flex-direction:column;gap:5px"><div style="display:flex;gap:5px;align-items:center"><span style="font:600 14px 'Atkinson Hyperlegible Mono';padding:1px 5px;border-radius:4px;color:{{ p.scC }};background:{{ p.scBg }};border:1px solid {{ p.scBd }}">{{ p.sc }}</span><span style="font:500 14px 'Atkinson Hyperlegible Mono';color:var(--fg3)">Ép. {{ p.ep }}</span></div><span style="font:550 16px/1.25 'Atkinson Hyperlegible Next';white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ p.n }}</span><span style="font:400 15px 'Atkinson Hyperlegible Mono';color:var(--fg3)">{{ p.ref }}</span></div></div></sc-for>
+          </div>
+        </div>
+        <dc-import name="RxTabBar" active="coleccion" hint-size="390px,86px"></dc-import>
+      </div></div>
+
+      <div style="display:flex;flex-direction:column;gap:10px"><span style="font:500 15px 'Atkinson Hyperlegible Next';color:var(--fg2)">Colección · lista, deslizar para acciones · sin conexión</span>
+      <div style="width:390px;height:844px;border-radius:44px;border:1px solid var(--ln2);background:var(--bg);position:relative;overflow:hidden">
+        <div style="height:50px;display:flex;align-items:center;justify-content:space-between;padding:0 30px;font:600 16px 'Atkinson Hyperlegible Next'"><span>9:41</span><span style="display:flex;gap:6px"><i class="icon-signal-low"></i><i class="icon-wifi-off"></i><i class="icon-battery-full"></i></span></div>
+        <div style="margin:4px 20px 10px;padding:10px 12px;border-radius:10px;background:var(--s2);display:flex;align-items:center;gap:10px;font:500 15px 'Atkinson Hyperlegible Next'"><i class="icon-cloud-off" style="color:var(--fg2)"></i><span style="flex:1">Sin conexión · 3 cambios pendientes</span><span style="font:500 15px 'Atkinson Hyperlegible Next';color:var(--fg3)">Se sincronizará</span></div>
+        <div style="padding:0 20px;display:flex;align-items:baseline;justify-content:space-between;margin-bottom:6px"><span style="font:700 26px 'Bricolage Grotesque';letter-spacing:-.025em">Colección</span><span style="display:flex;gap:4px"><span style="width:40px;height:36px;border-radius:9px;display:grid;place-items:center;color:var(--fg3)"><i class="icon-layout-grid"></i></span><span style="width:40px;height:36px;border-radius:9px;background:var(--s2);display:grid;place-items:center"><i class="icon-list"></i></span></span></div>
+        <sc-for list="{{ rows }}" as="p" hint-placeholder-count="7">
+          <div style="position:relative;height:84px;border-bottom:1px solid var(--ln);overflow:hidden">
+            <sc-if value="{{ p.swiped }}"><div style="position:absolute;right:0;top:0;bottom:0;display:flex"><div style="width:84px;background:var(--s2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font:500 15px 'Atkinson Hyperlegible Next'"><i class="icon-map-pin" style="font-size:18px"></i>Mover</div><div style="width:84px;background:var(--red);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font:500 15px 'Atkinson Hyperlegible Next'"><i class="icon-trash-2" style="font-size:18px"></i>Borrar</div></div></sc-if>
+            <div style="position:absolute;inset:0;transform:translateX({{ p.x }});background:var(--bg);display:flex;align-items:center;gap:14px;padding:0 20px">
+              <div style="width:76px;height:54px;flex:none;border-radius:10px;border:1px solid var(--ln);background:{{ p.phBg }};display:grid;place-items:center"><sc-if value="{{ p.noPh }}"><div style="width:76%;aspect-ratio:200/76;background:url('{{ p.sil }}') center/contain no-repeat"></div></sc-if></div>
+              <div style="flex:1;min-width:0"><div style="font:550 16px 'Atkinson Hyperlegible Next';white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ p.n }}</div><div style="display:flex;gap:6px;align-items:center;margin-top:5px"><span style="font:600 14px 'Atkinson Hyperlegible Mono';padding:1px 5px;border-radius:4px;color:{{ p.scC }};background:{{ p.scBg }};border:1px solid {{ p.scBd }}">{{ p.sc }}</span><span style="font:400 15px 'Atkinson Hyperlegible Mono';color:var(--fg3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ p.ref }}</span></div></div>
+              <span style="font:500 15px 'Atkinson Hyperlegible Mono'">{{ p.valT }}</span>
+            </div>
+          </div>
+        </sc-for>
+        <dc-import name="RxTabBar" active="coleccion" hint-size="390px,86px"></dc-import>
+      </div></div>
+    </div>
+  </section>
+
+  <!-- FILA 2 · FICHA -->
+  <section style="display:flex;flex-direction:column;gap:16px">
+    <div style="font:500 14px 'Atkinson Hyperlegible Mono';letter-spacing:.04em;color:var(--fg3)">02 · FICHA A PANTALLA COMPLETA</div>
+    <div style="display:flex;gap:40px;flex-wrap:wrap;align-items:flex-start">
+      <div style="display:flex;flex-direction:column;gap:10px"><span style="font:500 15px 'Atkinson Hyperlegible Next';color:var(--fg2)">Ficha · cabecera</span>
+      <div style="width:390px;height:844px;border-radius:44px;border:1px solid var(--ln2);background:var(--bg);position:relative;overflow:hidden">
+        <div style="height:340px;background:repeating-linear-gradient(135deg,var(--ph) 0 10px,var(--ph2) 10px 20px);position:relative">
+          <div style="height:50px;display:flex;align-items:center;justify-content:space-between;padding:0 30px;font:600 16px 'Atkinson Hyperlegible Next'"><span>9:41</span><span style="display:flex;gap:6px"><i class="icon-signal"></i><i class="icon-wifi"></i><i class="icon-battery-full"></i></span></div>
+          <div style="display:flex;justify-content:space-between;padding:4px 16px"><span style="width:44px;height:44px;border-radius:50%;background:var(--s1);border:1px solid var(--ln);display:grid;place-items:center"><i class="icon-chevron-left" style="font-size:20px"></i></span><div style="display:flex;gap:8px"><span style="width:44px;height:44px;border-radius:50%;background:var(--s1);border:1px solid var(--ln);display:grid;place-items:center"><i class="icon-share-2"></i></span><span style="width:44px;height:44px;border-radius:50%;background:var(--s1);border:1px solid var(--ln);display:grid;place-items:center"><i class="icon-ellipsis"></i></span></div></div>
+          <span style="position:absolute;left:20px;bottom:36px;font:400 14px 'Atkinson Hyperlegible Mono';letter-spacing:.06em;color:var(--fg3)">FOTO 1 · LATERAL · DESLIZA</span>
+          <div style="position:absolute;bottom:14px;left:0;right:0;display:flex;justify-content:center;gap:6px"><span style="width:18px;height:6px;border-radius:3px;background:var(--amb)"></span><span style="width:6px;height:6px;border-radius:3px;background:var(--fg3)"></span><span style="width:6px;height:6px;border-radius:3px;background:var(--fg3)"></span><span style="width:6px;height:6px;border-radius:3px;background:var(--fg3)"></span><span style="width:6px;height:6px;border-radius:3px;background:var(--fg3)"></span></div>
+        </div>
+        <div style="padding:18px 20px;display:flex;flex-direction:column;gap:14px">
+          <div style="display:flex;gap:6px;align-items:center"><span style="font:600 14px 'Atkinson Hyperlegible Mono';padding:2px 6px;border-radius:4px;color:var(--sc-h0);background:color-mix(in oklch, var(--sc-h0) 13%, transparent);border:1px solid color-mix(in oklch, var(--sc-h0) 38%, transparent)">H0</span><span style="font:500 14px 'Atkinson Hyperlegible Mono';padding:2px 6px;border-radius:4px;border:1px solid var(--ln2);color:var(--fg2)">Época V</span><span style="font:500 15px 'Atkinson Hyperlegible Next';padding:2px 8px;border-radius:999px;background:var(--grn2);color:var(--grn)">En mi colección</span></div>
+          <div><div style="font:700 26px/1.12 'Bricolage Grotesque';letter-spacing:-.025em">RENFE 333.014 «Talgo»</div><div style="font:400 16px 'Atkinson Hyperlegible Next';color:var(--fg2);margin-top:4px">Locomotora diésel · Roco</div></div>
+          <div style="border:1px solid var(--ln2);border-radius:16px;background:var(--s1)">
+            <div style="display:flex;justify-content:space-between;padding:11px 14px;border-bottom:1px solid var(--ln)"><span style="font:500 14px 'Atkinson Hyperlegible Mono';letter-spacing:.04em;color:var(--fg3)">REFERENCIA</span><span style="font:500 16px 'Atkinson Hyperlegible Mono'">Roco 73845</span></div>
+            <div style="display:flex;justify-content:space-between;padding:11px 14px;border-bottom:1px solid var(--ln)"><span style="font:500 14px 'Atkinson Hyperlegible Mono';letter-spacing:.04em;color:var(--fg3)">MATRÍCULA</span><span style="font:500 16px 'Atkinson Hyperlegible Mono'">91 71 0333 014-2</span></div>
+            <div style="display:flex;justify-content:space-between;padding:11px 14px"><span style="font:500 14px 'Atkinson Hyperlegible Mono';letter-spacing:.04em;color:var(--fg3)">DCC</span><span style="font:500 16px 'Atkinson Hyperlegible Mono';color:var(--ambtx)">3314</span></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><div style="padding:12px 14px;border:1px solid var(--ln);border-radius:16px;background:var(--s1)"><div style="font:400 15px 'Atkinson Hyperlegible Next';color:var(--fg2)">Valor</div><div style="font:700 22px 'Bricolage Grotesque';margin-top:4px">345 € <span style="font:500 15px 'Atkinson Hyperlegible Mono';color:var(--grn)">+19 %</span></div></div><div style="padding:12px 14px;border:1px solid var(--ln);border-radius:16px;background:var(--s1)"><div style="font:400 15px 'Atkinson Hyperlegible Next';color:var(--fg2)">Ficha completa</div><div style="font:700 22px 'Bricolage Grotesque';margin-top:4px">86 %</div></div></div>
+        </div>
+        <div style="position:absolute;left:0;right:0;bottom:0;padding:12px 20px 34px;border-top:1px solid var(--ln);background:var(--bg);display:flex;gap:8px"><button style="flex:1;height:48px;border:1px solid var(--ln2);border-radius:16px;background:var(--s1);font:500 16px 'Atkinson Hyperlegible Next';display:flex;align-items:center;justify-content:center;gap:8px"><i class="icon-pencil"></i>Editar</button><button style="flex:1;height:48px;border:1px solid var(--ln2);border-radius:16px;background:var(--s1);font:500 16px 'Atkinson Hyperlegible Next';display:flex;align-items:center;justify-content:center;gap:8px"><i class="icon-copy"></i>Duplicar</button><button style="width:48px;height:48px;border:1px solid var(--ln2);border-radius:16px;background:var(--s1)"><i class="icon-qr-code"></i></button></div>
+      </div></div>
+
+      <div style="display:flex;flex-direction:column;gap:10px"><span style="font:500 15px 'Atkinson Hyperlegible Next';color:var(--fg2)">Ficha · bloque técnico</span>
+      <div style="width:390px;height:844px;border-radius:44px;border:1px solid var(--ln2);background:var(--bg);position:relative;overflow:hidden">
+        <div style="height:50px;display:flex;align-items:center;justify-content:space-between;padding:0 30px;font:600 16px 'Atkinson Hyperlegible Next'"><span>9:41</span><span style="display:flex;gap:6px"><i class="icon-signal"></i><i class="icon-wifi"></i><i class="icon-battery-full"></i></span></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:0 16px 10px;border-bottom:1px solid var(--ln)"><span style="width:44px;height:44px;display:grid;place-items:center"><i class="icon-chevron-left" style="font-size:20px"></i></span><span style="font:600 16px 'Atkinson Hyperlegible Next';flex:1">RENFE 333.014</span></div>
+        <div style="display:flex;gap:6px;padding:12px 20px;overflow:hidden"><span style="height:36px;padding:0 14px;border-radius:999px;background:var(--fg);color:var(--bg);font:500 15px 'Atkinson Hyperlegible Next';display:flex;align-items:center;flex:none">Técnico</span><span style="height:36px;padding:0 14px;border-radius:999px;border:1px solid var(--ln2);font:500 15px 'Atkinson Hyperlegible Next';display:flex;align-items:center;flex:none">Ferroviario</span><span style="height:36px;padding:0 14px;border-radius:999px;border:1px solid var(--ln2);font:500 15px 'Atkinson Hyperlegible Next';display:flex;align-items:center;flex:none">Colección</span><span style="height:36px;padding:0 14px;border-radius:999px;border:1px solid var(--ln2);font:500 15px 'Atkinson Hyperlegible Next';display:flex;align-items:center;flex:none">Historial</span></div>
+        <div style="padding:4px 20px;display:flex;flex-direction:column;gap:12px">
+          <div style="padding:16px;border:1px solid var(--ln);border-radius:14px;background:var(--s1)">
+            <div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font:400 15px 'Atkinson Hyperlegible Next';color:var(--fg2)">Rodaje</span><span style="font:400 15px 'Atkinson Hyperlegible Mono';color:var(--fg3)">AAR C-C</span></div>
+            <div style="font:600 30px 'Atkinson Hyperlegible Mono';margin:6px 0 14px">Co'Co'</div>
+            <div style="height:24px;border:1.5px solid var(--fg3);border-radius:6px 6px 2px 2px;margin-bottom:6px"></div>
+            <div style="display:flex;justify-content:space-around"><sc-for list="{{ bogies }}" as="g" hint-placeholder-count="2"><div style="display:flex;flex-direction:column;gap:5px;align-items:center"><div style="display:flex;gap:5px"><sc-for list="{{ g.ax }}" as="a"><span style="width:20px;height:20px;border-radius:50%;background:var(--amb)"></span></sc-for></div><span style="height:3px;width:100%;background:var(--fg3)"></span></div></sc-for></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px;font:400 15px 'Atkinson Hyperlegible Next'"><div><div style="color:var(--fg3)">Longitud</div><div style="font:500 16px 'Atkinson Hyperlegible Mono'">241 mm</div></div><div><div style="color:var(--fg3)">Radio mín.</div><div style="font:500 16px 'Atkinson Hyperlegible Mono'">358 mm</div></div><div><div style="color:var(--fg3)">Enganche</div><div style="font:500 16px 'Atkinson Hyperlegible Mono'">NEM 362</div></div><div><div style="color:var(--fg3)">Peso</div><div style="font:500 16px 'Atkinson Hyperlegible Mono'">520 g</div></div></div>
+          </div>
+          <div style="padding:16px;border:1px solid var(--ln);border-radius:14px;background:var(--s1)">
+            <div style="display:flex;justify-content:space-between;align-items:center"><span style="font:600 16px 'Atkinson Hyperlegible Next'">ESU LokSound 5</span><span style="font:600 14px 'Atkinson Hyperlegible Mono';padding:2px 7px;border-radius:4px;background:var(--amb2);color:var(--ambtx)">DCC 3314</span></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px">
+              <sc-for list="{{ fx }}" as="f" hint-placeholder-count="8"><div style="display:flex;align-items:center;gap:8px;height:44px;padding:0 10px;border:1px solid var(--ln);border-radius:10px"><span style="font:600 15px 'Atkinson Hyperlegible Mono';color:var(--ambtx);width:28px">{{ f.f }}</span><span style="font:500 15px 'Atkinson Hyperlegible Next';white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ f.l }}</span></div></sc-for>
+            </div>
+          </div>
+        </div>
+      </div></div>
+    </div>
+  </section>
+
+  <!-- FILA 3 · AÑADIR -->
+  <section style="display:flex;flex-direction:column;gap:16px">
+    <div style="font:500 14px 'Atkinson Hyperlegible Mono';letter-spacing:.04em;color:var(--fg3)">03 · BOTÓN «+»: AÑADIR Y ESCANEAR</div>
+    <div style="display:flex;gap:40px;flex-wrap:wrap;align-items:flex-start">
+      <div style="display:flex;flex-direction:column;gap:10px"><span style="font:500 15px 'Atkinson Hyperlegible Next';color:var(--fg2)">Hoja de añadir</span>
+      <div style="width:390px;height:844px;border-radius:44px;border:1px solid var(--ln2);background:var(--bg);position:relative;overflow:hidden">
+        <div style="position:absolute;inset:0;background:rgba(6,7,9,.55)"></div>
+        <div style="position:absolute;left:0;right:0;bottom:0;background:var(--s1);border-radius:24px 24px 0 0;border-top:1px solid var(--ln2);padding:10px 20px 40px;display:flex;flex-direction:column;gap:10px">
+          <div style="width:40px;height:5px;border-radius:3px;background:var(--ln2);margin:0 auto 8px"></div>
+          <div style="font:600 20px 'Atkinson Hyperlegible Next';margin-bottom:4px">Añadir pieza</div>
+          <sc-for list="{{ addPaths }}" as="a" hint-placeholder-count="4"><div style="display:flex;align-items:center;gap:14px;min-height:64px;padding:0 14px;border:1px solid {{ a.bd }};border-radius:14px;background:{{ a.bg }}"><i class="{{ a.ic }}" style="font-size:22px;color:var(--ambtx)"></i><div style="flex:1"><div style="font:600 16px 'Atkinson Hyperlegible Next'">{{ a.t }}</div><div style="font:400 15px 'Atkinson Hyperlegible Next';color:var(--fg2)">{{ a.d }}</div></div><sc-if value="{{ a.isPro }}"><span style="font:600 14px 'Atkinson Hyperlegible Mono';padding:2px 6px;border-radius:4px;background:var(--amb2);color:var(--ambtx)">PRO</span></sc-if></div></sc-for>
+          <div style="display:flex;align-items:center;gap:14px;min-height:56px;padding:0 14px;border-radius:14px;background:var(--s2)"><i class="icon-zap" style="font-size:20px;color:var(--ambtx)"></i><span style="flex:1;font:600 16px 'Atkinson Hyperlegible Next'">Modo ráfaga para ferias</span><i class="icon-chevron-right" style="color:var(--fg3)"></i></div>
+        </div>
+      </div></div>
+
+      <div style="display:flex;flex-direction:column;gap:10px"><span style="font:500 15px 'Atkinson Hyperlegible Next';color:var(--fg2)">Escáner de código de barras</span>
+      <div style="width:390px;height:844px;border-radius:44px;border:1px solid #363C44;background:repeating-linear-gradient(135deg,#15181c 0 14px,#1a1e23 14px 28px);position:relative;overflow:hidden;color:#F2EFE9">
+        <div style="height:50px;display:flex;align-items:center;justify-content:space-between;padding:0 30px;font:600 16px 'Atkinson Hyperlegible Next'"><span>9:41</span><span style="display:flex;gap:6px"><i class="icon-signal"></i><i class="icon-wifi"></i><i class="icon-battery-full"></i></span></div>
+        <div style="display:flex;justify-content:space-between;padding:4px 16px"><span style="width:44px;height:44px;border-radius:50%;background:rgba(0,0,0,.45);display:grid;place-items:center"><i class="icon-x" style="font-size:20px"></i></span><span style="width:44px;height:44px;border-radius:50%;background:rgba(0,0,0,.45);display:grid;place-items:center"><i class="icon-flashlight"></i></span></div>
+        <div style="position:absolute;left:40px;right:40px;top:250px;height:180px;border:2.5px solid #E8701A;border-radius:16px"></div>
+        <div style="position:absolute;left:52px;right:52px;height:2px;background:#C8372D;box-shadow:0 0 12px #C8372D;animation:rxScan 2.4s ease-in-out infinite"></div>
+        <div style="position:absolute;left:0;right:0;top:450px;text-align:center;font:500 16px 'Atkinson Hyperlegible Next'">Apunta al código EAN de la caja</div>
+        <div style="position:absolute;left:16px;right:16px;bottom:40px;background:#16191D;border:1px solid #363C44;border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:10px">
+          <div style="display:flex;align-items:center;gap:8px;color:#5DAA84;font:600 16px 'Atkinson Hyperlegible Next'"><i class="icon-circle-check"></i>Encontrado en el catálogo</div>
+          <div><div style="font:600 17px 'Atkinson Hyperlegible Mono'">Roco 73845</div><div style="font:400 15px 'Atkinson Hyperlegible Next';color:#B0ABA2;margin-top:2px">RENFE 333.014 «Talgo» · H0 · DCC Sound</div></div>
+          <button style="height:50px;border:0;border-radius:16px;background:#E8701A;color:#16191D;font:600 16px 'Atkinson Hyperlegible Next'">Añadir con estos datos</button>
+        </div>
+      </div></div>
+
+      <div style="display:flex;flex-direction:column;gap:10px"><span style="font:500 15px 'Atkinson Hyperlegible Next';color:var(--fg2)">Foto con IA · revisar y confirmar</span>
+      <div style="width:390px;height:844px;border-radius:44px;border:1px solid var(--ln2);background:var(--bg);position:relative;overflow:hidden">
+        <div style="height:50px;display:flex;align-items:center;justify-content:space-between;padding:0 30px;font:600 16px 'Atkinson Hyperlegible Next'"><span>9:41</span><span style="display:flex;gap:6px"><i class="icon-signal"></i><i class="icon-wifi"></i><i class="icon-battery-full"></i></span></div>
+        <div style="padding:4px 20px;display:flex;flex-direction:column;gap:14px">
+          <div style="display:flex;align-items:center;gap:8px"><i class="icon-sparkles" style="color:var(--ambtx);font-size:20px"></i><span style="font:700 22px 'Bricolage Grotesque'">Propuesta de la IA</span></div>
+          <div style="display:flex;gap:8px"><sc-for list="{{ iaPhotos }}" as="p" hint-placeholder-count="4"><div style="flex:1;aspect-ratio:1;border-radius:10px;border:1px solid {{ p.bd }};background:{{ p.bg }};display:grid;place-items:center;color:var(--fg3)"><sc-if value="{{ p.add }}"><i class="icon-plus"></i></sc-if></div></sc-for></div>
+          <div style="display:flex;flex-direction:column">
+            <sc-for list="{{ conf }}" as="c" hint-placeholder-count="5"><div style="padding:12px 0;border-top:1px solid var(--ln);display:flex;flex-direction:column;gap:7px"><div style="display:flex;justify-content:space-between;align-items:baseline"><span style="font:400 15px 'Atkinson Hyperlegible Next';color:var(--fg3)">{{ c.k }}</span><span style="font:500 15px 'Atkinson Hyperlegible Mono';color:{{ c.col }}">{{ c.c }}</span></div><div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><span style="font:600 16px 'Atkinson Hyperlegible Next'">{{ c.v }}</span><sc-if value="{{ c.low }}"><span style="font:500 15px 'Atkinson Hyperlegible Next';color:var(--ambtx)">Revísalo</span></sc-if></div><div style="height:4px;background:var(--s2);border-radius:4px;overflow:hidden"><div style="height:100%;width:{{ c.w }};background:{{ c.col }}"></div></div></div></sc-for>
+          </div>
+        </div>
+        <div style="position:absolute;left:20px;right:20px;bottom:40px;display:flex;flex-direction:column;gap:8px"><button style="height:52px;border:0;border-radius:16px;background:var(--amb);color:#1A1410;box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 3px 0 #B0500E;font:600 16px 'Atkinson Hyperlegible Next'">Confirmar y completar</button><button style="height:48px;border:0;background:none;color:var(--fg2);font:500 16px 'Atkinson Hyperlegible Next'">Corregir manualmente</button></div>
+      </div></div>
+
+      <div style="display:flex;flex-direction:column;gap:10px"><span style="font:500 15px 'Atkinson Hyperlegible Next';color:var(--fg2)">Modo ráfaga · feria</span>
+      <div style="width:390px;height:844px;border-radius:44px;border:1px solid var(--ln2);background:var(--bg);position:relative;overflow:hidden">
+        <div style="height:400px;background:repeating-linear-gradient(135deg,#15181c 0 14px,#1a1e23 14px 28px);position:relative;color:#F2EFE9">
+          <div style="height:50px;display:flex;align-items:center;justify-content:space-between;padding:0 30px;font:600 16px 'Atkinson Hyperlegible Next'"><span>9:41</span><span style="display:flex;gap:6px"><i class="icon-signal"></i><i class="icon-wifi"></i><i class="icon-battery-full"></i></span></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 16px"><span style="height:36px;padding:0 12px;border-radius:999px;background:rgba(0,0,0,.5);display:flex;align-items:center;gap:6px;font:600 15px 'Atkinson Hyperlegible Next'"><span style="width:8px;height:8px;border-radius:50%;background:#C8372D"></span>Ráfaga · 7 piezas</span><span style="height:36px;padding:0 12px;border-radius:999px;background:rgba(0,0,0,.5);display:flex;align-items:center;font:600 15px 'Atkinson Hyperlegible Mono'">177 €</span></div>
+          <span style="position:absolute;left:20px;bottom:16px;font:400 14px 'Atkinson Hyperlegible Mono';letter-spacing:.04em;color:#8C877F">CÁMARA</span>
+        </div>
+        <div style="padding:16px 20px;display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;gap:10px"><div style="flex:1;height:56px;border:1.5px solid var(--amb);border-radius:14px;display:flex;align-items:center;padding:0 16px;font:600 24px 'Atkinson Hyperlegible Mono'">25<span style="margin-left:auto;font:400 18px 'Atkinson Hyperlegible Next';color:var(--fg3)">€</span></div><button style="width:72px;height:56px;border:0;border-radius:14px;background:var(--amb);color:#1A1410;box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 3px 0 #B0500E"><i class="icon-camera" style="font-size:24px"></i></button></div>
+          <div style="font:500 14px 'Atkinson Hyperlegible Mono';letter-spacing:.04em;color:var(--fg3)">ÚLTIMAS CAPTURAS</div>
+          <sc-for list="{{ burst }}" as="b" hint-placeholder-count="4"><div style="display:flex;align-items:center;gap:12px;height:52px;border-top:1px solid var(--ln)"><div style="width:52px;height:38px;border-radius:6px;background:repeating-linear-gradient(135deg,var(--ph) 0 6px,var(--ph2) 6px 12px)"></div><span style="flex:1;font:500 16px 'Atkinson Hyperlegible Next'">{{ b.n }}</span><span style="font:500 16px 'Atkinson Hyperlegible Mono'">{{ b.p }}</span></div></sc-for>
+        </div>
+      </div></div>
+    </div>
+  </section>
+
+  <!-- FILA 4 · ALTA -->
+  <section style="display:flex;flex-direction:column;gap:16px">
+    <div style="font:500 14px 'Atkinson Hyperlegible Mono';letter-spacing:.04em;color:var(--fg3)">04 · FORMULARIO DE ALTA · DIÉSEL DIGITAL FRENTE A VAPOR ANALÓGICO</div>
+    <div style="display:flex;gap:40px;flex-wrap:wrap;align-items:flex-start">
+      <sc-for list="{{ altaTr }}" as="d" hint-placeholder-count="2">
+      <div style="display:flex;flex-direction:column;gap:10px"><span style="font:500 15px 'Atkinson Hyperlegible Next';color:var(--fg2)">{{ d.label }}</span>
+      <div style="width:390px;height:844px;border-radius:44px;border:1px solid var(--ln2);background:var(--bg);position:relative;overflow:hidden">
+        <div style="height:50px;display:flex;align-items:center;justify-content:space-between;padding:0 30px;font:600 16px 'Atkinson Hyperlegible Next'"><span>9:41</span><span style="display:flex;gap:6px"><i class="icon-signal"></i><i class="icon-wifi"></i><i class="icon-battery-full"></i></span></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:0 16px 10px"><span style="width:44px;height:44px;display:grid;place-items:center"><i class="icon-x" style="font-size:20px"></i></span><span style="flex:1;font:500 15px 'Atkinson Hyperlegible Mono';color:var(--fg3);text-align:center">Paso 2 de 7</span><span style="width:44px;height:44px;display:grid;place-items:center;font:500 15px 'Atkinson Hyperlegible Next';color:var(--fg3)">60 %</span></div>
+        <div style="height:3px;background:var(--ln2);margin:0 20px"><div style="height:100%;width:28%;background:var(--amb)"></div></div>
+        <div style="padding:20px;display:flex;flex-direction:column;gap:18px">
+          <div style="font:700 26px 'Bricolage Grotesque';letter-spacing:-.025em">Tracción</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><sc-for list="{{ d.trs }}" as="t"><div style="height:56px;border-radius:16px;border:1.5px solid {{ t.bd }};background:{{ t.bg }};display:flex;align-items:center;gap:10px;padding:0 14px"><i class="{{ t.ic }}" style="font-size:20px;color:{{ t.c }}"></i><span style="font:600 16px 'Atkinson Hyperlegible Next'">{{ t.t }}</span></div></sc-for></div>
+          <div><div style="font:500 15px 'Atkinson Hyperlegible Next';color:var(--fg2);margin-bottom:8px">Rodaje · {{ d.notL }}</div><div style="height:52px;border:1px solid var(--ln2);border-radius:16px;background:var(--s3);display:flex;align-items:center;padding:0 14px;gap:10px"><span style="font:600 18px 'Atkinson Hyperlegible Mono'">{{ d.rod }}</span><span style="font:400 15px 'Atkinson Hyperlegible Next';color:var(--fg3)">{{ d.whyte }}</span><i class="icon-chevrons-up-down" style="margin-left:auto;color:var(--fg3)"></i></div>
+            <div style="margin-top:12px;padding:14px;border:1px solid var(--ln);border-radius:16px;background:var(--s1)"><div style="height:16px;border:1.5px solid var(--fg3);border-radius:5px 5px 2px 2px;margin-bottom:5px"></div><div style="display:flex;justify-content:space-around"><sc-for list="{{ d.groups }}" as="g"><div style="display:flex;flex-direction:column;gap:4px;align-items:center"><div style="display:flex;gap:4px"><sc-for list="{{ g.axles }}" as="a"><span style="width:16px;height:16px;border-radius:50%;border:2px solid {{ a.bd }};background:{{ a.bg }};box-sizing:border-box"></span></sc-for></div><span style="height:2px;width:100%;background:{{ g.bogie }}"></span></div></sc-for></div></div>
+          </div>
+          <sc-if value="{{ d.diesel }}"><div><div style="font:500 15px 'Atkinson Hyperlegible Next';color:var(--fg2);margin-bottom:8px">Transmisión</div><div style="display:flex;gap:8px"><span style="height:44px;padding:0 16px;border-radius:999px;border:1px solid var(--amb);background:var(--amb2);color:var(--ambtx);font:500 16px 'Atkinson Hyperlegible Next';display:flex;align-items:center">Eléctrica</span><span style="height:44px;padding:0 16px;border-radius:999px;border:1px solid var(--ln2);font:500 16px 'Atkinson Hyperlegible Next';display:flex;align-items:center">Hidráulica</span><span style="height:44px;padding:0 16px;border-radius:999px;border:1px solid var(--ln2);font:500 16px 'Atkinson Hyperlegible Next';display:flex;align-items:center">Mecánica</span></div></div></sc-if>
+          <sc-if value="{{ d.vapor }}"><div style="border:1px solid var(--ln);border-radius:16px;background:var(--s1);padding:0 14px">
+            <div style="display:flex;justify-content:space-between;align-items:center;min-height:56px"><span style="font:500 16px 'Atkinson Hyperlegible Next'">Ténder</span><span style="width:48px;height:28px;border-radius:14px;background:var(--amb);position:relative"><span style="position:absolute;top:3px;right:3px;width:22px;height:22px;border-radius:50%;background:#fff"></span></span></div>
+            <div style="display:flex;gap:6px;padding-bottom:14px"><span style="height:40px;padding:0 12px;border-radius:999px;border:1px solid var(--ln2);font:500 15px 'Atkinson Hyperlegible Mono';display:flex;align-items:center">3 ejes</span><span style="height:40px;padding:0 12px;border-radius:999px;border:1px solid var(--amb);background:var(--amb2);color:var(--ambtx);font:500 15px 'Atkinson Hyperlegible Mono';display:flex;align-items:center">4 ejes · 2'2' T</span></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;min-height:56px;border-top:1px solid var(--ln)"><span style="font:500 16px 'Atkinson Hyperlegible Next'">Generador de humo</span><span style="width:48px;height:28px;border-radius:14px;background:var(--ln2);position:relative"><span style="position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff"></span></span></div>
+          </div></sc-if>
+        </div>
+        <div style="position:absolute;left:20px;right:20px;bottom:40px;display:flex;gap:10px"><button style="width:52px;height:52px;border:1px solid var(--ln2);border-radius:16px;background:var(--s1)"><i class="icon-arrow-left"></i></button><button style="flex:1;height:52px;border:0;border-radius:16px;background:var(--amb);color:#1A1410;box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 3px 0 #B0500E;font:600 16px 'Atkinson Hyperlegible Next'">Siguiente · Sistema</button></div>
+      </div></div>
+      </sc-for>
+
+      <div style="display:flex;flex-direction:column;gap:10px"><span style="font:500 15px 'Atkinson Hyperlegible Next';color:var(--fg2)">Diésel · paso 3 · Digital</span>
+      <div style="width:390px;height:844px;border-radius:44px;border:1px solid var(--ln2);background:var(--bg);position:relative;overflow:hidden">
+        <div style="height:50px;display:flex;align-items:center;justify-content:space-between;padding:0 30px;font:600 16px 'Atkinson Hyperlegible Next'"><span>9:41</span><span style="display:flex;gap:6px"><i class="icon-signal"></i><i class="icon-wifi"></i><i class="icon-battery-full"></i></span></div>
+        <div style="display:flex;align-items:center;padding:0 16px 10px"><span style="width:44px;height:44px;display:grid;place-items:center"><i class="icon-x" style="font-size:20px"></i></span><span style="flex:1;font:500 15px 'Atkinson Hyperlegible Mono';color:var(--fg3);text-align:center">Paso 3 de 7</span><span style="width:44px"></span></div>
+        <div style="height:3px;background:var(--ln2);margin:0 20px"><div style="height:100%;width:43%;background:var(--amb)"></div></div>
+        <div style="padding:20px;display:flex;flex-direction:column;gap:16px">
+          <div style="font:700 26px 'Bricolage Grotesque';letter-spacing:-.025em">Sistema</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;padding:4px;border:1px solid var(--ln2);border-radius:14px;background:var(--s1)"><span style="height:48px;border-radius:10px;background:var(--amb);color:#1A1410;box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 3px 0 #B0500E;display:flex;align-items:center;justify-content:center;gap:8px;font:600 16px 'Atkinson Hyperlegible Next'"><i class="icon-cpu"></i>Digital</span><span style="height:48px;display:flex;align-items:center;justify-content:center;gap:8px;font:500 16px 'Atkinson Hyperlegible Next';color:var(--fg2)"><i class="icon-gauge"></i>Analógico</span></div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap"><span style="height:40px;padding:0 14px;border-radius:999px;border:1px solid var(--amb);background:var(--amb2);color:var(--ambtx);font:500 15px 'Atkinson Hyperlegible Next';display:flex;align-items:center">DCC</span><span style="height:40px;padding:0 14px;border-radius:999px;border:1px solid var(--ln2);font:500 15px 'Atkinson Hyperlegible Next';display:flex;align-items:center">mfx</span><span style="height:40px;padding:0 14px;border-radius:999px;border:1px solid var(--ln2);font:500 15px 'Atkinson Hyperlegible Next';display:flex;align-items:center">Motorola</span><span style="height:40px;padding:0 14px;border-radius:999px;border:1px solid var(--ln2);font:500 15px 'Atkinson Hyperlegible Next';display:flex;align-items:center">Multi</span></div>
+          <div><div style="font:500 15px 'Atkinson Hyperlegible Next';color:var(--fg2);margin-bottom:8px">Decoder</div><div style="height:52px;border:1px solid var(--ln2);border-radius:16px;background:var(--s3);display:flex;align-items:center;padding:0 14px;font:500 16px 'Atkinson Hyperlegible Next'">ESU LokSound 5<i class="icon-chevrons-up-down" style="margin-left:auto;color:var(--fg3)"></i></div></div>
+          <div><div style="font:500 15px 'Atkinson Hyperlegible Next';color:var(--fg2);margin-bottom:8px">Dirección digital</div><div style="height:52px;border:1.5px solid var(--red);border-radius:16px;background:var(--s3);display:flex;align-items:center;padding:0 14px;font:600 18px 'Atkinson Hyperlegible Mono'">1931</div>
+            <div style="margin-top:8px;padding:10px 12px;border-radius:10px;background:var(--red2);color:var(--red);font:500 15px/1.4 'Atkinson Hyperlegible Next'">Ya la usa RENFE 1931 «Alco» (Electrotren E2610S). <span style="text-decoration:underline">Usar 3192</span></div></div>
+          <div style="border:1px solid var(--ln);border-radius:16px;background:var(--s1);padding:0 14px"><div style="display:flex;justify-content:space-between;align-items:center;min-height:56px"><span style="font:500 16px 'Atkinson Hyperlegible Next'">Sonido</span><span style="width:48px;height:28px;border-radius:14px;background:var(--amb);position:relative"><span style="position:absolute;top:3px;right:3px;width:22px;height:22px;border-radius:50%;background:#fff"></span></span></div><div style="display:flex;justify-content:space-between;align-items:center;min-height:56px;border-top:1px solid var(--ln)"><span style="font:500 16px 'Atkinson Hyperlegible Next'">Tabla de funciones</span><span style="font:500 15px 'Atkinson Hyperlegible Mono';color:var(--fg2)">F0–F6 ›</span></div></div>
+        </div>
+        <div style="position:absolute;left:20px;right:20px;bottom:40px;display:flex;gap:10px"><button style="width:52px;height:52px;border:1px solid var(--ln2);border-radius:16px;background:var(--s1)"><i class="icon-arrow-left"></i></button><button style="flex:1;height:52px;border:0;border-radius:16px;background:var(--amb);color:#1A1410;box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 3px 0 #B0500E;font:600 16px 'Atkinson Hyperlegible Next'">Siguiente</button></div>
+      </div></div>
+
+      <div style="display:flex;flex-direction:column;gap:10px"><span style="font:500 15px 'Atkinson Hyperlegible Next';color:var(--fg2)">Vapor · paso 3 · Analógico</span>
+      <div style="width:390px;height:844px;border-radius:44px;border:1px solid var(--ln2);background:var(--bg);position:relative;overflow:hidden">
+        <div style="height:50px;display:flex;align-items:center;justify-content:space-between;padding:0 30px;font:600 16px 'Atkinson Hyperlegible Next'"><span>9:41</span><span style="display:flex;gap:6px"><i class="icon-signal"></i><i class="icon-wifi"></i><i class="icon-battery-full"></i></span></div>
+        <div style="display:flex;align-items:center;padding:0 16px 10px"><span style="width:44px;height:44px;display:grid;place-items:center"><i class="icon-x" style="font-size:20px"></i></span><span style="flex:1;font:500 15px 'Atkinson Hyperlegible Mono';color:var(--fg3);text-align:center">Paso 3 de 7</span><span style="width:44px"></span></div>
+        <div style="height:3px;background:var(--ln2);margin:0 20px"><div style="height:100%;width:43%;background:var(--amb)"></div></div>
+        <div style="padding:20px;display:flex;flex-direction:column;gap:16px">
+          <div style="font:700 26px 'Bricolage Grotesque';letter-spacing:-.025em">Sistema</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;padding:4px;border:1px solid var(--ln2);border-radius:14px;background:var(--s1)"><span style="height:48px;display:flex;align-items:center;justify-content:center;gap:8px;font:500 16px 'Atkinson Hyperlegible Next';color:var(--fg2)"><i class="icon-cpu"></i>Digital</span><span style="height:48px;border-radius:10px;background:var(--amb);color:#1A1410;box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 3px 0 #B0500E;display:flex;align-items:center;justify-content:center;gap:8px;font:600 16px 'Atkinson Hyperlegible Next'"><i class="icon-gauge"></i>Analógico</span></div>
+          <div><div style="font:500 15px 'Atkinson Hyperlegible Next';color:var(--fg2);margin-bottom:8px">Corriente</div><div style="display:flex;flex-direction:column;gap:8px"><span style="height:52px;padding:0 14px;border-radius:16px;border:1.5px solid var(--amb);background:var(--amb2);color:var(--ambtx);font:500 16px 'Atkinson Hyperlegible Next';display:flex;align-items:center">Continua · 2 carriles</span><span style="height:52px;padding:0 14px;border-radius:16px;border:1px solid var(--ln2);font:500 16px 'Atkinson Hyperlegible Next';display:flex;align-items:center">Alterna · 3 carriles (Märklin)</span></div></div>
+          <div style="border:1px solid var(--ln);border-radius:16px;background:var(--s1);padding:0 14px">
+            <div style="display:flex;justify-content:space-between;align-items:center;min-height:56px"><span style="font:500 16px 'Atkinson Hyperlegible Next'">Preparada para digital</span><span style="width:48px;height:28px;border-radius:14px;background:var(--amb);position:relative"><span style="position:absolute;top:3px;right:3px;width:22px;height:22px;border-radius:50%;background:#fff"></span></span></div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;padding-bottom:14px"><span style="height:40px;padding:0 10px;border-radius:9px;border:1px solid var(--ln2);font:500 15px 'Atkinson Hyperlegible Mono';display:flex;align-items:center">NEM 651</span><span style="height:40px;padding:0 10px;border-radius:9px;border:1px solid var(--amb);background:var(--amb2);color:var(--ambtx);font:500 15px 'Atkinson Hyperlegible Mono';display:flex;align-items:center">NEM 652</span><span style="height:40px;padding:0 10px;border-radius:9px;border:1px solid var(--ln2);font:500 15px 'Atkinson Hyperlegible Mono';display:flex;align-items:center">PluX22</span><span style="height:40px;padding:0 10px;border-radius:9px;border:1px solid var(--ln2);font:500 15px 'Atkinson Hyperlegible Mono';display:flex;align-items:center">Next18</span></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;min-height:56px;border-top:1px solid var(--ln)"><span style="font:500 16px 'Atkinson Hyperlegible Next'">Luces direccionales</span><span style="width:48px;height:28px;border-radius:14px;background:var(--amb);position:relative"><span style="position:absolute;top:3px;right:3px;width:22px;height:22px;border-radius:50%;background:#fff"></span></span></div>
+          </div>
+          <div style="font:400 15px/1.5 'Atkinson Hyperlegible Next';color:var(--fg3)">Sin decoder no se piden dirección, sonido ni funciones.</div>
+        </div>
+        <div style="position:absolute;left:20px;right:20px;bottom:40px;display:flex;gap:10px"><button style="width:52px;height:52px;border:1px solid var(--ln2);border-radius:16px;background:var(--s1)"><i class="icon-arrow-left"></i></button><button style="flex:1;height:52px;border:0;border-radius:16px;background:var(--amb);color:#1A1410;box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 3px 0 #B0500E;font:600 16px 'Atkinson Hyperlegible Next'">Siguiente</button></div>
+      </div></div>
+    </div>
+  </section>
+
+  <!-- FILA 5 · COMPOSICIÓN, DESEOS, PRO -->
+  <section style="display:flex;flex-direction:column;gap:16px">
+    <div style="font:500 14px 'Atkinson Hyperlegible Mono';letter-spacing:.04em;color:var(--fg3)">05 · COMPOSICIONES, DESEOS Y PRO</div>
+    <div style="display:flex;gap:40px;flex-wrap:wrap;align-items:flex-start">
+      <div style="display:flex;flex-direction:column;gap:10px"><span style="font:500 15px 'Atkinson Hyperlegible Next';color:var(--fg2)">Composición · andén</span>
+      <div style="width:390px;height:844px;border-radius:44px;border:1px solid var(--ln2);background:var(--bg);position:relative;overflow:hidden">
+        <div style="height:50px;display:flex;align-items:center;justify-content:space-between;padding:0 30px;font:600 16px 'Atkinson Hyperlegible Next'"><span>9:41</span><span style="display:flex;gap:6px"><i class="icon-signal"></i><i class="icon-wifi"></i><i class="icon-battery-full"></i></span></div>
+        <div style="padding:4px 20px;display:flex;flex-direction:column;gap:14px">
+          <div><div style="font:700 24px 'Bricolage Grotesque';letter-spacing:-.025em">Talgo III RENFE</div><div style="font:400 16px 'Atkinson Hyperlegible Next';color:var(--fg2);margin-top:4px">333 + 5 coches · H0</div></div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px"><sc-for list="{{ compTot }}" as="t" hint-placeholder-count="3"><div style="padding:10px 12px;border:1px solid var(--ln);border-radius:16px;background:var(--s1)"><div style="font:400 15px 'Atkinson Hyperlegible Next';color:var(--fg2)">{{ t.k }}</div><div style="font:600 16px 'Atkinson Hyperlegible Mono';margin-top:4px">{{ t.v }}</div></div></sc-for></div>
+        </div>
+        <div style="margin-top:16px;padding:14px 0 10px 20px;border-top:1px solid var(--ln);border-bottom:1px solid var(--ln);background:var(--s3)">
+          <div style="font:500 14px 'Atkinson Hyperlegible Mono';letter-spacing:.04em;color:var(--fg3);margin-bottom:10px">MANTÉN PULSADO PARA REORDENAR</div>
+          <div style="display:flex;gap:3px;overflow:hidden">
+            <sc-for list="{{ compVeh }}" as="v" hint-placeholder-count="5"><div style="width:{{ v.w }};flex:none;display:flex;flex-direction:column;gap:6px"><div style="height:56px;border-radius:6px 6px 3px 3px;border:1px solid var(--ln2);background:{{ v.phBg }};display:grid;place-items:center"><sc-if value="{{ v.noPh }}"><div style="width:86%;aspect-ratio:200/76;background:url('{{ v.sil }}') center/contain no-repeat"></div></sc-if></div><span style="height:3px;background:var(--fg3);margin:0 5px"></span><span style="font:500 15px 'Atkinson Hyperlegible Next';white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ v.n }}</span></div></sc-for>
+          </div>
+        </div>
+        <div style="padding:16px 20px;display:flex;flex-direction:column;gap:10px">
+          <div style="display:flex;gap:12px;padding:12px 14px;border:1px solid var(--ln);border-radius:16px;background:var(--s1)"><i class="icon-cpu" style="color:var(--ambtx);font-size:18px;margin-top:2px"></i><div><div style="font:600 16px 'Atkinson Hyperlegible Next'">5 coches analógicos en un tren digital</div><div style="font:400 15px/1.45 'Atkinson Hyperlegible Next';color:var(--fg2);margin-top:2px">La luz interior no se controlará desde la central.</div></div></div>
+          <div style="display:flex;gap:12px;padding:12px 14px;border:1px solid var(--ln);border-radius:16px;background:var(--s1)"><i class="icon-calendar-range" style="color:var(--ambtx);font-size:18px;margin-top:2px"></i><div><div style="font:600 16px 'Atkinson Hyperlegible Next'">Mezcla de épocas V y IV</div><div style="font:400 15px/1.45 'Atkinson Hyperlegible Next';color:var(--fg2);margin-top:2px">La 333.014 es de época V; los coches, de IV.</div></div></div>
+        </div>
+        <dc-import name="RxTabBar" active="mas" hint-size="390px,86px"></dc-import>
+      </div></div>
+
+      <div style="display:flex;flex-direction:column;gap:10px"><span style="font:500 15px 'Atkinson Hyperlegible Next';color:var(--fg2)">Deseos y preventas</span>
+      <div style="width:390px;height:844px;border-radius:44px;border:1px solid var(--ln2);background:var(--bg);position:relative;overflow:hidden">
+        <div style="height:50px;display:flex;align-items:center;justify-content:space-between;padding:0 30px;font:600 16px 'Atkinson Hyperlegible Next'"><span>9:41</span><span style="display:flex;gap:6px"><i class="icon-signal"></i><i class="icon-wifi"></i><i class="icon-battery-full"></i></span></div>
+        <div style="padding:4px 20px;display:flex;flex-direction:column;gap:14px">
+          <div style="display:flex;justify-content:space-between;align-items:center"><span style="font:700 26px 'Bricolage Grotesque';letter-spacing:-.025em">Deseos</span><span style="width:44px;height:44px;border-radius:16px;border:1px solid var(--ln2);display:grid;place-items:center"><i class="icon-file-text"></i></span></div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);padding:4px;border:1px solid var(--ln2);border-radius:16px;background:var(--s1)"><span style="height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font:500 15px 'Atkinson Hyperlegible Next';color:var(--fg2)">Deseadas · 4</span><span style="height:40px;border-radius:10px;background:var(--s2);display:flex;align-items:center;justify-content:center;font:600 15px 'Atkinson Hyperlegible Next'">Preventa · 2</span><span style="height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font:500 15px 'Atkinson Hyperlegible Next';color:var(--fg2)">Recibidas</span></div>
+          <sc-for list="{{ pre }}" as="w" hint-placeholder-count="2"><div style="padding:14px;border:1px solid var(--ln);border-radius:14px;background:var(--s1);display:flex;flex-direction:column;gap:10px"><div><div style="font:600 16px 'Atkinson Hyperlegible Next'">{{ w.n }}</div><div style="font:400 15px 'Atkinson Hyperlegible Mono';color:var(--fg3);margin-top:3px">{{ w.ref }}</div></div><div style="display:flex;gap:8px"><span style="flex:1;padding:8px 10px;border-radius:10px;background:var(--s2);font:400 15px 'Atkinson Hyperlegible Next';color:var(--fg2)">Señal <b style="font-family:'Atkinson Hyperlegible Mono';color:var(--fg);font-weight:500">{{ w.dep }}</b></span><span style="flex:1;padding:8px 10px;border-radius:10px;background:var(--amb2);font:400 15px 'Atkinson Hyperlegible Next';color:var(--ambtx)">Llega <b style="font-family:'Atkinson Hyperlegible Mono';font-weight:500">{{ w.eta }}</b></span></div><button style="height:48px;border:0;border-radius:16px;background:var(--grn);color:#fff;font:600 16px 'Atkinson Hyperlegible Next'">Ha llegado · a mi colección</button></div></sc-for>
+        </div>
+        <dc-import name="RxTabBar" active="deseos" hint-size="390px,86px"></dc-import>
+      </div></div>
+
+      <div style="display:flex;flex-direction:column;gap:10px"><span style="font:500 15px 'Atkinson Hyperlegible Next';color:var(--fg2)">Invitación a Pro · al tocar una función Pro</span>
+      <div style="width:390px;height:844px;border-radius:44px;border:1px solid var(--ln2);background:var(--bg);position:relative;overflow:hidden">
+        <div style="position:absolute;inset:0;background:rgba(6,7,9,.55)"></div>
+        <div style="position:absolute;left:0;right:0;bottom:0;background:var(--s1);border-radius:24px 24px 0 0;overflow:hidden;border-top:1px solid var(--ln2)">
+          <div style="height:6px;background:repeating-linear-gradient(90deg,var(--amb) 0 18px,#16191D 18px 36px)"></div>
+          <div style="padding:18px 20px 40px;display:flex;flex-direction:column;gap:14px">
+            <div style="font:500 14px 'Atkinson Hyperlegible Mono';letter-spacing:.05em;color:var(--ambtx)">RAILODEX PRO</div>
+            <div style="font:700 24px/1.15 'Bricolage Grotesque';letter-spacing:-.02em">El reconocimiento por foto es una función Pro</div>
+            <div style="display:flex;flex-direction:column;gap:9px"><sc-for list="{{ proFeats }}" as="f" hint-placeholder-count="5"><div style="display:flex;gap:10px;font:400 16px 'Atkinson Hyperlegible Next'"><i class="icon-check" style="color:var(--grn);margin-top:3px"></i>{{ f.t }}</div></sc-for></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px"><div style="padding:10px;border:1px solid var(--ln2);border-radius:10px"><div style="font:400 15px 'Atkinson Hyperlegible Next';color:var(--fg2)">Mes</div><div style="font:600 17px 'Atkinson Hyperlegible Next'">4,99 €</div></div><div style="padding:10px;border:1.5px solid var(--amb);border-radius:10px;background:var(--amb2)"><div style="font:400 15px 'Atkinson Hyperlegible Next';color:var(--fg2)">Año</div><div style="font:600 17px 'Atkinson Hyperlegible Next'">39 €</div></div><div style="padding:10px;border:1px solid var(--ln2);border-radius:10px"><div style="font:400 15px 'Atkinson Hyperlegible Next';color:var(--fg2)">Siempre</div><div style="font:600 17px 'Atkinson Hyperlegible Next'">119 €</div></div></div>
+            <button style="height:52px;border:0;border-radius:16px;background:var(--amb);color:#1A1410;box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 3px 0 #B0500E;font:600 16px 'Atkinson Hyperlegible Next'">Probar 14 días gratis</button>
+            <button style="height:44px;border:0;background:none;color:var(--fg2);font:500 16px 'Atkinson Hyperlegible Next'">Ahora no</button>
+          </div>
+        </div>
+      </div></div>
+    </div>
+  </section>
+
+  <!-- FILA 6 · MANTENIMIENTO, UBICACIONES, DIGITAL, AJUSTES -->
+  <section style="display:flex;flex-direction:column;gap:16px">
+    <div style="font:500 14px 'Atkinson Hyperlegible Mono';letter-spacing:.04em;color:var(--fg3)">06 · MANTENIMIENTO, UBICACIONES, DIGITAL Y AJUSTES</div>
+    <div style="display:flex;gap:40px;flex-wrap:wrap;align-items:flex-start">
+      <div style="display:flex;flex-direction:column;gap:10px"><span style="font:500 15px 'Atkinson Hyperlegible Next';color:var(--fg2)">Mantenimiento</span>
+      <div style="width:390px;height:844px;border-radius:44px;border:1px solid var(--ln2);background:var(--bg);position:relative;overflow:hidden">
+        <div style="height:50px;display:flex;align-items:center;justify-content:space-between;padding:0 30px;font:600 16px 'Atkinson Hyperlegible Next'"><span>9:41</span><span style="display:flex;gap:6px"><i class="icon-signal"></i><i class="icon-wifi"></i><i class="icon-battery-full"></i></span></div>
+        <div style="padding:4px 20px;display:flex;flex-direction:column;gap:14px">
+          <div style="font:700 26px 'Bricolage Grotesque';letter-spacing:-.025em">Mantenimiento</div>
+          <div style="display:flex;gap:6px;overflow:hidden"><sc-for list="{{ week }}" as="d" hint-placeholder-count="7"><div style="flex:1;height:64px;border-radius:16px;border:1px solid {{ d.bd }};background:{{ d.bg }};color:{{ d.fg }};display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px"><span style="font:500 14px 'Atkinson Hyperlegible Mono';opacity:.8">{{ d.w }}</span><span style="font:600 16px 'Atkinson Hyperlegible Mono'">{{ d.d }}</span><span style="width:5px;height:5px;border-radius:50%;background:{{ d.dot }}"></span></div></sc-for></div>
+          <sc-for list="{{ mtasks }}" as="t" hint-placeholder-count="4"><div style="padding:14px;border:1px solid {{ t.bd }};border-radius:14px;background:var(--s1);display:flex;flex-direction:column;gap:8px"><div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px"><span style="font:600 16px 'Atkinson Hyperlegible Next'">{{ t.t }}</span><span style="font:500 15px 'Atkinson Hyperlegible Next';color:{{ t.c }};white-space:nowrap">{{ t.due }}</span></div><span style="font:400 15px 'Atkinson Hyperlegible Next';color:var(--fg2)">{{ t.p }}</span><sc-if value="{{ t.hasH }}"><div style="display:flex;align-items:center;gap:8px"><div style="flex:1;height:4px;background:var(--s2);border-radius:4px;overflow:hidden"><div style="height:100%;width:{{ t.w }};background:{{ t.c }}"></div></div><span style="font:500 15px 'Atkinson Hyperlegible Mono';color:var(--fg2)">{{ t.h }}</span></div></sc-if></div></sc-for>
+        </div>
+        <dc-import name="RxTabBar" active="mas" hint-size="390px,86px"></dc-import>
+      </div></div>
+
+      <div style="display:flex;flex-direction:column;gap:10px"><span style="font:500 15px 'Atkinson Hyperlegible Next';color:var(--fg2)">Etiqueta QR escaneada · qué hay dentro</span>
+      <div style="width:390px;height:844px;border-radius:44px;border:1px solid var(--ln2);background:var(--bg);position:relative;overflow:hidden">
+        <div style="height:50px;display:flex;align-items:center;justify-content:space-between;padding:0 30px;font:600 16px 'Atkinson Hyperlegible Next'"><span>9:41</span><span style="display:flex;gap:6px"><i class="icon-signal"></i><i class="icon-wifi"></i><i class="icon-battery-full"></i></span></div>
+        <div style="display:flex;align-items:center;gap:6px;padding:0 16px 8px"><span style="width:44px;height:44px;display:grid;place-items:center"><i class="icon-chevron-left" style="font-size:20px"></i></span><span style="font:500 15px 'Atkinson Hyperlegible Mono';color:var(--fg3)">UB-0023</span></div>
+        <div style="padding:0 20px;display:flex;flex-direction:column;gap:14px">
+          <div style="display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;background:var(--grn2);color:var(--grn);font:500 15px 'Atkinson Hyperlegible Next'"><i class="icon-qr-code"></i>Etiqueta reconocida</div>
+          <div><div style="font:500 15px 'Atkinson Hyperlegible Mono';letter-spacing:.06em;color:var(--fg3)">ESTUDIO › ARMARIO</div><div style="font:700 26px 'Bricolage Grotesque';letter-spacing:-.025em;margin-top:4px">Caja 3</div><div style="font:400 16px 'Atkinson Hyperlegible Next';color:var(--fg2);margin-top:4px">4 piezas · 279 €</div></div>
+          <sc-for list="{{ boxItems }}" as="p" hint-placeholder-count="4"><div style="display:flex;align-items:center;gap:12px;min-height:68px;border-top:1px solid var(--ln)"><div style="width:72px;height:50px;flex:none;border-radius:10px;border:1px solid var(--ln);background:var(--s2);display:grid;place-items:center"><div style="width:76%;aspect-ratio:200/76;background:url('{{ p.sil }}') center/contain no-repeat"></div></div><div style="flex:1;min-width:0"><div style="font:550 16px 'Atkinson Hyperlegible Next';white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ p.n }}</div><div style="font:400 15px 'Atkinson Hyperlegible Mono';color:var(--fg3);margin-top:3px">{{ p.ref }}</div></div><i class="icon-chevron-right" style="color:var(--fg3)"></i></div></sc-for>
+        </div>
+        <div style="position:absolute;left:20px;right:20px;bottom:40px;display:flex;gap:10px"><button style="flex:1;height:52px;border:1px solid var(--ln2);border-radius:16px;background:var(--s1);font:500 16px 'Atkinson Hyperlegible Next';display:flex;align-items:center;justify-content:center;gap:8px"><i class="icon-plus"></i>Añadir aquí</button><button style="flex:1;height:52px;border:0;border-radius:16px;background:var(--amb);color:#1A1410;box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 3px 0 #B0500E;font:600 16px 'Atkinson Hyperlegible Next';display:flex;align-items:center;justify-content:center;gap:8px"><i class="icon-move"></i>Mover piezas</button></div>
+      </div></div>
+
+      <div style="display:flex;flex-direction:column;gap:10px"><span style="font:500 15px 'Atkinson Hyperlegible Next';color:var(--fg2)">Digital · direcciones</span>
+      <div style="width:390px;height:844px;border-radius:44px;border:1px solid var(--ln2);background:var(--bg);position:relative;overflow:hidden">
+        <div style="height:50px;display:flex;align-items:center;justify-content:space-between;padding:0 30px;font:600 16px 'Atkinson Hyperlegible Next'"><span>9:41</span><span style="display:flex;gap:6px"><i class="icon-signal"></i><i class="icon-wifi"></i><i class="icon-battery-full"></i></span></div>
+        <div style="padding:4px 20px;display:flex;flex-direction:column;gap:12px">
+          <div style="font:700 26px 'Bricolage Grotesque';letter-spacing:-.025em">Digital</div>
+          <div style="padding:12px 14px;border:1px solid var(--red);border-radius:16px;background:var(--red2);display:flex;gap:10px"><i class="icon-triangle-alert" style="color:var(--red);font-size:18px;margin-top:1px"></i><div><div style="font:600 16px 'Atkinson Hyperlegible Next';color:var(--red)">2 direcciones duplicadas</div><div style="font:400 15px 'Atkinson Hyperlegible Next';color:var(--fg2);margin-top:2px">3314 y 1032 · toca para proponer libres</div></div></div>
+          <div>
+            <sc-for list="{{ addrs }}" as="a" hint-placeholder-count="8"><div style="display:flex;align-items:center;gap:14px;min-height:60px;border-top:1px solid var(--ln);background:{{ a.bg }};margin:0 -20px;padding:0 20px"><span style="width:58px;font:600 17px 'Atkinson Hyperlegible Mono';color:{{ a.c }}">{{ a.a }}</span><div style="flex:1;min-width:0"><div style="font:500 16px 'Atkinson Hyperlegible Next';white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ a.n }}</div><div style="font:400 15px 'Atkinson Hyperlegible Next';color:var(--fg3);margin-top:2px">{{ a.d }}</div></div><span style="font:600 14px 'Atkinson Hyperlegible Mono';padding:1px 5px;border-radius:4px;color:{{ a.scC }};background:{{ a.scBg }};border:1px solid {{ a.scBd }}">{{ a.sc }}</span></div></sc-for>
+          </div>
+        </div>
+        <dc-import name="RxTabBar" active="mas" hint-size="390px,86px"></dc-import>
+      </div></div>
+
+      <div style="display:flex;flex-direction:column;gap:10px"><span style="font:500 15px 'Atkinson Hyperlegible Next';color:var(--fg2)">Más · ajustes y perfil público</span>
+      <div style="width:390px;height:844px;border-radius:44px;border:1px solid var(--ln2);background:var(--bg);position:relative;overflow:hidden">
+        <div style="height:50px;display:flex;align-items:center;justify-content:space-between;padding:0 30px;font:600 16px 'Atkinson Hyperlegible Next'"><span>9:41</span><span style="display:flex;gap:6px"><i class="icon-signal"></i><i class="icon-wifi"></i><i class="icon-battery-full"></i></span></div>
+        <div style="padding:4px 20px;display:flex;flex-direction:column;gap:14px">
+          <div style="display:flex;align-items:center;gap:12px"><span style="width:52px;height:52px;border-radius:50%;background:var(--amb);color:#1A1410;box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 3px 0 #B0500E;display:grid;place-items:center;font:600 18px 'Atkinson Hyperlegible Next'">JO</span><div><div style="font:600 18px 'Atkinson Hyperlegible Next'">Javier Ortega</div><div style="font:400 15px 'Atkinson Hyperlegible Next';color:var(--fg3)">Plan Gratis · 40/100 piezas</div></div></div>
+          <div style="border:1px solid var(--ln);border-radius:14px;background:var(--s1)">
+            <sc-for list="{{ more }}" as="m" hint-placeholder-count="5"><div style="display:flex;align-items:center;gap:14px;min-height:54px;padding:0 14px;border-bottom:1px solid var(--ln)"><i class="{{ m.ic }}" style="font-size:19px;color:var(--fg2)"></i><span style="flex:1;font:500 16px 'Atkinson Hyperlegible Next'">{{ m.t }}</span><span style="font:400 15px 'Atkinson Hyperlegible Next';color:var(--fg3)">{{ m.v }}</span><i class="icon-chevron-right" style="color:var(--fg3)"></i></div></sc-for>
+          </div>
+          <div style="padding:14px;border:1px solid var(--ln);border-radius:14px;background:var(--s1);display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;justify-content:space-between;align-items:center"><span style="font:600 16px 'Atkinson Hyperlegible Next'">Perfil público</span><span style="width:48px;height:28px;border-radius:14px;background:var(--amb);position:relative"><span style="position:absolute;top:3px;right:3px;width:22px;height:22px;border-radius:50%;background:#fff"></span></span></div>
+            <div style="height:44px;border:1px solid var(--ln2);border-radius:10px;background:var(--s3);display:flex;align-items:center;padding:0 12px;font:500 15px 'Atkinson Hyperlegible Mono'">railodex.app/c/javier-ortega</div>
+            <div style="display:flex;justify-content:space-between;align-items:center;min-height:44px"><span style="font:400 16px 'Atkinson Hyperlegible Next'">Ocultar precios</span><span style="width:48px;height:28px;border-radius:14px;background:var(--amb);position:relative"><span style="position:absolute;top:3px;right:3px;width:22px;height:22px;border-radius:50%;background:#fff"></span></span></div>
+          </div>
+        </div>
+        <dc-import name="RxTabBar" active="mas" hint-size="390px,86px"></dc-import>
+      </div></div>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;tema&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;oscuro&quot;,&quot;claro&quot;],&quot;default&quot;:&quot;oscuro&quot;,&quot;tsType&quot;:&quot;'oscuro'|'claro'&quot;}}">
+class Component extends DCLogic {
+  state = { theme:null };
+  sil(ty,tr,c){
+    const W=(x,r)=>`<circle cx="${x}" cy="62" r="${r||7}" fill="${c}"/>`; let s='';
+    if(ty==='loco'&&tr==='Vapor') s=`<rect x="34" y="26" width="104" height="26" rx="12" fill="${c}"/><rect x="48" y="12" width="10" height="16" rx="2" fill="${c}"/><rect x="132" y="14" width="36" height="40" rx="3" fill="${c}"/>`+W(68,10)+W(94,10)+W(120,10)+W(44,6)+W(156,6);
+    else if(ty==='loco') s=`<rect x="20" y="22" width="160" height="32" rx="5" fill="${c}"/>`+W(42)+W(60)+W(140)+W(158);
+    else if(ty==='coche') s=`<rect x="10" y="20" width="180" height="34" rx="4" fill="${c}"/>`+W(34)+W(52)+W(148)+W(166);
+    else s=`<rect x="34" y="30" width="132" height="24" rx="2" fill="${c}"/>`+W(62,8)+W(138,8);
+    return 'data:image/svg+xml,'+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 76">${s}</svg>`);
+  }
+  rodaje(code){ const g=[]; const re=/([A-F]o?|\d)('?)/g; let m; while((m=re.exec(code))){ const t=m[1]; const motor=/[A-F]/.test(t[0]); const n=motor?t.charCodeAt(0)-64:+t; g.push({bogie:m[2]?'var(--fg3)':'transparent',axles:Array.from({length:n},()=>({bg:motor?'var(--amb)':'transparent',bd:motor?'var(--amb)':'var(--fg3)'}))}); } return g; }
+  renderVals(){
+    const theme=this.state.theme||(this.props.tema==='claro'?'claro':'oscuro'); const silC=theme==='oscuro'?'#3A4049':'#C7C2B8';
+    const tag=sc=>{const v=sc==='N'?'var(--sc-n)':'var(--sc-h0)'; return {scC:v,scBg:`color-mix(in oklch, ${v} 13%, transparent)`,scBd:`color-mix(in oklch, ${v} 38%, transparent)`};};
+    const P=[['RENFE 333.014 «Talgo»','Roco 73845','H0','V',345,1,'loco','Diésel'],['Talgo III · Cafetería','Electrotren E3325','H0','IV',70,1,'coche'],['RENFE 1931 «Alco»','Electrotren E2610S','H0','IV',260,1,'loco','Diésel'],['RENFE 269.201','Mabar 81501','H0','IV',210,1,'loco','Eléctrica'],['RENFE 7702','Electrotren E3512','H0','III',175,0,'loco','Eléctrica'],['RENFE 141F-2111 «Mikado»','Mabar 81141','H0','III',240,1,'loco','Vapor'],['Tolva TT RENFE','Arnold HN6312','N','IV',24,0,'vagon'],['RENFE 333.020','Arnold HN2442','N','IV',170,1,'loco','Diésel']]
+      .map(([n,ref,sc,ep,val,ph,ty,tr])=>({n,ref,sc,ep,valT:val+' €',noPh:!ph,phBg:ph?'repeating-linear-gradient(135deg,var(--ph) 0 8px,var(--ph2) 8px 16px)':'var(--s2)',sil:this.sil(ty,tr,silC),...tag(sc)}));
+    const pal=on=>({bg:on?'var(--amb2)':'var(--s1)',bd:on?'var(--amb)':'var(--ln2)',c:on?'var(--ambtx)':'var(--fg2)'});
+    const trs=sel=>[['Vapor','icon-flame'],['Diésel','icon-fuel'],['Eléctrica','icon-zap'],['Híbrida / otra','icon-battery-charging']].map(([t,ic])=>({t,ic,...pal(t===sel)}));
+    return {theme,themeIcon:theme==='oscuro'?'icon-sun':'icon-moon',themeLabel:theme==='oscuro'?'Modo claro':'Modo oscuro',toggleTheme:()=>this.setState({theme:theme==='oscuro'?'claro':'oscuro'}),
+      obScales:[['H0','1:87 · 16,5 mm','--sc-h0',1],['N','1:160 · 9 mm','--sc-n',1],['TT','1:120 · 12 mm','--sc-h0',0],['Z','1:220 · 6,5 mm','--sc-h0',0],['0','1:43,5 · 32 mm','--sc-h0',0],['G','1:22,5 · 45 mm','--sc-h0',0]].map(([k,d,v,on])=>({k,d,c:on?`var(${v})`:'var(--fg)',bg:on?`color-mix(in oklch, var(${v}) 12%, var(--s1))`:'var(--s1)',bd:on?`var(${v})`:'var(--ln2)'})),
+      k:{val:'5.480 €',gain:'+6,6 %',buy:'5.142 €',n:39},
+      quick:[['Escanear','icon-scan-barcode'],['Foto IA','icon-sparkles'],['Ráfaga','icon-zap'],['Importar','icon-file-up']].map(([label,icon])=>({label,icon})),
+      items:P.slice(0,6), rows:P.map((p,i)=>({...p,swiped:i===1,x:i===1?'-168px':'0px'})),
+      bogies:[{ax:[1,2,3]},{ax:[1,2,3]}],
+      fx:[['F0','Luces'],['F1','Sonido'],['F2','Bocina larga'],['F3','Bocina corta'],['F4','Compresor'],['F5','Luz cabina'],['F6','Maniobras'],['F7','Freno']].map(([f,l])=>({f,l})),
+      addPaths:[['icon-search','Buscar en el catálogo','Escribe la referencia',0],['icon-scan-barcode','Escanear código','EAN de la caja',0],['icon-sparkles','Foto con IA','1–4 fotos y revisas',1],['icon-list-checks','Manual','Asistente por pasos',0]].map(([ic,t,d,pro],i)=>({ic,t,d,isPro:!!pro,bg:i===1?'var(--amb2)':'var(--s1)',bd:i===1?'var(--amb)':'var(--ln)'})),
+      iaPhotos:[0,1,2,3].map(i=>({add:i===3,bg:i<3?'repeating-linear-gradient(135deg,var(--ph) 0 6px,var(--ph2) 6px 12px)':'transparent',bd:i<3?'var(--ln2)':'var(--ln2)'})),
+      conf:[['Fabricante','Roco',96],['Modelo','RENFE 333.0 «Talgo»',84],['Escala','H0',98],['Compañía','RENFE',92],['Época','V',61]].map(([k,v,c])=>({k,v,c:c+' %',w:c+'%',col:c>=85?'var(--grn)':c>=70?'var(--amb)':'var(--red)',low:c<70})),
+      burst:[['Cisterna CAMPSA','9 €'],['Lote vías Roco Line','30 €'],['Locomotora sin caja','45 €'],['Coche 8000 RENFE','18 €']].map(([n,p])=>({n,p})),
+      altaTr:[{label:'Diésel · paso 2 · Tracción',trs:trs('Diésel'),rod:"Co'Co'",whyte:'C-C · 6 ejes motores',notL:'UIC / AAR',groups:this.rodaje("Co'Co'"),diesel:true,vapor:false},{label:'Vapor · paso 2 · Tracción',trs:trs('Vapor'),rod:"2'D1'",whyte:'4-8-2 Montaña',notL:'UIC / Whyte',groups:this.rodaje("2'D1'"),diesel:false,vapor:true}],
+      compTot:[['Longitud','999 mm'],['Piezas','6'],['Valor','681 €']].map(([k,v])=>({k,v})),
+      compVeh:[P[0],{...P[1]},{...P[1],n:'Coche 1.ª'},{...P[1],n:'Coche 2.ª'},{...P[1],n:'Furgón'}].map((p,i)=>({...p,w:i===0?'150px':'93px'})),
+      pre:[{n:'RENFE 333.3 «Faraona»',ref:'Roco 7300012',dep:'50 €',eta:'Feb 2027'},{n:'DB BR 78 · sonido',ref:'Märklin 39760',dep:'—',eta:'Abr 2027'}],
+      week:[['L','17',''],['M','18',''],['X','19','l'],['J','20',''],['V','21',''],['S','22',''],['D','23','t']].map(([w,d,e])=>({w,d,bg:e==='t'?'var(--amb)':'var(--s1)',fg:e==='t'?'#16191D':'var(--fg)',bd:e==='t'?'var(--amb)':'var(--ln)',dot:e==='l'?'var(--red)':'transparent'})),
+      mtasks:[['Cambio de escobillas','DB BR 103 245-7','Vencida',54,50,'var(--red)'],['Engrase de transmisión','DB BR 01 118','En 3 días',18.5,20,'var(--amb)'],['Limpieza de ruedas','RENFE 1931 «Alco»','2 dic',null,null,'var(--fg2)'],['Revisión del motor','DB BR 50 2988','5 dic',null,null,'var(--fg2)']].map(([t,p,due,u,m,c])=>({t,p,due,c,bd:c==='var(--red)'?'var(--red)':'var(--ln)',hasH:u!=null,h:u!=null?String(u).replace('.',',')+' / '+m+' h':'',w:u!=null?Math.min(100,u/m*100)+'%':'0%'})),
+      boxItems:[['RENFE 7702','Electrotren E3512','loco','Eléctrica'],['RENFE 319.026','Ibertren 2123','loco','Diésel'],['Tolva TT RENFE','Arnold HN6312','vagon'],['DB Eaos','Piko 40720','vagon']].map(([n,ref,ty,tr])=>({n,ref,sil:this.sil(ty,tr,silC)})),
+      addrs:[['101','DB BR 01 150','Zimo MX645 · sonido','N',0],['1032','DB BR 103 245-7','Roco (fábrica)','H0',1],['1032','DB BR 103 113-7','Fleischmann (fábrica)','N',1],['1462','DB BR 146 247-7','Piko SmartDecoder 4.1','H0',0],['1931','RENFE 1931 «Alco»','ESU LokSound 5 · sonido','H0',0],['2180','DB BR 218 133-7','Fleischmann (fábrica)','N',0],['3314','RENFE 333.014','ESU LokSound 5 · sonido','H0',1],['3314','RENFE 333.020','Arnold (fábrica)','N',1]].map(([a,n,d,sc,dup])=>({a,n,d,sc,...tag(sc),c:dup?'var(--red)':'var(--ambtx)',bg:dup?'var(--red2)':'transparent'})),
+      more:[['icon-train-front','Composiciones','3'],['icon-wrench','Mantenimiento','1 vencida'],['icon-warehouse','Ubicaciones','12'],['icon-cpu','Digital','14'],['icon-chart-line','Estadísticas',''],['icon-arrow-down-up','Importar / exportar',''],['icon-settings','Ajustes','']].map(([ic,t,v])=>({ic,t,v})),
+      proFeats:['Piezas y fotos ilimitadas','Reconocimiento por foto con IA','Valor de mercado y evolución','PDF para el seguro','Ubicaciones con etiquetas QR'].map(t=>({t}))};
+  }
+}
+</script>
+</body>
+</html>
