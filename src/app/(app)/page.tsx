@@ -22,6 +22,12 @@ export default async function InicioPage() {
       .limit(4),
     supabase.from("item_photos").select("item_id"),
   ]);
+  const { data: reservedWishes } = await supabase
+    .from("wishes")
+    .select("id, name, manufacturer, catalog_ref, expected_date")
+    .eq("status", "reservada")
+    .order("expected_date", { ascending: true, nullsFirst: false })
+    .limit(4);
   const photoCount = new Map<string, number>();
   (photoRows ?? []).forEach((p) => photoCount.set(p.item_id, (photoCount.get(p.item_id) ?? 0) + 1));
 
@@ -180,10 +186,23 @@ export default async function InicioPage() {
                   </ul>
                 )}
               </Card>
-              {preorders.length > 0 && (
+              {(preorders.length > 0 || (reservedWishes ?? []).length > 0) && (
                 <Card className="p-5">
-                  <SectionTitle>Preventas pendientes</SectionTitle>
+                  <SectionTitle aside={<Link href="/deseos" className="text-[15px] text-ambtx hover:underline">Ver todas</Link>}>
+                    Preventas pendientes
+                  </SectionTitle>
                   <ul className="mt-3 flex flex-col gap-3">
+                    {(reservedWishes ?? []).map((w) => (
+                      <li key={w.id}>
+                        <Link href="/deseos" className="block hover:text-ambtx">
+                          <p className="text-[15px] font-semibold">{w.name}</p>
+                          <p className="font-mono text-[13px] text-fg3">
+                            {[w.manufacturer, w.catalog_ref].filter(Boolean).join(" ")}
+                            {w.expected_date ? ` · llega ${shortDate(w.expected_date)}` : ""}
+                          </p>
+                        </Link>
+                      </li>
+                    ))}
                     {preorders.slice(0, 4).map((p) => (
                       <li key={p.id}>
                         <Link href={`/coleccion/${p.id}`} className="block hover:text-ambtx">

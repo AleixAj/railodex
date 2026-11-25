@@ -3,11 +3,7 @@ import { notFound } from "next/navigation";
 import { Card } from "@/components/ui";
 
 const SECTIONS: Record<string, { title: string; text: string }> = {
-  composiciones: { title: "Composiciones", text: "Agrupa una locomotora y sus coches en un tren completo, con longitud total y avisos de enganches o épocas que no casan." },
-  deseos: { title: "Deseos y preventas", text: "Piezas que quieres, con precio objetivo y prioridad. Una preventa pasará a tu colección con un botón." },
-  mantenimiento: { title: "Mantenimiento", text: "Calendario de engrases y limpiezas con recordatorios. De momento puedes apuntar el historial desde la ficha de cada pieza." },
   ubicaciones: { title: "Ubicaciones", text: "Vitrinas, estantes y cajas con etiquetas QR. De momento la ubicación se escribe en cada pieza." },
-  digital: { title: "Digital", text: "Todas tus direcciones digitales y decoders en una lista, con aviso de duplicados." },
   estadisticas: { title: "Estadísticas", text: "Evolución del valor, gasto por año y fabricante, y progreso de series." },
   importar: { title: "Importar y exportar", text: "Importar desde Excel/CSV con vista previa, y exportar a CSV o PDF para el seguro." },
   ajustes: { title: "Ajustes y perfil", text: "Idioma, moneda, privacidad y tu plan (Gratis o Pro)." },
