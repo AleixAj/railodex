@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useOptimistic, useRef, useState, useTransition } from "react";
+import { addTransitionType, useOptimistic, useRef, useState, useTransition } from "react";
 import { ChevronLeft, ChevronRight, Pencil, Plus, Trash2, X } from "lucide-react";
 import type { Kind } from "@/lib/catalog";
 import { PhotoBox, ScaleBadge, btn, field } from "@/components/ui";
+import { ListItemMotion } from "@/components/motion";
 import {
   addToComposition,
   deleteComposition,
@@ -104,6 +105,7 @@ export function Train({
     const [m] = next.splice(from, 1);
     next.splice(to, 0, m);
     start(async () => {
+      addTransitionType("reorder");
       setList(next);
       await reorderComposition(
         id,
@@ -120,59 +122,62 @@ export function Train({
         ) : (
           <ol className="flex min-w-max items-end gap-1.5" aria-label="Orden del tren, de cabeza a cola">
             {list.map((m, i) => (
-              <li key={m.id} className="w-[180px] flex-none">
-                <Link
-                  href={`/coleccion/${m.id}`}
-                  className="block overflow-hidden rounded-lg border border-ln hover:border-ln2"
-                >
-                  <div className="relative aspect-[16/9]">
-                    <PhotoBox src={m.cover} alt={m.name} kind={m.kind} />
-                    <span className="absolute left-1.5 top-1.5 rounded bg-bg/80 px-1.5 font-mono text-[12px]">
-                      {i + 1}
-                    </span>
-                    {m.sold && (
-                      <span className="absolute right-1.5 top-1.5 rounded bg-red2 px-1.5 text-[12px] text-red">
-                        Vendida
+              <ListItemMotion key={m.id} type="reorder">
+                <li className="w-[180px] flex-none">
+                  <Link
+                    href={`/coleccion/${m.id}`}
+                    className="block overflow-hidden rounded-lg border border-ln hover:border-ln2"
+                  >
+                    <div className="relative aspect-[16/9]">
+                      <PhotoBox src={m.cover} alt={m.name} kind={m.kind} />
+                      <span className="absolute left-1.5 top-1.5 rounded bg-bg/80 px-1.5 font-mono text-[12px]">
+                        {i + 1}
                       </span>
-                    )}
+                      {m.sold && (
+                        <span className="absolute right-1.5 top-1.5 rounded bg-red2 px-1.5 text-[12px] text-red">
+                          Vendida
+                        </span>
+                      )}
+                    </div>
+                  </Link>
+                  <p className="mt-1.5 truncate text-[15px] font-semibold">{m.name}</p>
+                  <p className="flex items-center gap-1.5 truncate font-mono text-[12px] text-fg3">
+                    <ScaleBadge scale={m.scale} /> {m.ref}
+                  </p>
+                  <div className="mt-1.5 flex gap-1">
+                    <button
+                      onClick={() => move(i, i - 1)}
+                      disabled={i === 0 || pending}
+                      aria-label={`Mover ${m.name} hacia la cabeza`}
+                      className="flex h-9 flex-1 items-center justify-center rounded-md border border-ln2 text-fg2 hover:text-fg disabled:opacity-30"
+                    >
+                      <ChevronLeft className="h-4 w-4" />
+                    </button>
+                    <button
+                      onClick={() => move(i, i + 1)}
+                      disabled={i === list.length - 1 || pending}
+                      aria-label={`Mover ${m.name} hacia la cola`}
+                      className="flex h-9 flex-1 items-center justify-center rounded-md border border-ln2 text-fg2 hover:text-fg disabled:opacity-30"
+                    >
+                      <ChevronRight className="h-4 w-4" />
+                    </button>
+                    <button
+                      onClick={() =>
+                        start(async () => {
+                          addTransitionType("reorder");
+                          setList(list.filter((x) => x.id !== m.id));
+                          await removeFromComposition(id, m.id);
+                        })
+                      }
+                      disabled={pending}
+                      aria-label={`Quitar ${m.name} del tren`}
+                      className="flex h-9 w-9 items-center justify-center rounded-md border border-ln2 text-fg3 hover:text-red"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
                   </div>
-                </Link>
-                <p className="mt-1.5 truncate text-[15px] font-semibold">{m.name}</p>
-                <p className="flex items-center gap-1.5 truncate font-mono text-[12px] text-fg3">
-                  <ScaleBadge scale={m.scale} /> {m.ref}
-                </p>
-                <div className="mt-1.5 flex gap-1">
-                  <button
-                    onClick={() => move(i, i - 1)}
-                    disabled={i === 0 || pending}
-                    aria-label={`Mover ${m.name} hacia la cabeza`}
-                    className="flex h-9 flex-1 items-center justify-center rounded-md border border-ln2 text-fg2 hover:text-fg disabled:opacity-30"
-                  >
-                    <ChevronLeft className="h-4 w-4" />
-                  </button>
-                  <button
-                    onClick={() => move(i, i + 1)}
-                    disabled={i === list.length - 1 || pending}
-                    aria-label={`Mover ${m.name} hacia la cola`}
-                    className="flex h-9 flex-1 items-center justify-center rounded-md border border-ln2 text-fg2 hover:text-fg disabled:opacity-30"
-                  >
-                    <ChevronRight className="h-4 w-4" />
-                  </button>
-                  <button
-                    onClick={() =>
-                      start(async () => {
-                        setList(list.filter((x) => x.id !== m.id));
-                        await removeFromComposition(id, m.id);
-                      })
-                    }
-                    disabled={pending}
-                    aria-label={`Quitar ${m.name} del tren`}
-                    className="flex h-9 w-9 items-center justify-center rounded-md border border-ln2 text-fg3 hover:text-red"
-                  >
-                    <X className="h-4 w-4" />
-                  </button>
-                </div>
-              </li>
+                </li>
+              </ListItemMotion>
             ))}
           </ol>
         )}
@@ -186,6 +191,7 @@ export function Train({
         className="flex flex-col gap-2 sm:flex-row"
         action={() =>
           start(async () => {
+            addTransitionType("reorder");
             await addToComposition(id, toAdd);
             setToAdd("");
           })

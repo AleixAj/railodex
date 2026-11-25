@@ -6,6 +6,7 @@ import { KINDS, TRACTIONS, labelOf } from "@/lib/catalog";
 import { money } from "@/lib/format";
 import type { Item } from "@/lib/types";
 import { Card, EmptyState, PhotoBox, ScaleBadge, Tag } from "@/components/ui";
+import { ListItemMotion } from "@/components/motion";
 import { FilterBar } from "./filter-bar";
 
 export const metadata: Metadata = { title: "Mi colección" };
@@ -109,39 +110,40 @@ function GridView({ items, covers }: { items: Item[]; covers: Record<string, str
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
       {items.map((i) => (
-        <Link
-          key={i.id}
-          href={`/coleccion/${i.id}`}
-          className="lazy-card group overflow-hidden rounded-xl border border-ln bg-s1 transition hover:border-ln2"
-        >
-          <div className="relative aspect-[4/3] border-b border-ln">
-            <PhotoBox src={covers[i.id]} alt={i.name} kind={i.kind} />
-            {!covers[i.id] && (
-              <span className="absolute bottom-3 left-3 font-mono text-[12px] tracking-[0.06em] text-fg3">
-                SIN FOTO
-              </span>
-            )}
-            {i.status !== "coleccion" && (
-              <span className="absolute right-3 top-3">
-                <Tag tone="amb">
-                  {i.status === "preventa" ? "Preventa" : i.status === "prestada" ? "Prestada" : "Vendida"}
-                </Tag>
-              </span>
-            )}
-          </div>
-          <div className="p-4">
-            <div className="flex items-center gap-1.5">
-              <ScaleBadge scale={i.scale} />
-              {i.epoch && <Tag>Ép. {i.epoch}</Tag>}
-              {i.system === "digital" && <Tag>{i.details?.protocol ?? "Digital"}</Tag>}
-              <span className="ml-auto font-semibold">{money(i.estimated_value ?? i.purchase_price)}</span>
+        <ListItemMotion key={i.id} type="filter">
+          <Link
+            href={`/coleccion/${i.id}`}
+            className="lazy-card press zoom-on-hover group block overflow-hidden rounded-xl border border-ln bg-s1 hover:border-ln2"
+          >
+            <div className="relative aspect-[4/3] border-b border-ln">
+              <PhotoBox src={covers[i.id]} alt={i.name} kind={i.kind} />
+              {!covers[i.id] && (
+                <span className="absolute bottom-3 left-3 font-mono text-[12px] tracking-[0.06em] text-fg3">
+                  SIN FOTO
+                </span>
+              )}
+              {i.status !== "coleccion" && (
+                <span className="absolute right-3 top-3">
+                  <Tag tone="amb">
+                    {i.status === "preventa" ? "Preventa" : i.status === "prestada" ? "Prestada" : "Vendida"}
+                  </Tag>
+                </span>
+              )}
             </div>
-            <p className="mt-2.5 truncate text-[18px] font-semibold group-hover:text-ambtx">{i.name}</p>
-            <p className="truncate font-mono text-[14px] text-fg3">
-              {[i.manufacturer, i.catalog_ref].filter(Boolean).join(" ")}
-            </p>
-          </div>
-        </Link>
+            <div className="p-4">
+              <div className="flex items-center gap-1.5">
+                <ScaleBadge scale={i.scale} />
+                {i.epoch && <Tag>Ép. {i.epoch}</Tag>}
+                {i.system === "digital" && <Tag>{i.details?.protocol ?? "Digital"}</Tag>}
+                <span className="ml-auto font-semibold">{money(i.estimated_value ?? i.purchase_price)}</span>
+              </div>
+              <p className="mt-2.5 truncate text-[18px] font-semibold group-hover:text-ambtx">{i.name}</p>
+              <p className="truncate font-mono text-[14px] text-fg3">
+                {[i.manufacturer, i.catalog_ref].filter(Boolean).join(" ")}
+              </p>
+            </div>
+          </Link>
+        </ListItemMotion>
       ))}
     </div>
   );

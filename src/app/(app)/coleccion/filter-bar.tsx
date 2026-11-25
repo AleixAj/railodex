@@ -19,7 +19,10 @@ export function FilterBar({ manufacturers, railways }: { manufacturers: string[]
     const next = new URLSearchParams(window.location.search);
     if (value) next.set(key, value);
     else next.delete(key);
-    startTransition(() => router.replace(`${pathname}?${next.toString()}`, { scroll: false }));
+    // Tagged "filter" so the cards slide to their new places (see ListItemMotion).
+    startTransition(() =>
+      router.replace(`${pathname}?${next.toString()}`, { scroll: false, transitionTypes: ["filter"] }),
+    );
   };
 
   // Search as you type, but wait until they stop for a moment so each letter isn't a request.
@@ -108,7 +111,11 @@ export function FilterBar({ manufacturers, railways }: { manufacturers: string[]
             onClick={() => {
               setText("");
               clearTimeout(timer.current);
-              startTransition(() => router.replace(`${pathname}${view !== "cuadricula" ? `?vista=${view}` : ""}`));
+              startTransition(() =>
+                router.replace(`${pathname}${view !== "cuadricula" ? `?vista=${view}` : ""}`, {
+                  transitionTypes: ["filter"],
+                }),
+              );
             }}
             className="inline-flex h-11 items-center gap-1.5 rounded-[10px] px-3 text-[15px] text-ambtx hover:bg-s2"
           >

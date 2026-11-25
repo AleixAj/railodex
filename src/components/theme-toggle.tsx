@@ -33,9 +33,28 @@ export function ThemeToggle({
   );
   const next: Theme = theme === "oscuro" ? "claro" : "oscuro";
 
-  const toggle = () => {
-    document.documentElement.dataset.theme = next;
-    document.cookie = `theme=${next}; path=/; max-age=31536000; samesite=lax`;
+  const toggle = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const html = document.documentElement;
+    const apply = () => {
+      html.dataset.theme = next;
+      document.cookie = `theme=${next}; path=/; max-age=31536000; samesite=lax`;
+    };
+
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!document.startViewTransition || reduced) {
+      apply();
+      return;
+    }
+
+    // The new theme grows as a circle from the button (see .theme-switching in globals.css).
+    const box = event.currentTarget.getBoundingClientRect();
+    const x = box.left + box.width / 2;
+    const y = box.top + box.height / 2;
+    html.style.setProperty("--reveal-x", `${x}px`);
+    html.style.setProperty("--reveal-y", `${y}px`);
+    html.style.setProperty("--reveal-r", `${Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y))}px`);
+    html.classList.add("theme-switching");
+    document.startViewTransition(apply).finished.finally(() => html.classList.remove("theme-switching"));
   };
 
   const Icon = theme === "oscuro" ? Sun : Moon;
