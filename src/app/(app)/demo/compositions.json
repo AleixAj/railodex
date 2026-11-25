@@ -1,0 +1,23 @@
+[
+  {
+    "name": "Catalán Talgo",
+    "notes": "La 333 al frente del Talgo III de Barcelona a Ginebra, como a finales de los 70.",
+    "pieces": ["RENFE 333.083", "Talgo III RD «Catalán Talgo» (8 coches)"]
+  },
+  {
+    "name": "Mercancías de vapor",
+    "notes": "La Mikado con un vagón J, época III.",
+    "pieces": ["RENFE 141F-2332 «Mikado»", "Vagón cerrado J RENFE"]
+  },
+  {
+    "name": "Mercancías por Europa",
+    "notes": "Vagones de varias épocas tirados por la 319: la app avisa de la mezcla.",
+    "pieces": [
+      "RENFE 319.319",
+      "Bordes altos Eaos DB AG",
+      "Portacontenedores Sgnss HUPAC",
+      "Cisterna VTG DB",
+      "Frigorífico Interfrigo FS"
+    ]
+  }
+]

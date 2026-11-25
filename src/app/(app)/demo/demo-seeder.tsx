@@ -8,7 +8,7 @@ import { createClient } from "@/lib/supabase/client";
 import { syncPhotos } from "@/components/item-wizard/photos";
 import { btn, Card } from "@/components/ui";
 import type { DemoPiece } from "./page";
-import { deleteDemoWishes, deletePieces, seedWishes } from "./actions";
+import { deleteDemoCompositions, deleteDemoWishes, deletePieces, seedCompositions, seedWishes } from "./actions";
 
 type Status = "pending" | "working" | "done" | "skipped" | "failed";
 
@@ -19,12 +19,12 @@ export function DemoSeeder({
   userId,
   pieces,
   existing,
-  wishesLoaded,
+  extrasLoaded,
 }: {
   userId: string;
   pieces: DemoPiece[];
   existing: { id: string; name: string }[];
-  wishesLoaded: number;
+  extrasLoaded: number;
 }) {
   const router = useRouter();
   const [status, setStatus] = useState<Record<string, Status>>({});
@@ -54,7 +54,7 @@ export function DemoSeeder({
           setStatus((s) => ({ ...s, [piece.slug]: "failed" }));
         }
       }
-      await seedWishes();
+      await Promise.all([seedWishes(), seedCompositions()]);
       router.refresh();
     });
 
@@ -67,7 +67,7 @@ export function DemoSeeder({
   // Handy after changing the photos or the data in pieces.json: clear it, then load again.
   const clearDemo = () =>
     start(async () => {
-      await Promise.all([deletePieces(loaded.map((i) => i.id)), deleteDemoWishes()]);
+      await Promise.all([deletePieces(loaded.map((i) => i.id)), deleteDemoWishes(), deleteDemoCompositions()]);
       setStatus({});
       router.refresh();
     });
@@ -78,7 +78,7 @@ export function DemoSeeder({
         <button onClick={load} disabled={running} className={btn.primary}>
           <Sparkles className="h-[18px] w-[18px]" /> {running ? "Cargando…" : "Cargar colección de ejemplo"}
         </button>
-        {(loaded.length > 0 || wishesLoaded > 0) && (
+        {(loaded.length > 0 || extrasLoaded > 0) && (
           <button onClick={clearDemo} disabled={running} className={btn.secondary}>
             <RotateCcw className="h-[18px] w-[18px]" /> Quitar la colección de ejemplo
           </button>

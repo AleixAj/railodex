@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { requireUser } from "@/lib/supabase/server";
 import { PHOTO_BUCKET, storageFiles } from "@/lib/photos";
 import wishes from "./wishes.json";
+import compositions from "./compositions.json";
 
 /** Deletes several pieces (with their photos) in one go, without leaving the page. */
 export async function deletePieces(ids: string[]) {
@@ -35,6 +36,45 @@ export async function deleteDemoWishes() {
     .in(
       "name",
       wishes.map((w) => w.name),
+    );
+  revalidatePath("/", "layout");
+}
+
+/** Builds the example trains from the demo pieces already in the collection. */
+export async function seedCompositions() {
+  if (process.env.NODE_ENV === "production") return;
+  const { supabase } = await requireUser();
+  const [{ data: items }, { data: existing }] = await Promise.all([
+    supabase.from("items").select("id, name"),
+    supabase.from("compositions").select("name"),
+  ]);
+  const idByName = new Map((items ?? []).map((i) => [i.name, i.id]));
+  const have = new Set((existing ?? []).map((c) => c.name));
+  for (const comp of compositions) {
+    const ids = comp.pieces.map((n) => idByName.get(n)).filter((id): id is string => !!id);
+    if (have.has(comp.name) || ids.length === 0) continue;
+    const { data } = await supabase
+      .from("compositions")
+      .insert({ name: comp.name, notes: comp.notes })
+      .select("id")
+      .single();
+    if (!data) continue;
+    await supabase
+      .from("composition_items")
+      .insert(ids.map((item_id, position) => ({ composition_id: data.id, item_id, position })));
+  }
+  revalidatePath("/", "layout");
+}
+
+export async function deleteDemoCompositions() {
+  if (process.env.NODE_ENV === "production") return;
+  const { supabase } = await requireUser();
+  await supabase
+    .from("compositions")
+    .delete()
+    .in(
+      "name",
+      compositions.map((c) => c.name),
     );
   revalidatePath("/", "layout");
 }

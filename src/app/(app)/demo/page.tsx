@@ -5,6 +5,7 @@ import type { ItemPayload } from "@/app/(app)/anadir/actions";
 import { DemoSeeder } from "./demo-seeder";
 import pieces from "./pieces.json";
 import wishes from "./wishes.json";
+import compositions from "./compositions.json";
 
 export const metadata: Metadata = { title: "Colección de ejemplo" };
 
@@ -16,11 +17,12 @@ export type DemoPiece = { slug: string; item: ItemPayload };
 export default async function DemoPage() {
   if (process.env.NODE_ENV === "production") notFound();
   const { supabase, userId } = await requireUser();
-  const [{ data }, { data: wishRows }] = await Promise.all([
+  const [{ data }, { data: wishRows }, { data: compRows }] = await Promise.all([
     supabase.from("items").select("id, name"),
     supabase.from("wishes").select("name"),
+    supabase.from("compositions").select("name"),
   ]);
-  const demoWishes = new Set(wishes.map((w) => w.name));
+  const demoExtras = new Set([...wishes.map((w) => w.name), ...compositions.map((c) => c.name)]);
 
   return (
     <div className="flex max-w-3xl flex-col gap-5">
@@ -31,15 +33,15 @@ export default async function DemoPage() {
           Carga {pieces.length} piezas con fotos reales de Wikimedia Commons para ver la app como quedaría con una
           colección real. Las fotos son de los trenes y accesorios de verdad (el autor está en las notas de cada pieza).
           Las referencias son de modelos que existen; los precios, fechas y ubicaciones son de ejemplo. También añade{" "}
-          {wishes.filter((w) => w.status === "reservada").length} preventas y{" "}
-          {wishes.filter((w) => w.status === "deseo").length} deseos.
+          {wishes.filter((w) => w.status === "reservada").length} preventas,{" "}
+          {wishes.filter((w) => w.status === "deseo").length} deseos y {compositions.length} composiciones.
         </p>
       </div>
       <DemoSeeder
         userId={userId}
         pieces={pieces as unknown as DemoPiece[]}
         existing={(data ?? []).map((i) => ({ id: i.id, name: i.name }))}
-        wishesLoaded={(wishRows ?? []).filter((w) => demoWishes.has(w.name)).length}
+        extrasLoaded={[...(wishRows ?? []), ...(compRows ?? [])].filter((r) => demoExtras.has(r.name)).length}
       />
     </div>
   );
