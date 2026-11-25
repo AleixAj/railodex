@@ -51,7 +51,7 @@ export async function removeFromComposition(id: string, itemId: string) {
   revalidatePath(`/composiciones/${id}`);
 }
 
-/** Guarda el orden completo de la composición (lista de ids de pieza de cabeza a cola). */
+/** Saves the whole order at once: item ids from the front of the train to the back. */
 export async function reorderComposition(id: string, itemIds: string[]) {
   const { supabase } = await requireUser();
   await Promise.all(

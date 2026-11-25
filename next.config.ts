@@ -1,8 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Desactivado: casi todas las pantallas dependen del usuario con sesión, así que se
-  // renderizan en cada petición. Se puede activar más adelante para páginas públicas.
+  // Off for now: almost every page depends on the logged-in user and renders per request.
+  // Worth turning on once there are public pages.
   cacheComponents: false,
   turbopack: {
     rules: {

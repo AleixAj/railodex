@@ -27,7 +27,7 @@ export default async function ColeccionPage({ searchParams }: PageProps<"/colecc
     .from("items")
     .select("id, kind, traction, system, name, manufacturer, catalog_ref, scale, epoch, railway, road_number, dcc_address, status, purchase_price, estimated_value, location, details");
 
-  // Quitamos los caracteres que tienen significado en los filtros de PostgREST.
+  // Strip characters that mean something inside a PostgREST filter.
   const q = get("q").replace(/[%,()"\\*]/g, " ").trim();
   if (q) {
     const like = `"%${q}%"`;

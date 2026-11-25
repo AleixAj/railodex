@@ -68,7 +68,7 @@ export async function deleteWish(id: string) {
   revalidatePath("/deseos");
 }
 
-/** La pieza ha llegado: crea la ficha en la colección con lo que ya sabemos y abre la edición para completarla. */
+/** The piece has arrived: create it in the collection with what we know, then open the editor to fill in the rest. */
 export async function wishToCollection(id: string) {
   const { supabase } = await requireUser();
   const { data: w } = await supabase.from("wishes").select("*").eq("id", id).maybeSingle();

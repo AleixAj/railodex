@@ -1,4 +1,4 @@
-// Listas de opciones de la app. Si hace falta un fabricante o rodaje nuevo, se añade aquí.
+// Every list of options used in the app. New makers, wheel arrangements etc. go here.
 
 export const KINDS = [
   { id: "locomotora", label: "Locomotora", hint: "Vapor, diésel, eléctrica", icon: "TrainFront" },
@@ -17,7 +17,7 @@ export const TRACTIONS = [
 ] as const;
 export type Traction = (typeof TRACTIONS)[number]["id"];
 
-/** Rodajes en notación UIC, con su equivalencia (Whyte para vapor, AAR para el resto). */
+/** UIC wheel arrangements, with the Whyte (steam) or AAR (diesel/electric) equivalent. */
 export const WHEEL_ARRANGEMENTS: Record<Traction, { uic: string; alt?: string }[]> = {
   vapor: [
     { uic: "B", alt: "0-4-0" },

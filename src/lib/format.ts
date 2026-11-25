@@ -16,7 +16,7 @@ export function longToday() {
   return new Intl.DateTimeFormat("es-ES", { weekday: "long", day: "numeric", month: "long" }).format(new Date());
 }
 
-/** Porcentaje de campos útiles rellenos, para el indicador "ficha completa". */
+/** Rough percentage of useful fields filled in, for the completeness bar. */
 export function completeness(item: {
   catalog_ref: string | null;
   epoch: string | null;

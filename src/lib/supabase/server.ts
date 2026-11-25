@@ -3,7 +3,7 @@ import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-/** Cliente de Supabase para el servidor. Se crea uno nuevo en cada petición. */
+/** Supabase client for the server. Make a new one per request. */
 export async function createClient() {
   const cookieStore = await cookies();
 
@@ -19,8 +19,7 @@ export async function createClient() {
           try {
             cookiesToSet.forEach(({ name, value, options }) => cookieStore.set(name, value, options));
           } catch {
-            // Desde un Server Component no se pueden escribir cookies;
-            // el proxy ya se encarga de refrescar la sesión.
+            // Server Components can't set cookies. That's fine, the proxy refreshes the session.
           }
         },
       },
@@ -28,7 +27,7 @@ export async function createClient() {
   );
 }
 
-/** Devuelve el cliente y el usuario verificado, o manda al login si no hay sesión. */
+/** Gets the client plus the verified user, or redirects to /login. */
 export async function requireUser() {
   const supabase = await createClient();
   const { data } = await supabase.auth.getClaims();

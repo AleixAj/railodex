@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* Tokens sacados del sistema de diseño de Claude Design (design/Railodex Sistema de diseno.dc.html) */
+/* Colour tokens taken from the Claude Design system (design/Railodex Sistema de diseno.dc.html) */
 :root,
 [data-theme="oscuro"] {
   color-scheme: dark;
@@ -98,12 +98,12 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Fondo rayado para huecos de foto, como en las maquetas */
+/* Striped background for missing photos, same as the mockups */
 .photo-placeholder {
   background: repeating-linear-gradient(135deg, var(--ph) 0 10px, var(--ph2) 10px 20px);
 }
 
-/* Línea tipo regla/carril bajo la cabecera */
+/* Ruler/track line under the header */
 .rail-rule {
   background-image: repeating-linear-gradient(90deg, var(--ln) 0 1px, transparent 1px 8px);
   height: 5px;

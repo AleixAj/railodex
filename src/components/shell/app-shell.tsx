@@ -19,7 +19,7 @@ export function AppShell({
   userLabel: string;
 }) {
   const [open, setOpen] = useState(false);
-  // En el asistente el botón flotante tapaba «Siguiente» en el móvil.
+  // On phones the floating button covered the wizard's Next button.
   const pathname = usePathname();
   const inWizard = pathname === "/anadir" || pathname.endsWith("/editar");
 

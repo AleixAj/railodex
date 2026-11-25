@@ -1,6 +1,7 @@
 /**
- * Dibuja un rodaje en notación UIC: letras = ejes motores (A=1, B=2…), números = ejes portantes,
- * «'» = bogie. Ej.: Co'Co' → dos bogies de 3 ejes motores; 2'D1' → bogie de 2, 4 motores, 1 portante.
+ * Draws a UIC wheel arrangement. Letters are driven axles (A=1, B=2...), digits are carrying
+ * axles and ' marks a bogie. Co'Co' is two 3-axle powered bogies; 2'D1' is a 2-axle bogie,
+ * 4 driven axles and 1 trailing axle.
  */
 export function WheelDiagram({ uic }: { uic: string }) {
   const tokens = [...uic.replace(/\s*\+.*$/, "").matchAll(/(\d|[A-E])(o)?(')?/g)].map((m) => {

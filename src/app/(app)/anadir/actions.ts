@@ -102,7 +102,7 @@ export async function saveItem(payload: ItemPayload, itemId?: string): Promise<{
   return { id: res.data.id };
 }
 
-/** Quita valores vacíos para no guardar basura en el jsonb. */
+// Drop empty values so the jsonb column doesn't fill up with blanks.
 function cleanDetails(d: ItemDetails): ItemDetails {
   const out: Record<string, unknown> = {};
   for (const [k, v] of Object.entries(d ?? {})) {

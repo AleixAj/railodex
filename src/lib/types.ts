@@ -1,8 +1,8 @@
 import type { Kind, Traction } from "./catalog";
 
-/** Datos que cambian según el tipo de pieza. Se guardan en items.details (jsonb). */
+/** Fields that depend on the kind of piece. Stored in items.details (jsonb). */
 export type ItemDetails = {
-  // Tracción
+  // Traction
   wheelArrangement?: string;
   tender?: boolean;
   smokeGenerator?: boolean;
@@ -22,19 +22,19 @@ export type ItemDetails = {
   railcom?: boolean;
   firmware?: string;
   functions?: { key: string; label: string }[];
-  // Analógico
+  // Analogue
   current?: "dc" | "ac";
   digitalReady?: boolean;
   interface?: string;
   directionalLights?: boolean;
-  // Identificación
+  // Identification
   livery?: string;
   modelYear?: number;
   ean?: string;
   lengthMm?: number;
   limitedEdition?: string;
   coupler?: string;
-  // Compra
+  // Purchase
   origin?: string;
   seller?: string;
   hasBox?: boolean;

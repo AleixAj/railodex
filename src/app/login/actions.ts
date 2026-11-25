@@ -41,7 +41,7 @@ export async function authenticate(prev: AuthState, formData: FormData): Promise
   });
   if (error) return { mode, error: MESSAGES[error.code ?? ""] ?? "No se ha podido crear la cuenta." };
 
-  // Si el proyecto no pide confirmar el email, ya hay sesión.
+  // If email confirmation is turned off in Supabase we already have a session.
   if (data.session) redirect("/");
   return { mode: "entrar", info: "Cuenta creada. Te hemos enviado un email para confirmarla." };
 }

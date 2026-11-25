@@ -1,11 +1,11 @@
--- Railodex: colección de piezas, fotos e historial de mantenimiento.
--- Cada usuario solo puede ver y tocar sus propias filas (RLS).
+-- Railodex: collection items, photos and maintenance history.
+-- Every user can only see and change their own rows (RLS).
 
 -- ─────────────────────────────────────────────────────────────
--- Piezas
--- Las columnas por las que se filtra u ordena van como columnas.
--- Los datos que dependen del tipo (rodaje, decoder, funciones…)
--- van en `details` (jsonb) para poder añadir campos sin migrar.
+-- Items
+-- Anything we filter or sort by is a real column. Fields that depend on
+-- the kind of piece (wheel arrangement, decoder, functions...) live in
+-- `details` so new ones can be added without a migration.
 -- ─────────────────────────────────────────────────────────────
 create table public.items (
   id              uuid primary key default gen_random_uuid(),
@@ -43,8 +43,8 @@ create index items_user_created_idx on public.items (user_id, created_at desc);
 create index items_user_address_idx on public.items (user_id, dcc_address) where dcc_address is not null;
 
 -- ─────────────────────────────────────────────────────────────
--- Fotos (los archivos viven en Storage, bucket `item-photos`,
--- dentro de una carpeta con el id del usuario)
+-- Photos. The files live in Storage (bucket `item-photos`),
+-- inside a folder named after the user id.
 -- ─────────────────────────────────────────────────────────────
 create table public.item_photos (
   id         uuid primary key default gen_random_uuid(),
@@ -59,7 +59,7 @@ create index item_photos_item_idx on public.item_photos (item_id, position);
 create index item_photos_user_idx on public.item_photos (user_id);
 
 -- ─────────────────────────────────────────────────────────────
--- Historial (mantenimiento, reparaciones, cambios de ubicación…)
+-- History: maintenance, repairs, moves...
 -- ─────────────────────────────────────────────────────────────
 create table public.item_events (
   id         uuid primary key default gen_random_uuid(),
@@ -77,7 +77,7 @@ create index item_events_item_idx on public.item_events (item_id, happened_on de
 create index item_events_user_idx on public.item_events (user_id);
 
 -- ─────────────────────────────────────────────────────────────
--- updated_at automático
+-- Keep updated_at current
 -- ─────────────────────────────────────────────────────────────
 create function public.set_updated_at()
 returns trigger
@@ -96,9 +96,9 @@ before update on public.items
 for each row execute function public.set_updated_at();
 
 -- ─────────────────────────────────────────────────────────────
--- Acceso: solo usuarios con sesión, y solo a sus filas.
--- Desde oct 2026 las tablas nuevas no se exponen solas a la API,
--- así que damos los permisos a mano (y nada a `anon`).
+-- Access: logged-in users only, and only their own rows.
+-- Since Oct 2026 new tables aren't exposed to the Data API by default,
+-- so grants are explicit (and `anon` gets nothing).
 -- ─────────────────────────────────────────────────────────────
 grant select, insert, update, delete on public.items       to authenticated, service_role;
 grant select, insert, update, delete on public.item_photos to authenticated, service_role;
@@ -117,7 +117,7 @@ create policy "items: editar las mías" on public.items
 create policy "items: borrar las mías" on public.items
   for delete to authenticated using ((select auth.uid()) = user_id);
 
--- Fotos y eventos: además de ser míos, la pieza a la que apuntan también tiene que ser mía.
+-- Photos and events: the item they point to has to be yours too.
 create policy "fotos: ver las mías" on public.item_photos
   for select to authenticated using ((select auth.uid()) = user_id);
 create policy "fotos: crear las mías" on public.item_photos
@@ -149,8 +149,8 @@ create policy "eventos: borrar los míos" on public.item_events
   for delete to authenticated using ((select auth.uid()) = user_id);
 
 -- ─────────────────────────────────────────────────────────────
--- Storage: bucket privado para fotos, 5 MB por archivo, solo imágenes.
--- Cada usuario solo accede a la carpeta con su id: <user_id>/<item_id>/<archivo>
+-- Storage: private photo bucket, 5 MB per file, images only.
+-- Users can only touch their own folder: <user_id>/<item_id>/<file>
 -- ─────────────────────────────────────────────────────────────
 insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
 values ('item-photos', 'item-photos', false, 5242880, array['image/jpeg', 'image/png', 'image/webp', 'image/avif'])

@@ -3,7 +3,7 @@ import { NextResponse, type NextRequest } from "next/server";
 
 const PUBLIC_PATHS = ["/login", "/auth"];
 
-/** Refresca la sesión en cada petición y manda al login a quien no la tenga. */
+/** Refreshes the session on every request and sends logged-out users to /login. */
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });
 
@@ -27,7 +27,7 @@ export async function updateSession(request: NextRequest) {
     },
   );
 
-  // No meter código entre createServerClient y getClaims: puede cerrar sesiones al azar.
+  // Don't put anything between createServerClient and getClaims, or sessions can drop randomly.
   const { data } = await supabase.auth.getClaims();
   const signedIn = Boolean(data?.claims?.sub);
   const { pathname } = request.nextUrl;

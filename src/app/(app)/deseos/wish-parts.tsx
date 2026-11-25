@@ -178,7 +178,7 @@ export function WishActions({ wish }: { wish: Wish }) {
   );
 }
 
-/** Copia la lista al portapapeles, para llevarla a una feria o mandarla por mensaje. */
+/** Copies the list as plain text, handy for a swap meet or to send to someone. */
 export function CopyListButton({ text }: { text: string }) {
   const [done, setDone] = useState(false);
   return (

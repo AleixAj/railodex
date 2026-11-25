@@ -1,4 +1,4 @@
-/** Reduce la foto a 1600 px de lado como mucho y la pasa a WebP, para ahorrar espacio (el plan gratis tiene 1 GB). */
+/** Shrinks the photo to 1600px on the long side and converts it to WebP. Supabase's free plan only has 1 GB. */
 export async function compressImage(file: File, maxSide = 1600, quality = 0.82): Promise<Blob> {
   const bitmap = await createImageBitmap(file);
   const scale = Math.min(1, maxSide / Math.max(bitmap.width, bitmap.height));

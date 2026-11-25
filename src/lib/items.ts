@@ -4,7 +4,7 @@ import type { ItemPhoto } from "./types";
 
 export const PHOTO_BUCKET = "item-photos";
 
-/** Devuelve { item_id: url de la foto de portada } con URLs firmadas válidas 1 hora. */
+/** Returns { itemId: cover photo url }. Signed URLs, valid for an hour. */
 export async function coverUrls(supabase: SupabaseClient, itemIds: string[]) {
   if (itemIds.length === 0) return {} as Record<string, string>;
   const { data: photos } = await supabase

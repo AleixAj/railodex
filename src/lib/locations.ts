@@ -1,4 +1,4 @@
-/** Las ubicaciones se escriben como ruta: «Salón › Vitrina 1 › Estante 2». Aquí se convierten en árbol. */
+// Locations are typed as a path, e.g. "Salón › Vitrina 1 › Estante 2". This turns them into a tree.
 
 export const SEP = "›";
 
@@ -48,7 +48,7 @@ export function flatten(nodes: LocationNode[]): LocationNode[] {
   return nodes.flatMap((n) => [n, ...flatten(n.children)]);
 }
 
-/** ¿La ubicación de la pieza está dentro de `path` (o es la misma)? */
+/** True if `location` is `path` or somewhere inside it. */
 export function isInside(location: string | null, path: string) {
   const a = splitLocation(location).map((p) => p.toLowerCase());
   const b = splitLocation(path).map((p) => p.toLowerCase());

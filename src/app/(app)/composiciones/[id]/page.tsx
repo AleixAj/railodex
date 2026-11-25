@@ -51,13 +51,12 @@ export default async function ComposicionPage({ params }: PageProps<"/composicio
     .filter((i) => !inTrain.has(i.id))
     .map((i) => ({ id: i.id, label: `${i.name} · ${[i.manufacturer, i.catalog_ref].filter(Boolean).join(" ")} · ${i.scale}` }));
 
-  // Totales
   const withLength = ordered.filter((i) => i.details?.lengthMm);
   const length = withLength.reduce((s, i) => s + Number(i.details.lengthMm), 0);
   const value = ordered.reduce((s, i) => s + Number(i.estimated_value ?? i.purchase_price ?? 0), 0);
   const epochs = [...new Set(ordered.map((i) => i.epoch).filter(Boolean) as string[])];
 
-  // Avisos: cosas que un coleccionista querría saber antes de montar el tren
+  // Things worth knowing before you put this train on the layout.
   const warnings: string[] = [];
   const scales = new Set(ordered.map((i) => i.scale));
   if (scales.size > 1) warnings.push(`Mezcla escalas: ${[...scales].join(", ")}.`);

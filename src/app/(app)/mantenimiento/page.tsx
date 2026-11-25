@@ -35,7 +35,7 @@ export default async function MantenimientoPage({ searchParams }: PageProps<"/ma
   const costYear = all.filter((e) => e.happened_on.startsWith(year)).reduce((s, e) => s + Number(e.cost ?? 0), 0);
   const costAll = all.reduce((s, e) => s + Number(e.cost ?? 0), 0);
 
-  // Locomotoras sin mantenimiento en el último año: las que más pide revisar un coleccionista.
+  // Locos with no maintenance logged in the last year.
   const cutoff = new Date();
   cutoff.setFullYear(cutoff.getFullYear() - 1);
   const lastByItem = new Map<string, string>();
