@@ -50,7 +50,7 @@ export function WishDialog({ wish, trigger }: { wish?: Wish; trigger: "nuevo" | 
           {wish && <input type="hidden" name="id" value={wish.id} />}
           <div>
             <Label htmlFor="w-name" hint="obligatorio">¿Qué pieza quieres?</Label>
-            <input id="w-name" name="name" required defaultValue={wish?.name} className={field} placeholder="RENFE 333.3 «Faraona»" />
+            <input id="w-name" name="name" required defaultValue={wish?.name} className={field} placeholder="p. ej. RENFE 333.3 «Faraona»" />
           </div>
           <div className="grid gap-3 sm:grid-cols-2">
             <div>

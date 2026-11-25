@@ -341,16 +341,16 @@ export function ItemWizard({
                       </div>
                       <div>
                         <Label htmlFor="decoder">Marca y modelo</Label>
-                        <input id="decoder" list="decoders" className={field} value={form.details.decoder ?? ""} onChange={(e) => setD("decoder", e.target.value)} placeholder="ESU LokSound 5" />
+                        <input id="decoder" list="decoders" className={field} value={form.details.decoder ?? ""} onChange={(e) => setD("decoder", e.target.value)} placeholder="p. ej. ESU LokSound 5" />
                         <datalist id="decoders">{DECODER_BRANDS.map((d) => <option key={d} value={d} />)}</datalist>
                       </div>
                       <div>
                         <Label htmlFor="addr" hint="1 – 10239">Dirección digital</Label>
-                        <input id="addr" inputMode="numeric" className={`${field} font-mono`} value={form.dcc_address} onChange={(e) => set("dcc_address", e.target.value.replace(/\D/g, "").slice(0, 5))} placeholder="3" />
+                        <input id="addr" inputMode="numeric" className={`${field} font-mono`} value={form.dcc_address} onChange={(e) => set("dcc_address", e.target.value.replace(/\D/g, "").slice(0, 5))} placeholder="p. ej. 3" />
                       </div>
                       <div>
                         <Label htmlFor="fw">Firmware</Label>
-                        <input id="fw" className={`${field} font-mono`} value={form.details.firmware ?? ""} onChange={(e) => setD("firmware", e.target.value)} placeholder="5.10.172" />
+                        <input id="fw" className={`${field} font-mono`} value={form.details.firmware ?? ""} onChange={(e) => setD("firmware", e.target.value)} placeholder="p. ej. 5.10.172" />
                       </div>
                     </div>
                     {conflict && (
@@ -366,7 +366,7 @@ export function ItemWizard({
                       <div className="flex flex-wrap items-center gap-3">
                         <Toggle label="Sonido" value={form.details.sound} onChange={(v) => setD("sound", v)} />
                         {form.details.sound && (
-                          <input aria-label="Altavoz" className={`${field} h-10 max-w-[240px]`} value={form.details.speaker ?? ""} onChange={(e) => setD("speaker", e.target.value)} placeholder="Altavoz (p. ej. Sugar Cube)" />
+                          <input aria-label="Altavoz" className={`${field} h-10 max-w-[240px]`} value={form.details.speaker ?? ""} onChange={(e) => setD("speaker", e.target.value)} placeholder="Altavoz, p. ej. Sugar Cube" />
                         )}
                       </div>
                       <Toggle label="RailCom" value={form.details.railcom} onChange={(v) => setD("railcom", v)} />
@@ -400,12 +400,12 @@ export function ItemWizard({
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
                   <Label htmlFor="mf" hint="obligatorio">Fabricante</Label>
-                  <input id="mf" list="mfs" className={field} value={form.manufacturer} onChange={(e) => set("manufacturer", e.target.value)} placeholder="Roco" />
+                  <input id="mf" list="mfs" className={field} value={form.manufacturer} onChange={(e) => set("manufacturer", e.target.value)} placeholder="p. ej. Roco" />
                   <datalist id="mfs">{MANUFACTURERS.map((m) => <option key={m} value={m} />)}</datalist>
                 </div>
                 <div>
                   <Label htmlFor="ref">Referencia de catálogo</Label>
-                  <input id="ref" className={`${field} font-mono`} value={form.catalog_ref} onChange={(e) => set("catalog_ref", e.target.value)} placeholder="73845" />
+                  <input id="ref" className={`${field} font-mono`} value={form.catalog_ref} onChange={(e) => set("catalog_ref", e.target.value)} placeholder="p. ej. 73845" />
                 </div>
                 <div className="sm:col-span-2">
                   <Label hint="obligatorio">Escala</Label>
@@ -413,16 +413,16 @@ export function ItemWizard({
                 </div>
                 <div className="sm:col-span-2">
                   <Label htmlFor="name" hint="si lo dejas vacío lo creamos con la compañía y la matrícula">Nombre</Label>
-                  <input id="name" className={field} value={form.name} onChange={(e) => set("name", e.target.value)} placeholder="RENFE 333.014 «Talgo»" />
+                  <input id="name" className={field} value={form.name} onChange={(e) => set("name", e.target.value)} placeholder="p. ej. RENFE 333.014 «Talgo»" />
                 </div>
                 <div>
                   <Label htmlFor="rw">Compañía</Label>
-                  <input id="rw" list="rws" className={field} value={form.railway} onChange={(e) => set("railway", e.target.value)} placeholder="RENFE" />
+                  <input id="rw" list="rws" className={field} value={form.railway} onChange={(e) => set("railway", e.target.value)} placeholder="p. ej. RENFE" />
                   <datalist id="rws">{RAILWAYS.map((r) => <option key={r} value={r} />)}</datalist>
                 </div>
                 <div>
                   <Label htmlFor="road">Serie y número (matrícula)</Label>
-                  <input id="road" className={`${field} font-mono`} value={form.road_number} onChange={(e) => set("road_number", e.target.value)} placeholder="333.014" />
+                  <input id="road" className={`${field} font-mono`} value={form.road_number} onChange={(e) => set("road_number", e.target.value)} placeholder="p. ej. 333.014" />
                 </div>
                 <div className="sm:col-span-2">
                   <Label>Época NEM</Label>
@@ -430,7 +430,7 @@ export function ItemWizard({
                 </div>
                 <div>
                   <Label htmlFor="livery">Librea / decoración</Label>
-                  <input id="livery" className={field} value={form.details.livery ?? ""} onChange={(e) => setD("livery", e.target.value)} placeholder="Gris y amarillo Talgo" />
+                  <input id="livery" className={field} value={form.details.livery ?? ""} onChange={(e) => setD("livery", e.target.value)} placeholder="p. ej. Gris y amarillo Talgo" />
                 </div>
                 <div>
                   <Label htmlFor="coupler">Enganche</Label>
@@ -441,11 +441,11 @@ export function ItemWizard({
                 </div>
                 <div>
                   <Label htmlFor="year">Año del modelo</Label>
-                  <input id="year" inputMode="numeric" className={field} value={form.details.modelYear ?? ""} onChange={(e) => setD("modelYear", e.target.value ? Number(e.target.value.replace(/\D/g, "").slice(0, 4)) : undefined)} placeholder="2019" />
+                  <input id="year" inputMode="numeric" className={field} value={form.details.modelYear ?? ""} onChange={(e) => setD("modelYear", e.target.value ? Number(e.target.value.replace(/\D/g, "").slice(0, 4)) : undefined)} placeholder="p. ej. 2019" />
                 </div>
                 <div>
                   <Label htmlFor="len" hint="entre topes">Longitud (mm)</Label>
-                  <input id="len" inputMode="numeric" className={field} value={form.details.lengthMm ?? ""} onChange={(e) => setD("lengthMm", e.target.value ? Number(e.target.value.replace(/\D/g, "").slice(0, 5)) : undefined)} placeholder="241" />
+                  <input id="len" inputMode="numeric" className={field} value={form.details.lengthMm ?? ""} onChange={(e) => setD("lengthMm", e.target.value ? Number(e.target.value.replace(/\D/g, "").slice(0, 5)) : undefined)} placeholder="p. ej. 241" />
                 </div>
                 <div>
                   <Label htmlFor="ean">Código EAN</Label>
@@ -462,7 +462,7 @@ export function ItemWizard({
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
                   <Label htmlFor="price">Precio de compra (€)</Label>
-                  <input id="price" inputMode="decimal" className={field} value={form.purchase_price} onChange={(e) => set("purchase_price", e.target.value)} placeholder="289" />
+                  <input id="price" inputMode="decimal" className={field} value={form.purchase_price} onChange={(e) => set("purchase_price", e.target.value)} placeholder="p. ej. 289" />
                 </div>
                 <div>
                   <Label htmlFor="pdate">Fecha de compra</Label>
@@ -474,7 +474,7 @@ export function ItemWizard({
                 </div>
                 <div>
                   <Label htmlFor="seller">Tienda o vendedor</Label>
-                  <input id="seller" className={field} value={form.details.seller ?? ""} onChange={(e) => setD("seller", e.target.value)} placeholder="Trenes Ibéricos" />
+                  <input id="seller" className={field} value={form.details.seller ?? ""} onChange={(e) => setD("seller", e.target.value)} placeholder="p. ej. Trenes Ibéricos" />
                 </div>
                 <div>
                   <Label htmlFor="value" hint="opcional">Valor estimado actual (€)</Label>
@@ -529,11 +529,11 @@ export function ItemWizard({
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div>
                     <Label htmlFor="loc">Ubicación en casa</Label>
-                    <input id="loc" className={field} value={form.location} onChange={(e) => set("location", e.target.value)} placeholder="Salón › Vitrina 1 › Estante 2" />
+                    <input id="loc" className={field} value={form.location} onChange={(e) => set("location", e.target.value)} placeholder="p. ej. Salón › Vitrina 1 › Estante 2" />
                   </div>
                   <div>
                     <Label htmlFor="tags" hint="separadas por comas">Etiquetas</Label>
-                    <input id="tags" className={field} value={form.tags} onChange={(e) => set("tags", e.target.value)} placeholder="Talgo, Sonido, Favorita" />
+                    <input id="tags" className={field} value={form.tags} onChange={(e) => set("tags", e.target.value)} placeholder="p. ej. Talgo, Sonido, Favorita" />
                   </div>
                   <div className="sm:col-span-2">
                     <Label htmlFor="notes">Notas</Label>
