@@ -113,8 +113,8 @@ export default async function FichaPage({ params, searchParams }: PageProps<"/co
           <Link href={`/coleccion/${item.id}/editar`} className={btn.secondary}>
             <Pencil className="h-[18px] w-[18px]" /> Editar
           </Link>
-          <Link href={`/anadir?duplicar=${item.id}`} className={btn.secondary}>
-            <Copy className="h-[18px] w-[18px]" /> Duplicar
+          <Link href={`/anadir?duplicar=${item.id}`} className={`${btn.secondary} max-sm:px-3`} title="Duplicar">
+            <Copy className="h-[18px] w-[18px]" /> <span className="max-sm:sr-only">Duplicar</span>
           </Link>
           <CompositionPicker itemId={item.id} compositions={compositions} />
           <DeleteItemButton itemId={item.id} name={item.name} />

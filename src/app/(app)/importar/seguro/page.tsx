@@ -52,46 +52,50 @@ export default async function SeguroPage() {
           </div>
         </header>
 
-        <table className="mt-4 w-full text-[13px]">
-          <thead>
-            <tr className="border-b border-neutral-300 text-left text-[11px] uppercase tracking-[0.05em] text-neutral-500">
-              <th className="py-2 pr-2">Foto</th>
-              <th className="py-2 pr-2">Pieza</th>
-              <th className="py-2 pr-2">Referencia</th>
-              <th className="py-2 pr-2">Estado</th>
-              <th className="py-2 pr-2">Compra</th>
-              <th className="py-2 text-right">Valor</th>
-            </tr>
-          </thead>
-          <tbody>
-            {items.map((i) => (
-              <tr key={i.id} className="break-inside-avoid border-b border-neutral-200 align-top">
-                <td className="py-2 pr-2">
-                  <div className="h-12 w-16 overflow-hidden rounded border border-neutral-300">
-                    <PhotoBox src={covers[i.id]} alt={i.name} kind={i.kind} />
-                  </div>
-                </td>
-                <td className="py-2 pr-2">
-                  <p className="font-semibold">{i.name}</p>
-                  <p className="text-neutral-600">{[i.scale, i.railway, i.road_number].filter(Boolean).join(" · ")}</p>
-                </td>
-                <td className="py-2 pr-2 font-mono">
-                  {[i.manufacturer, i.catalog_ref].filter(Boolean).join(" ")}
-                  {i.details?.ean && <span className="block text-neutral-500">EAN {i.details.ean}</span>}
-                </td>
-                <td className="py-2 pr-2">
-                  {labelOf(CONDITIONS, i.condition) || "—"}
-                  {i.details?.hasBox && <span className="block text-neutral-500">Con caja</span>}
-                </td>
-                <td className="py-2 pr-2">
-                  {money(i.purchase_price)}
-                  {i.purchase_date && <span className="block text-neutral-500">{shortDate(i.purchase_date)}</span>}
-                </td>
-                <td className="py-2 text-right font-semibold">{money(value(i))}</td>
+        <div className="mt-4 overflow-x-auto print:overflow-visible">
+          <table className="w-full min-w-[560px] text-[13px] print:min-w-0">
+            <thead>
+              <tr className="border-b border-neutral-300 text-left text-[11px] uppercase tracking-[0.05em] text-neutral-500">
+                <th className="py-2 pr-2">Foto</th>
+                <th className="py-2 pr-2">Pieza</th>
+                <th className="py-2 pr-2">Referencia</th>
+                <th className="py-2 pr-2">Estado</th>
+                <th className="py-2 pr-2">Compra</th>
+                <th className="py-2 text-right">Valor</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {items.map((i) => (
+                <tr key={i.id} className="break-inside-avoid border-b border-neutral-200 align-top">
+                  <td className="py-2 pr-2">
+                    <div className="h-12 w-16 overflow-hidden rounded border border-neutral-300">
+                      <PhotoBox src={covers[i.id]} alt={i.name} kind={i.kind} />
+                    </div>
+                  </td>
+                  <td className="py-2 pr-2">
+                    <p className="font-semibold">{i.name}</p>
+                    <p className="text-neutral-600">
+                      {[i.scale, i.railway, i.road_number].filter(Boolean).join(" · ")}
+                    </p>
+                  </td>
+                  <td className="py-2 pr-2 font-mono">
+                    {[i.manufacturer, i.catalog_ref].filter(Boolean).join(" ")}
+                    {i.details?.ean && <span className="block text-neutral-500">EAN {i.details.ean}</span>}
+                  </td>
+                  <td className="py-2 pr-2">
+                    {labelOf(CONDITIONS, i.condition) || "—"}
+                    {i.details?.hasBox && <span className="block text-neutral-500">Con caja</span>}
+                  </td>
+                  <td className="py-2 pr-2">
+                    {money(i.purchase_price)}
+                    {i.purchase_date && <span className="block text-neutral-500">{shortDate(i.purchase_date)}</span>}
+                  </td>
+                  <td className="py-2 text-right font-semibold">{money(value(i))}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
         <p className="mt-4 text-[11px] text-neutral-500">
           Valores estimados por el propietario. Donde no hay valor estimado se usa el precio de compra.
         </p>

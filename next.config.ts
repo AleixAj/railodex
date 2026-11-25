@@ -1,10 +1,11 @@
 import type { NextConfig } from "next";
 
-// Basic hardening that costs nothing: no embedding in other sites (clickjacking),
-// no MIME sniffing, no full URLs leaked to other sites, and the camera only for our own pages.
+// Basic hardening that costs nothing: other sites can't embed the app (clickjacking; our
+// own pages still can, which is handy for testing at phone width), no MIME sniffing,
+// no full URLs leaked to other sites, and the camera only for our own pages.
 const securityHeaders = [
-  { key: "X-Frame-Options", value: "DENY" },
-  { key: "Content-Security-Policy", value: "frame-ancestors 'none'" },
+  { key: "X-Frame-Options", value: "SAMEORIGIN" },
+  { key: "Content-Security-Policy", value: "frame-ancestors 'self'" },
   { key: "X-Content-Type-Options", value: "nosniff" },
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
   { key: "Permissions-Policy", value: "camera=(self), microphone=(), geolocation=()" },

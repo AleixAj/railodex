@@ -57,6 +57,15 @@ design/                 Claude Design mockups (visual reference)
 docs/                   the prompt used for the design
 ```
 
+## Example collection (development only)
+
+To see the app with a realistic collection:
+
+1. `python scripts/demo-photos.py` generates the photos with AI (Pollinations, free and without an account; about one per minute). They go to `public/demo/`, which isn't committed.
+2. Open `/demo` (or Ajustes → Colección de ejemplo) and press **Cargar colección de ejemplo**.
+
+The page doesn't exist in production. References and prices in `src/app/(app)/demo/pieces.json` are illustrative.
+
 ## Scripts
 
 | Command          | What it does                                    |

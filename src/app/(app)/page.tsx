@@ -103,7 +103,7 @@ export default async function InicioPage() {
         />
       ) : (
         <>
-          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 xl:grid-cols-4">
             <Stat
               label="Piezas en colección"
               value={String(owned.length)}
@@ -336,9 +336,9 @@ function QuickAction({
 
 function Stat({ label, value, sub, alert }: { label: string; value: string; sub: string; alert?: boolean }) {
   return (
-    <Card className="p-5">
-      <p className="text-[15px] text-fg2">{label}</p>
-      <p className="mt-1 font-display text-[32px] font-bold tracking-tight">{value}</p>
+    <Card className="p-4 sm:p-5">
+      <p className="text-[14px] text-fg2 sm:text-[15px]">{label}</p>
+      <p className="mt-1 font-display text-[24px] font-bold tracking-tight sm:text-[32px]">{value}</p>
       <p className={`text-[14px] ${alert ? "text-red" : "text-fg3"}`}>{sub}</p>
     </Card>
   );

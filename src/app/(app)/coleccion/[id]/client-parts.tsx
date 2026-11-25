@@ -103,8 +103,8 @@ export function DeleteItemButton({ itemId, name }: { itemId: string; name: strin
   const [error, setError] = useState("");
   return (
     <>
-      <button onClick={() => dialog.current?.showModal()} className={btn.danger}>
-        <Trash2 className="h-[18px] w-[18px]" /> Eliminar
+      <button onClick={() => dialog.current?.showModal()} className={`${btn.danger} max-sm:px-3`} title="Eliminar">
+        <Trash2 className="h-[18px] w-[18px]" /> <span className="max-sm:sr-only">Eliminar</span>
       </button>
       <dialog
         ref={dialog}
@@ -237,8 +237,12 @@ export function CompositionPicker({
 
   return (
     <>
-      <button onClick={() => dialog.current?.showModal()} className={btn.secondary}>
-        <TrainTrack className="h-[18px] w-[18px]" /> Añadir a composición
+      <button
+        onClick={() => dialog.current?.showModal()}
+        className={`${btn.secondary} max-sm:px-3`}
+        title="Añadir a composición"
+      >
+        <TrainTrack className="h-[18px] w-[18px]" /> <span className="max-sm:sr-only">Añadir a composición</span>
       </button>
       <dialog
         ref={dialog}

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
-import { Check, DatabaseBackup, FileSpreadsheet, LogOut } from "lucide-react";
+import Link from "next/link";
+import { Check, DatabaseBackup, FileSpreadsheet, LogOut, Sparkles } from "lucide-react";
 import { requireUser } from "@/lib/supabase/server";
 import { FREE_PLAN_LIMIT } from "@/lib/catalog";
 import { signOut } from "@/app/actions";
@@ -124,6 +125,11 @@ export default async function AjustesPage() {
           <a href="/importar/copia" download className={btn.secondary}>
             <DatabaseBackup className="h-[18px] w-[18px]" /> Copia de seguridad
           </a>
+          {process.env.NODE_ENV !== "production" && (
+            <Link href="/demo" className={btn.ghost}>
+              <Sparkles className="h-[18px] w-[18px]" /> Colección de ejemplo
+            </Link>
+          )}
         </div>
       </Card>
 
