@@ -55,7 +55,7 @@ export function StepKind({ form, setForm }: StepProps) {
                 )
               }
               aria-pressed={on}
-              className={`flex flex-col items-start gap-2 rounded-xl border p-4 text-left transition ${on ? "border-amb bg-amb2" : "border-ln2 bg-s3 hover:border-fg3"}`}
+              className={`press flex flex-col items-start gap-2 rounded-xl border p-4 text-left ${on ? "border-amb bg-amb2" : "border-ln2 bg-s3 hover:border-fg3"}`}
             >
               <Icon className={`h-7 w-7 ${on ? "text-ambtx" : "text-fg2"}`} strokeWidth={1.5} />
               <span className="text-[18px] font-semibold">{k.label}</span>

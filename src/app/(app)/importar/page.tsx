@@ -68,7 +68,7 @@ function ExportCard({
   text: string;
   download?: boolean;
 }) {
-  const className = "flex items-start gap-3 rounded-xl border border-ln bg-s1 p-4 transition hover:border-ln2";
+  const className = "press flex items-start gap-3 rounded-xl border border-ln bg-s1 p-4 hover:border-ln2";
   const body = (
     <>
       <span className="flex h-11 w-11 flex-none items-center justify-center rounded-[10px] bg-s2 text-ambtx">

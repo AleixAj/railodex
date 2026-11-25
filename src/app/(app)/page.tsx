@@ -317,7 +317,7 @@ function QuickAction({
   return (
     <Link
       href={href}
-      className={`flex items-center gap-4 rounded-xl border p-4 transition ${
+      className={`press flex items-center gap-4 rounded-xl border p-4 ${
         primary ? "border-amb/60 bg-amb2 hover:border-amb" : "border-ln bg-s1 hover:border-ln2"
       }`}
     >

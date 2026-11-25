@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link, { useLinkStatus } from "next/link";
 import { usePathname } from "next/navigation";
 import {
   ArrowLeftRight,
@@ -47,22 +47,27 @@ export function Sidebar({ count, open, onClose }: { count: number; open: boolean
         href={item.href}
         onClick={onClose}
         aria-current={active ? "page" : undefined}
-        className={`flex h-11 items-center gap-3 rounded-[10px] px-3 text-[16px] transition ${
+        className={`press relative flex h-11 items-center gap-3 rounded-[10px] px-3 text-[16px] ${
           active ? "bg-s2 font-semibold text-fg" : "text-fg2 hover:bg-s2/60 hover:text-fg"
         }`}
       >
         <Icon className={`h-[18px] w-[18px] ${active ? "text-ambtx" : ""}`} strokeWidth={1.75} />
         <span className="flex-1">{item.label}</span>
         {"count" in item && item.count && <span className="font-mono text-[13px] text-fg3">{count}</span>}
+        <PendingTrack />
       </Link>
     );
   };
 
   return (
     <>
-      {open && <div className="fixed inset-0 z-30 bg-black/50 lg:hidden" onClick={onClose} aria-hidden />}
+      <div
+        className={`fixed inset-0 z-30 bg-black/50 transition-opacity duration-300 lg:hidden ${open ? "opacity-100" : "pointer-events-none opacity-0"}`}
+        onClick={onClose}
+        aria-hidden
+      />
       <aside
-        className={`fixed inset-y-0 left-0 z-40 flex w-[260px] flex-col print:hidden border-r border-ln bg-bg transition-transform lg:sticky lg:top-0 lg:h-dvh lg:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-40 flex w-[260px] flex-col print:hidden border-r border-ln bg-bg transition-transform duration-300 ease-[var(--ease-drawer)] lg:sticky lg:top-0 lg:h-dvh lg:translate-x-0 ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -108,4 +113,11 @@ export function Sidebar({ count, open, onClose }: { count: number; open: boolean
       </aside>
     </>
   );
+}
+
+/** While the clicked page loads, a small amber train runs along the bottom of its link. */
+function PendingTrack() {
+  const { pending } = useLinkStatus();
+  if (!pending) return null;
+  return <span aria-hidden className="nav-pending pointer-events-none absolute inset-x-3 bottom-1 h-[2px] rounded" />;
 }

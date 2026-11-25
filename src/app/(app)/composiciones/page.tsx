@@ -53,7 +53,7 @@ export default async function ComposicionesPage() {
             <Link
               key={c.id}
               href={`/composiciones/${c.id}`}
-              className="rounded-xl border border-ln bg-s1 p-4 transition hover:border-ln2"
+              className="press rounded-xl border border-ln bg-s1 p-4 hover:border-ln2"
             >
               <div className="flex items-baseline justify-between gap-3">
                 <p className="truncate text-[18px] font-semibold">{c.name}</p>

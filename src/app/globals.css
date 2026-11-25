@@ -142,3 +142,243 @@ body {
   content-visibility: auto;
   contain-intrinsic-size: auto 80px;
 }
+
+/* ───────────────────────────── Motion ─────────────────────────────
+   Crisp and short: this is a tool people use every day, so movement only
+   confirms what happened (press, arrive, move) and never makes them wait. */
+:root {
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+/* Anything pressable sinks a little when pressed. */
+.press {
+  transition:
+    transform 160ms var(--ease-out),
+    background-color 150ms ease,
+    border-color 150ms ease,
+    color 150ms ease,
+    filter 150ms ease;
+}
+.press:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+/* Page arrival. Every page root and the loading skeleton are direct children of
+   .page-shell (see (app)/template.tsx), so this runs whenever new content mounts. */
+.page-shell > * {
+  animation: page-enter 240ms var(--ease-out) both;
+}
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+/* Messages, inline forms, step panels: a quick fade and rise. */
+.appear {
+  animation: page-enter 200ms var(--ease-out) both;
+}
+
+/* Wizard steps slide in from the side they come from. */
+.step-forward {
+  animation: step-in 220ms var(--ease-out) both;
+  --step-from: 16px;
+}
+.step-back {
+  animation: step-in 220ms var(--ease-out) both;
+  --step-from: -16px;
+}
+@keyframes step-in {
+  from {
+    opacity: 0;
+    transform: translateX(var(--step-from));
+  }
+}
+
+/* Loading skeleton: a soft light passing over, faster than a pulse feels. */
+.shimmer {
+  background: linear-gradient(100deg, var(--s1) 30%, var(--s2) 50%, var(--s1) 70%);
+  background-size: 300% 100%;
+  animation: shimmer 1.4s linear infinite;
+}
+@keyframes shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: 0 0;
+  }
+}
+
+/* Dialogs scale in from 96% (never from nothing) and the backdrop fades. */
+dialog[open] {
+  animation: dialog-in 200ms var(--ease-out);
+}
+dialog[open]::backdrop {
+  animation: backdrop-in 200ms ease;
+}
+@keyframes dialog-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(4px);
+  }
+}
+@keyframes backdrop-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* Photos fade in as they load instead of popping. */
+.photo-fade {
+  animation: photo-in 260ms ease both;
+}
+@keyframes photo-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* Card photos zoom a touch on hover, only where hover really exists. */
+@media (hover: hover) and (pointer: fine) {
+  .zoom-on-hover img {
+    transition: transform 400ms var(--ease-out);
+  }
+  .zoom-on-hover:hover img {
+    transform: scale(1.03);
+  }
+}
+
+/* Empty states: the little train rolls in along its track once. */
+.train-in {
+  animation: train-in 700ms var(--ease-out) both;
+}
+@keyframes train-in {
+  from {
+    opacity: 0;
+    transform: translateX(-48px);
+  }
+}
+
+/* Small amber "train" running along a track while a menu link loads. */
+.nav-pending {
+  overflow: hidden;
+}
+.nav-pending::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  width: 40%;
+  border-radius: 2px;
+  background: var(--amb);
+  animation: nav-train 900ms var(--ease-in-out) infinite;
+}
+@keyframes nav-train {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(250%);
+  }
+}
+
+/* ───────────────────────── View Transitions ─────────────────────────
+   Used for things that move: cards re-sorting when you filter, coaches being
+   reordered in a train, and the light/dark switch. */
+:root {
+  --vt-exit: 150ms;
+  --vt-enter: 210ms;
+  --vt-move: 320ms;
+}
+
+/* Keep the rest of the page live and clickable while something animates. */
+::view-transition {
+  pointer-events: none;
+}
+::view-transition-old(root) {
+  display: none;
+}
+::view-transition-new(root) {
+  animation: none;
+}
+
+::view-transition-group(.list-move) {
+  animation-duration: var(--vt-move);
+  animation-timing-function: var(--ease-in-out);
+}
+::view-transition-new(.list-in) {
+  animation: var(--vt-enter) var(--ease-out) var(--vt-exit) both vt-pop-in;
+}
+::view-transition-old(.list-out) {
+  animation: var(--vt-exit) ease both vt-pop-out;
+}
+@keyframes vt-pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+@keyframes vt-pop-out {
+  to {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+
+/* Light/dark: the new theme grows in a circle from the button you pressed. */
+html.theme-switching::view-transition-old(root) {
+  display: block;
+  animation: none;
+}
+html.theme-switching::view-transition-new(root) {
+  animation: theme-reveal 420ms var(--ease-in-out);
+}
+@keyframes theme-reveal {
+  from {
+    clip-path: circle(0 at var(--reveal-x, 50%) var(--reveal-y, 0));
+  }
+  to {
+    clip-path: circle(var(--reveal-r, 150vmax) at var(--reveal-x, 50%) var(--reveal-y, 0));
+  }
+}
+
+/* Reduced motion: keep fades (they help you follow what changed), drop movement. */
+@media (prefers-reduced-motion: reduce) {
+  .press:active:not(:disabled) {
+    transform: none;
+  }
+  .page-shell > *,
+  .appear,
+  .step-forward,
+  .step-back,
+  dialog[open] {
+    animation: photo-in 150ms ease both;
+  }
+  .shimmer,
+  .nav-pending::after {
+    animation: none;
+  }
+  .train-in {
+    animation: photo-in 150ms ease both;
+  }
+  .zoom-on-hover:hover img {
+    transform: none;
+  }
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
+}
+
+/* Any status or error message slides in instead of popping. */
+[role="alert"],
+[role="status"] {
+  animation: page-enter 200ms var(--ease-out) both;
+}

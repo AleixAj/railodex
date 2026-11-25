@@ -50,6 +50,7 @@ export function ItemWizard({ userId, initial, existingPhotos = [], addresses, mo
   const router = useRouter();
   const [form, setForm] = useState<ItemPayload>(() => toPayload(initial));
   const [step, setStep] = useState<StepId>(mode === "editar" ? "identificacion" : "tipo");
+  const [direction, setDirection] = useState<"forward" | "back">("forward");
   const [keptPhotos, setKeptPhotos] = useState(existingPhotos);
   const [newPhotos, setNewPhotos] = useState<{ file: File; url: string }[]>([]);
   const [error, setError] = useState("");
@@ -78,6 +79,7 @@ export function ItemWizard({ userId, initial, existingPhotos = [], addresses, mo
   const canSave = missing.length === 0;
 
   const go = (to: number) => {
+    setDirection(to < idx ? "back" : "forward");
     setError("");
     setStep(steps[Math.max(0, Math.min(steps.length - 1, to))]);
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -149,48 +151,51 @@ export function ItemWizard({ userId, initial, existingPhotos = [], addresses, mo
 
       <div className="grid gap-6 lg:grid-cols-[1fr_340px]">
         <div className="min-w-0 rounded-xl border border-ln bg-s1 p-5 sm:p-7">
-          <p className="font-mono text-[13px] text-fg3">
-            Paso {idx + 1} de {steps.length}
-          </p>
-          <h2 className="mt-1 font-display text-[28px] font-bold tracking-tight">{STEP_LABELS[step]}</h2>
+          {/* Keyed by step so each new step animates in from the side it comes from. */}
+          <div key={step} className={direction === "back" ? "step-back" : "step-forward"}>
+            <p className="font-mono text-[13px] text-fg3">
+              Paso {idx + 1} de {steps.length}
+            </p>
+            <h2 className="mt-1 font-display text-[28px] font-bold tracking-tight">{STEP_LABELS[step]}</h2>
 
-          <div className="mt-5 flex flex-col gap-6">
-            {step === "tipo" && <StepKind {...stepProps} />}
-            {step === "traccion" && tractor && <StepTraction {...stepProps} />}
-            {step === "traccion" && rolling && <StepRolling {...stepProps} />}
-            {step === "sistema" && <StepSystem {...stepProps} addresses={addresses} itemId={initial?.id} />}
-            {step === "identificacion" && <StepIdentity {...stepProps} />}
-            {step === "compra" && <StepPurchase {...stepProps} />}
-            {step === "fotos" && (
-              <StepPhotos
-                {...stepProps}
-                keptPhotos={keptPhotos}
-                setKeptPhotos={setKeptPhotos}
-                newPhotos={newPhotos}
-                setNewPhotos={setNewPhotos}
-              />
-            )}
-            {step === "revision" && (
-              <>
-                <p className="text-fg2">Revisa que todo esté bien. Podrás editarla cuando quieras.</p>
-                {!canSave && (
-                  <p role="alert" className="rounded-lg border border-red/40 bg-red2 p-3 text-red">
-                    Faltan datos obligatorios: {missing.join(", ")}.
-                  </p>
-                )}
-                {mode === "crear" && (
-                  <button onClick={() => save(true)} disabled={saving} className={`${btn.secondary} self-start`}>
-                    <Plus className="h-4 w-4" /> Guardar y añadir otra parecida
-                  </button>
-                )}
-              </>
-            )}
+            <div className="mt-5 flex flex-col gap-6">
+              {step === "tipo" && <StepKind {...stepProps} />}
+              {step === "traccion" && tractor && <StepTraction {...stepProps} />}
+              {step === "traccion" && rolling && <StepRolling {...stepProps} />}
+              {step === "sistema" && <StepSystem {...stepProps} addresses={addresses} itemId={initial?.id} />}
+              {step === "identificacion" && <StepIdentity {...stepProps} />}
+              {step === "compra" && <StepPurchase {...stepProps} />}
+              {step === "fotos" && (
+                <StepPhotos
+                  {...stepProps}
+                  keptPhotos={keptPhotos}
+                  setKeptPhotos={setKeptPhotos}
+                  newPhotos={newPhotos}
+                  setNewPhotos={setNewPhotos}
+                />
+              )}
+              {step === "revision" && (
+                <>
+                  <p className="text-fg2">Revisa que todo esté bien. Podrás editarla cuando quieras.</p>
+                  {!canSave && (
+                    <p role="alert" className="rounded-lg border border-red/40 bg-red2 p-3 text-red">
+                      Faltan datos obligatorios: {missing.join(", ")}.
+                    </p>
+                  )}
+                  {mode === "crear" && (
+                    <button onClick={() => save(true)} disabled={saving} className={`${btn.secondary} self-start`}>
+                      <Plus className="h-4 w-4" /> Guardar y añadir otra parecida
+                    </button>
+                  )}
+                </>
+              )}
 
-            {error && (
-              <p role="alert" className="rounded-lg border border-red/40 bg-red2 p-3 text-red">
-                {error}
-              </p>
-            )}
+              {error && (
+                <p role="alert" className="rounded-lg border border-red/40 bg-red2 p-3 text-red">
+                  {error}
+                </p>
+              )}
+            </div>
           </div>
 
           <div className="mt-8 flex items-center justify-between gap-2 border-t border-ln pt-5">

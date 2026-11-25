@@ -62,17 +62,17 @@ export function SectionTitle({ children, aside }: { children: React.ReactNode; a
 
 export const btn = {
   primary:
-    "inline-flex h-11 items-center justify-center gap-2 rounded-[10px] bg-amb px-4 font-semibold text-[#1a1714] transition hover:brightness-110 disabled:opacity-50",
+    "inline-flex h-11 items-center justify-center gap-2 rounded-[10px] bg-amb px-4 font-semibold text-[#1a1714] press hover:brightness-110 disabled:opacity-50",
   secondary:
-    "inline-flex h-11 items-center justify-center gap-2 rounded-[10px] border border-ln2 bg-s1 px-4 font-medium text-fg transition hover:bg-s2 disabled:opacity-50",
+    "inline-flex h-11 items-center justify-center gap-2 rounded-[10px] border border-ln2 bg-s1 px-4 font-medium text-fg press hover:bg-s2 disabled:opacity-50",
   ghost:
-    "inline-flex h-10 items-center justify-center gap-2 rounded-[10px] px-3 font-medium text-fg2 transition hover:bg-s2 hover:text-fg",
+    "inline-flex h-10 items-center justify-center gap-2 rounded-[10px] px-3 font-medium text-fg2 press hover:bg-s2 hover:text-fg",
   danger:
-    "inline-flex h-11 items-center justify-center gap-2 rounded-[10px] border border-red/40 bg-red2 px-4 font-medium text-red transition hover:brightness-110",
+    "inline-flex h-11 items-center justify-center gap-2 rounded-[10px] border border-red/40 bg-red2 px-4 font-medium text-red press hover:brightness-110",
 };
 
 export const field =
-  "h-11 w-full rounded-[10px] border border-ln2 bg-s3 px-3 text-fg placeholder:text-fg3 focus:border-amb focus:outline-none";
+  "h-11 w-full rounded-[10px] border border-ln2 bg-s3 px-3 text-fg transition-[border-color,background-color] duration-150 placeholder:text-fg3 focus:border-amb focus:outline-none";
 
 export function Label({ children, htmlFor, hint }: { children: React.ReactNode; htmlFor?: string; hint?: string }) {
   return (
@@ -132,7 +132,10 @@ export function EmptyState({
 }) {
   return (
     <Card className="flex flex-col items-center gap-3 px-6 py-14 text-center">
-      <TrainFront className="h-12 w-12 text-ln2" strokeWidth={1.25} />
+      <div className="relative w-28 overflow-hidden pb-2" aria-hidden>
+        <TrainFront className="train-in mx-auto h-12 w-12 text-ln2" strokeWidth={1.25} />
+        <div className="rail-rule absolute inset-x-0 bottom-0" />
+      </div>
       <h2 className="font-display text-2xl font-bold tracking-tight">{title}</h2>
       <p className="max-w-md text-fg2">{text}</p>
       {action && (

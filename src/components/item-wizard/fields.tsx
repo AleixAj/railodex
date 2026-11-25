@@ -30,7 +30,7 @@ export function Choice({
             role="radio"
             aria-checked={on}
             onClick={() => onChange(o.id)}
-            className={`rounded-full border px-3.5 text-[15px] transition ${big ? "h-14 rounded-xl text-[17px] font-semibold" : "h-10"} ${mono ? "font-mono" : ""} ${
+            className={`press rounded-full border px-3.5 text-[15px] ${big ? "h-14 rounded-xl text-[17px] font-semibold" : "h-10"} ${mono ? "font-mono" : ""} ${
               on ? "border-amb bg-amb2 text-ambtx" : "border-ln2 bg-s3 text-fg2 hover:border-fg3 hover:text-fg"
             }`}
           >
@@ -50,10 +50,10 @@ export function Toggle({ label, value, onChange }: { label: string; value?: bool
         role="switch"
         aria-checked={Boolean(value)}
         onClick={() => onChange(!value)}
-        className={`relative h-7 w-12 flex-none rounded-full transition ${value ? "bg-amb" : "bg-ln2"}`}
+        className={`relative h-7 w-12 flex-none rounded-full transition-colors duration-200 ${value ? "bg-amb" : "bg-ln2"}`}
       >
         <span
-          className={`absolute top-1 h-5 w-5 rounded-full bg-white transition-all ${value ? "left-6" : "left-1"}`}
+          className={`absolute left-1 top-1 h-5 w-5 rounded-full bg-white shadow-sm transition-transform duration-200 ease-[var(--ease-out)] ${value ? "translate-x-5" : "translate-x-0"}`}
         />
       </button>
       <span className="text-[16px]">{label}</span>

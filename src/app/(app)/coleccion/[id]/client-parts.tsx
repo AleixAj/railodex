@@ -18,7 +18,14 @@ export function Gallery({ photos, name, kind }: { photos: GalleryPhoto[]; name: 
   return (
     <div className="flex flex-col gap-2">
       <div className="relative aspect-[4/3] overflow-hidden rounded-xl border border-ln bg-s1">
-        <PhotoBox src={photos[i]?.full} alt={`${name}, foto ${i + 1}`} kind={kind} priority />
+        <PhotoBox
+          key={photos[i]?.full ?? "none"}
+          src={photos[i]?.full}
+          alt={`${name}, foto ${i + 1}`}
+          kind={kind}
+          priority
+          className={n > 1 ? "photo-fade" : ""}
+        />
         {n > 1 && (
           <>
             <button
@@ -147,7 +154,7 @@ export function AddEventForm({ itemId }: { itemId: string }) {
     );
   }
   return (
-    <form action={action} className="mt-3 flex w-full flex-col gap-3 rounded-lg border border-ln bg-s3 p-3">
+    <form action={action} className="appear mt-3 flex w-full flex-col gap-3 rounded-lg border border-ln bg-s3 p-3">
       <div className="flex items-center justify-between">
         <span className="font-semibold">Nueva entrada</span>
         <button
