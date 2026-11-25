@@ -1,7 +1,9 @@
 // Converts spreadsheet rows into rows for the `items` table.
 // Plain module so both the preview (browser) and the import (server) use the same rules.
 
-import { CONDITIONS, KINDS, SCALES } from "./catalog";
+import { CONDITIONS, EPOCHS, KINDS, SCALES } from "./catalog";
+import { isISODate } from "./dates";
+import { parseAmount } from "./numbers";
 import type { ColumnKey } from "./csv";
 
 export type ImportRow = Partial<Record<ColumnKey, string>>;
@@ -11,20 +13,18 @@ const text = (v: string | undefined, max = 200) => {
   return t || null;
 };
 
-// Accepts "289", "289,50", "1.289,50" and "289.50".
+// Bad numbers in a spreadsheet just get left empty instead of failing the whole row.
 function money(v: string | undefined) {
-  const t = (v ?? "").replace(/[€\s]/g, "");
-  if (!t) return null;
-  const n = Number(t.includes(",") ? t.replace(/\./g, "").replace(",", ".") : t);
-  return Number.isFinite(n) && n >= 0 ? n : null;
+  const n = parseAmount(v);
+  return Number.isNaN(n) ? null : n;
 }
 
 // Accepts 2025-11-18 and 18/11/2025.
 function date(v: string | undefined) {
   const t = (v ?? "").trim();
-  if (/^\d{4}-\d{2}-\d{2}$/.test(t)) return t;
   const m = t.match(/^(\d{1,2})[/.-](\d{1,2})[/.-](\d{4})$/);
-  return m ? `${m[3]}-${m[2].padStart(2, "0")}-${m[1].padStart(2, "0")}` : null;
+  const iso = m ? `${m[3]}-${m[2].padStart(2, "0")}-${m[1].padStart(2, "0")}` : t;
+  return isISODate(iso) ? iso : null;
 }
 
 function findId<T extends { id: string; label: string }>(list: readonly T[], v: string | undefined) {
@@ -52,7 +52,7 @@ export function toItemRow(r: ImportRow) {
     catalog_ref: text(r.catalog_ref, 60),
     scale,
     railway: text(r.railway, 60),
-    epoch: text(r.epoch, 10)?.toUpperCase() ?? null,
+    epoch: EPOCHS.find((e) => e === (r.epoch ?? "").trim().toUpperCase()) ?? null,
     road_number: text(r.road_number, 60),
     system: kind === "locomotora" || kind === "automotor" ? system : null,
     dcc_address: system === "digital" && Number.isInteger(address) && address >= 1 && address <= 10239 ? address : null,

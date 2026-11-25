@@ -4,6 +4,9 @@
 import type { Item } from "./types";
 import { CONDITIONS, KINDS, labelOf } from "./catalog";
 
+/** Byte order mark. Without it Excel opens the file as Latin-1 and breaks the accents. */
+export const BOM = String.fromCharCode(0xfeff);
+
 /** Columns shared by export and import, so a file we export can be imported back. */
 export const COLUMNS = [
   { header: "Nombre", key: "name" },
@@ -27,7 +30,10 @@ export const COLUMNS = [
 export type ColumnKey = (typeof COLUMNS)[number]["key"];
 
 function escape(value: unknown) {
-  const s = value === null || value === undefined ? "" : String(value);
+  let s = value === null || value === undefined ? "" : String(value);
+  // A text cell starting with = + - @ runs as a formula when opened in Excel
+  // ("CSV injection"). A leading apostrophe keeps it as plain text.
+  if (typeof value === "string" && /^[=+\-@\t\r]/.test(s)) s = `'${s}`;
   return /[";\n\r]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
 }
 
@@ -46,12 +52,12 @@ export function itemsToCsv(items: Item[]) {
       }).join(";"),
     );
   }
-  return "﻿" + lines.join("\r\n");
+  return BOM + lines.join("\r\n");
 }
 
 /** Small CSV parser: handles quotes, escaped quotes and both ";" and "," separators. */
 export function parseCsv(text: string): string[][] {
-  const clean = text.replace(/^﻿/, "");
+  const clean = text.startsWith(BOM) ? text.slice(1) : text;
   const firstLine = clean.split(/\r?\n/, 1)[0] ?? "";
   const sep = (firstLine.match(/;/g)?.length ?? 0) >= (firstLine.match(/,/g)?.length ?? 0) ? ";" : ",";
 

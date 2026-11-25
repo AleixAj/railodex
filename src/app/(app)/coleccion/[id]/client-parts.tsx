@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Check, ChevronLeft, ChevronRight, Plus, TrainTrack, Trash2, X } from "lucide-react";
 import { addToComposition } from "@/app/(app)/composiciones/actions";
 import { EVENT_KINDS, STATUSES } from "@/lib/catalog";
+import { todayISO } from "@/lib/dates";
 import type { Kind } from "@/lib/catalog";
 import { PhotoBox, btn, field, Label } from "@/components/ui";
 import { addEvent, deleteEvent, deleteItem, setStatus, type EventState } from "./actions";
@@ -129,7 +130,7 @@ export function AddEventForm({ itemId }: { itemId: string }) {
         </div>
         <div>
           <Label htmlFor="ev-date">Fecha</Label>
-          <input id="ev-date" name="happened_on" type="date" className={field} defaultValue={new Date().toISOString().slice(0, 10)} />
+          <input id="ev-date" name="happened_on" type="date" className={field} defaultValue={todayISO()} />
         </div>
         <div>
           <Label htmlFor="ev-cost">Coste €</Label>

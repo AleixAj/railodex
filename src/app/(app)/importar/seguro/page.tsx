@@ -5,6 +5,7 @@ import { requireUser } from "@/lib/supabase/server";
 import { coverUrls } from "@/lib/items";
 import { CONDITIONS, labelOf } from "@/lib/catalog";
 import { money, shortDate } from "@/lib/format";
+import { TIME_ZONE, todayISO } from "@/lib/dates";
 import type { Item } from "@/lib/types";
 import { PhotoBox, btn } from "@/components/ui";
 import { PrintButton } from "@/components/print-button";
@@ -24,7 +25,7 @@ export default async function SeguroPage() {
   const covers = await coverUrls(supabase, items.map((i) => i.id));
 
   const total = items.reduce((s, i) => s + value(i), 0);
-  const today = new Date().toISOString().slice(0, 10);
+  const today = todayISO(TIME_ZONE);
 
   return (
     <div className="flex flex-col gap-5">

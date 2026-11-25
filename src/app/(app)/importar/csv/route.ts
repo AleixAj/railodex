@@ -1,4 +1,5 @@
 import { requireUser } from "@/lib/supabase/server";
+import { TIME_ZONE, todayISO } from "@/lib/dates";
 import { itemsToCsv } from "@/lib/csv";
 import type { Item } from "@/lib/types";
 
@@ -7,7 +8,7 @@ export async function GET() {
   const { data, error } = await supabase.from("items").select("*").order("created_at");
   if (error) return new Response("No se ha podido exportar", { status: 500 });
 
-  const day = new Date().toISOString().slice(0, 10);
+  const day = todayISO(TIME_ZONE);
   return new Response(itemsToCsv((data ?? []) as Item[]), {
     headers: {
       "Content-Type": "text/csv; charset=utf-8",

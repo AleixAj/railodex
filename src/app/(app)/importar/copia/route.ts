@@ -1,4 +1,5 @@
 import { requireUser } from "@/lib/supabase/server";
+import { TIME_ZONE, todayISO } from "@/lib/dates";
 
 // Full backup of the user's data as JSON. Photos aren't included, only their paths.
 export async function GET() {
@@ -16,7 +17,7 @@ export async function GET() {
     data: Object.fromEntries(tables.map((t, i) => [t, results[i].data ?? []])),
   };
 
-  const day = new Date().toISOString().slice(0, 10);
+  const day = todayISO(TIME_ZONE);
   return new Response(JSON.stringify(backup, null, 2), {
     headers: {
       "Content-Type": "application/json; charset=utf-8",

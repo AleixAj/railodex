@@ -3,7 +3,9 @@
 import { revalidatePath } from "next/cache";
 import { requireUser } from "@/lib/supabase/server";
 import { remainingSlots, LIMIT_MESSAGE } from "@/lib/plan";
-import { CONDITIONS, KINDS, SCALES, STATUSES, TRACTIONS } from "@/lib/catalog";
+import { CONDITIONS, EPOCHS, KINDS, SCALES, STATUSES, TRACTIONS } from "@/lib/catalog";
+import { sanitizeDetails } from "@/lib/details";
+import { parseAmount } from "@/lib/numbers";
 import type { ItemDetails } from "@/lib/types";
 
 export type ItemPayload = {
@@ -33,12 +35,6 @@ const text = (v: string, max = 200) => {
   const t = (v ?? "").trim().slice(0, max);
   return t === "" ? null : t;
 };
-const num = (v: string) => {
-  const t = (v ?? "").replace(",", ".").trim();
-  if (!t) return null;
-  const n = Number(t);
-  return Number.isFinite(n) && n >= 0 ? n : NaN;
-};
 
 export async function saveItem(payload: ItemPayload, itemId?: string): Promise<{ id?: string; error?: string }> {
   const { supabase } = await requireUser();
@@ -51,10 +47,16 @@ export async function saveItem(payload: ItemPayload, itemId?: string): Promise<{
   if (payload.system && !["digital", "analogico"].includes(payload.system)) return { error: "Sistema no válido." };
   if (payload.condition && !CONDITIONS.some((c) => c.id === payload.condition)) return { error: "Estado no válido." };
   if (!STATUSES.some((s) => s.id === payload.status)) return { error: "Estado de propiedad no válido." };
+  if (payload.epoch && !(EPOCHS as readonly string[]).includes(payload.epoch)) return { error: "Época no válida." };
 
-  const price = num(payload.purchase_price);
-  const value = num(payload.estimated_value);
-  const address = payload.system === "digital" ? num(payload.dcc_address) : null;
+  // Coaches, wagons and accessories have no traction, decoder or address.
+  const tractor = payload.kind === "locomotora" || payload.kind === "automotor";
+  const traction = tractor ? payload.traction || null : null;
+  const system = tractor ? payload.system || null : null;
+
+  const price = parseAmount(payload.purchase_price);
+  const value = parseAmount(payload.estimated_value);
+  const address = system === "digital" && payload.dcc_address.trim() ? Number(payload.dcc_address) : null;
   if (Number.isNaN(price) || Number.isNaN(value)) return { error: "Revisa los precios: tienen que ser números." };
   if (Number.isNaN(address) || (address !== null && (address < 1 || address > 10239 || !Number.isInteger(address)))) {
     return { error: "La dirección digital tiene que ser un número entre 1 y 10239." };
@@ -68,13 +70,13 @@ export async function saveItem(payload: ItemPayload, itemId?: string): Promise<{
 
   const row = {
     kind: payload.kind,
-    traction: payload.kind === "locomotora" || payload.kind === "automotor" ? payload.traction || null : null,
-    system: payload.kind === "locomotora" || payload.kind === "automotor" ? payload.system || null : null,
+    traction,
+    system,
     name,
     manufacturer: text(payload.manufacturer)!,
     catalog_ref: text(payload.catalog_ref, 60),
     scale: payload.scale,
-    epoch: text(payload.epoch, 10),
+    epoch: payload.epoch || null,
     railway: text(payload.railway, 60),
     road_number: text(payload.road_number, 60),
     dcc_address: address,
@@ -84,13 +86,9 @@ export async function saveItem(payload: ItemPayload, itemId?: string): Promise<{
     estimated_value: value,
     purchase_date: text(payload.purchase_date),
     location: text(payload.location),
-    tags: payload.tags
-      .split(",")
-      .map((t) => t.trim())
-      .filter(Boolean)
-      .slice(0, 20),
+    tags: [...new Set(payload.tags.split(",").map((t) => t.trim().slice(0, 40)).filter(Boolean))].slice(0, 20),
     notes: text(payload.notes, 4000),
-    details: cleanDetails(payload.details),
+    details: sanitizeDetails(payload.details, { kind: payload.kind, traction, system }),
   };
 
   const res = itemId
@@ -100,16 +98,4 @@ export async function saveItem(payload: ItemPayload, itemId?: string): Promise<{
   if (res.error || !res.data) return { error: "No se ha podido guardar la pieza. Inténtalo de nuevo." };
   revalidatePath("/", "layout");
   return { id: res.data.id };
-}
-
-// Drop empty values so the jsonb column doesn't fill up with blanks.
-function cleanDetails(d: ItemDetails): ItemDetails {
-  const out: Record<string, unknown> = {};
-  for (const [k, v] of Object.entries(d ?? {})) {
-    if (v === undefined || v === null || v === "") continue;
-    if (typeof v === "string") out[k] = v.trim().slice(0, 200);
-    else if (Array.isArray(v)) out[k] = v.filter((f) => f && typeof f.key === "string" && f.label?.trim()).slice(0, 69);
-    else out[k] = v;
-  }
-  return out as ItemDetails;
 }

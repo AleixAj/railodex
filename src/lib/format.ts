@@ -1,8 +1,21 @@
+import { TIME_ZONE } from "./dates";
+
+/**
+ * 289 € / 66,50 € / 1.289 €. Cents only when there are any, and always a thousands
+ * dot (Spanish formatting leaves it out on 4-digit numbers otherwise: "1289 €").
+ */
 export function money(value: number | string | null | undefined, currency = "EUR") {
   if (value === null || value === undefined || value === "") return "—";
-  return new Intl.NumberFormat("es-ES", { style: "currency", currency, maximumFractionDigits: 0 }).format(
-    Number(value),
-  );
+  const n = Number(value);
+  if (!Number.isFinite(n)) return "—";
+  const cents = !Number.isInteger(Math.round(n * 100) / 100);
+  return new Intl.NumberFormat("es-ES", {
+    style: "currency",
+    currency,
+    useGrouping: "always",
+    minimumFractionDigits: cents ? 2 : 0,
+    maximumFractionDigits: cents ? 2 : 0,
+  }).format(n);
 }
 
 export function shortDate(value: string | null | undefined) {
@@ -13,7 +26,7 @@ export function shortDate(value: string | null | undefined) {
 }
 
 export function longToday() {
-  return new Intl.DateTimeFormat("es-ES", { weekday: "long", day: "numeric", month: "long" }).format(new Date());
+  return new Intl.DateTimeFormat("es-ES", { weekday: "long", day: "numeric", month: "long", timeZone: TIME_ZONE }).format(new Date());
 }
 
 /** Rough percentage of useful fields filled in, for the completeness bar. */

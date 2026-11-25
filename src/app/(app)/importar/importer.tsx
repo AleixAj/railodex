@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import Link from "next/link";
 import { CircleCheck, FileUp, TriangleAlert } from "lucide-react";
-import { COLUMNS, mapHeaders, parseCsv } from "@/lib/csv";
+import { BOM, COLUMNS, mapHeaders, parseCsv } from "@/lib/csv";
 import { toItemRow, type ImportRow } from "@/lib/import-row";
 import { btn, Card } from "@/components/ui";
 import { importItems, type ImportResult } from "./actions";
@@ -72,7 +72,7 @@ export function Importer({ existing }: { existing: string[] }) {
             }}
           />
         </label>
-        <a href={`data:text/csv;charset=utf-8,${encodeURIComponent("﻿" + COLUMNS.map((c) => c.header).join(";"))}`} download="plantilla-railodex.csv" className={btn.ghost}>
+        <a href={`data:text/csv;charset=utf-8,${encodeURIComponent(BOM + COLUMNS.map((c) => c.header).join(";"))}`} download="plantilla-railodex.csv" className={btn.ghost}>
           Descargar plantilla
         </a>
       </div>

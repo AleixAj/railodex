@@ -3,6 +3,8 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/supabase/server";
+import { parseAmount } from "@/lib/numbers";
+import { isISODate, TIME_ZONE, todayISO } from "@/lib/dates";
 import { remainingSlots, LIMIT_MESSAGE } from "@/lib/plan";
 import { KINDS, SCALES } from "@/lib/catalog";
 
@@ -12,12 +14,7 @@ const text = (v: FormDataEntryValue | null, max = 200) => {
   const t = String(v ?? "").trim().slice(0, max);
   return t || null;
 };
-const num = (v: FormDataEntryValue | null) => {
-  const t = String(v ?? "").replace(",", ".").trim();
-  if (!t) return null;
-  const n = Number(t);
-  return Number.isFinite(n) && n >= 0 ? n : NaN;
-};
+const num = (v: FormDataEntryValue | null) => parseAmount(String(v ?? ""));
 
 export async function saveWish(prev: WishState, fd: FormData): Promise<WishState> {
   const id = text(fd.get("id"), 40);
@@ -36,7 +33,7 @@ export async function saveWish(prev: WishState, fd: FormData): Promise<WishState
   const url = text(fd.get("url"), 500);
   if (url && !/^https?:\/\//i.test(url)) return { error: "El enlace tiene que empezar por http:// o https://" };
   const expected_date = text(fd.get("expected_date"), 10);
-  if (expected_date && !/^\d{4}-\d{2}-\d{2}$/.test(expected_date)) return { error: "Fecha no válida." };
+  if (expected_date && !isISODate(expected_date)) return { error: "Fecha no válida." };
 
   const row = {
     name,
@@ -88,7 +85,7 @@ export async function wishToCollection(id: string) {
       railway: w.railway,
       status: "coleccion",
       purchase_price: w.target_price,
-      purchase_date: new Date().toISOString().slice(0, 10),
+      purchase_date: todayISO(TIME_ZONE),
       notes: w.notes,
       details: w.shop ? { seller: w.shop } : {},
     })

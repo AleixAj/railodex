@@ -3,6 +3,8 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/supabase/server";
+import { parseAmount } from "@/lib/numbers";
+import { isISODate, TIME_ZONE, todayISO } from "@/lib/dates";
 import { PHOTO_BUCKET } from "@/lib/items";
 import { EVENT_KINDS, STATUSES } from "@/lib/catalog";
 
@@ -27,16 +29,16 @@ export type EventState = { error?: string; ok?: number };
 
 export async function addEvent(itemId: string, prev: EventState, formData: FormData): Promise<EventState> {
   const { supabase } = await requireUser();
-  const title = String(formData.get("title") ?? "").trim();
+  const title = String(formData.get("title") ?? "").trim().slice(0, 200);
   const kind = String(formData.get("kind") ?? "mantenimiento");
-  const happened_on = String(formData.get("happened_on") ?? "") || new Date().toISOString().slice(0, 10);
-  const costRaw = String(formData.get("cost") ?? "").replace(",", ".").trim();
-  const notes = String(formData.get("notes") ?? "").trim() || null;
+  const happened_on = String(formData.get("happened_on") ?? "") || todayISO(TIME_ZONE);
+  const cost = parseAmount(String(formData.get("cost") ?? ""));
+  const notes = String(formData.get("notes") ?? "").trim().slice(0, 2000) || null;
 
   if (!title) return { error: "Escribe qué se ha hecho." };
   if (!EVENT_KINDS.some((k) => k.id === kind)) return { error: "Tipo no válido." };
-  const cost = costRaw ? Number(costRaw) : null;
-  if (cost !== null && (Number.isNaN(cost) || cost < 0)) return { error: "El coste no es un número válido." };
+  if (!isISODate(happened_on)) return { error: "La fecha no es válida." };
+  if (Number.isNaN(cost)) return { error: "El coste no es un número válido." };
 
   const { error } = await supabase.from("item_events").insert({ item_id: itemId, title, kind, happened_on, cost, notes });
   if (error) return { error: "No se ha podido guardar." };
