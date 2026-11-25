@@ -4,8 +4,9 @@ import { LoginForm } from "./login-form";
 export const metadata: Metadata = { title: "Entrar" };
 
 export default async function LoginPage({ searchParams }: PageProps<"/login">) {
-  const { error } = await searchParams;
+  const { error, confirmado } = await searchParams;
   const notice = error ? "El enlace no es válido o ha caducado. Vuelve a intentarlo." : undefined;
+  const info = confirmado ? "Email confirmado. Ya puedes entrar con tu email y contraseña." : undefined;
 
   return (
     <div className="grid min-h-dvh lg:grid-cols-[1.1fr_1fr]">
@@ -28,7 +29,7 @@ export default async function LoginPage({ searchParams }: PageProps<"/login">) {
           <span className="font-display text-4xl font-bold tracking-tight">Railodex</span>
           <p className="mt-2 text-fg2">Entra o crea tu cuenta gratis.</p>
         </div>
-        <LoginForm notice={notice} />
+        <LoginForm notice={notice} info={info} />
       </section>
     </div>
   );

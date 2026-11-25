@@ -4,7 +4,7 @@ import { useActionState, useState } from "react";
 import { authenticate, type AuthState } from "./actions";
 import { btn, field, Label } from "@/components/ui";
 
-export function LoginForm({ notice }: { notice?: string }) {
+export function LoginForm({ notice, info }: { notice?: string; info?: string }) {
   const [state, action, pending] = useActionState<AuthState, FormData>(authenticate, { mode: "entrar" });
   const [mode, setMode] = useState<"entrar" | "registro">(state.mode);
   const current = state.info ? "entrar" : mode;
@@ -58,9 +58,9 @@ export function LoginForm({ notice }: { notice?: string }) {
             {state.error ?? notice}
           </p>
         )}
-        {state.info && (
+        {(state.info || (info && !state.error)) && (
           <p role="status" className="rounded-[10px] border border-grn/40 bg-grn2 px-3 py-2.5 text-[15px] text-grn">
-            {state.info}
+            {state.info ?? info}
           </p>
         )}
 
