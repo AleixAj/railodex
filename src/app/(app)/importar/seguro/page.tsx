@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
 import { requireUser } from "@/lib/supabase/server";
-import { coverUrls } from "@/lib/items";
+import { coversOf } from "@/lib/photos";
 import { CONDITIONS, labelOf } from "@/lib/catalog";
 import { money, shortDate } from "@/lib/format";
 import { TIME_ZONE, todayISO } from "@/lib/dates";
@@ -15,14 +15,11 @@ export const metadata: Metadata = { title: "Informe para el seguro" };
 // Printable inventory. The browser's "Save as PDF" turns it into the PDF for the insurer.
 export default async function SeguroPage() {
   const { supabase, email, name } = await requireUser();
-  const { data } = await supabase.from("items").select("*").neq("status", "vendida");
+  const { data } = await supabase.from("items").select("*, item_photos(path, position)").neq("status", "vendida");
   // Sorted here because the value falls back to the purchase price when there's no estimate.
   const value = (i: Item) => Number(i.estimated_value ?? i.purchase_price ?? 0);
   const items = ((data ?? []) as Item[]).sort((a, b) => value(b) - value(a));
-  const covers = await coverUrls(
-    supabase,
-    items.map((i) => i.id),
-  );
+  const covers = coversOf(items);
 
   const total = items.reduce((s, i) => s + value(i), 0);
   const today = todayISO(TIME_ZONE);

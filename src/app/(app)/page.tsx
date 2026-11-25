@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { FileUp, Library, Plus, ScanBarcode } from "lucide-react";
 import { requireUser } from "@/lib/supabase/server";
-import { coverUrls } from "@/lib/items";
+import { coversOf } from "@/lib/photos";
 import { EPOCHS, KINDS, scaleInfo, labelOf, EVENT_KINDS } from "@/lib/catalog";
 import { completeness, longToday, money, shortDate } from "@/lib/format";
 import type { Item, ItemEvent } from "@/lib/types";
@@ -10,11 +10,12 @@ import { Card, EmptyState, PhotoBox, ScaleBadge, SectionTitle } from "@/componen
 export default async function InicioPage() {
   const { supabase, name } = await requireUser();
 
-  const [{ data: itemsData }, { data: eventsData }, { data: photoRows }] = await Promise.all([
+  // Everything in one go; these queries don't depend on each other.
+  const [{ data: itemsData }, { data: eventsData }, { data: reservedWishes }] = await Promise.all([
     supabase
       .from("items")
       .select(
-        "id, kind, name, manufacturer, catalog_ref, scale, epoch, railway, road_number, system, dcc_address, condition, status, purchase_price, purchase_date, estimated_value, location, details, created_at",
+        "id, kind, name, manufacturer, catalog_ref, scale, epoch, railway, road_number, system, dcc_address, condition, status, purchase_price, purchase_date, estimated_value, location, details, created_at, item_photos(path, position)",
       )
       .order("created_at", { ascending: false }),
     supabase
@@ -22,30 +23,24 @@ export default async function InicioPage() {
       .select("id, item_id, happened_on, kind, title, cost, items(name)")
       .order("happened_on", { ascending: false })
       .limit(4),
-    supabase.from("item_photos").select("item_id"),
+    supabase
+      .from("wishes")
+      .select("id, name, manufacturer, catalog_ref, expected_date")
+      .eq("status", "reservada")
+      .order("expected_date", { ascending: true, nullsFirst: false })
+      .limit(4),
   ]);
-  const { data: reservedWishes } = await supabase
-    .from("wishes")
-    .select("id, name, manufacturer, catalog_ref, expected_date")
-    .eq("status", "reservada")
-    .order("expected_date", { ascending: true, nullsFirst: false })
-    .limit(4);
-  const photoCount = new Map<string, number>();
-  (photoRows ?? []).forEach((p) => photoCount.set(p.item_id, (photoCount.get(p.item_id) ?? 0) + 1));
 
   const items = (itemsData ?? []) as Item[];
   const owned = items.filter((i) => i.status !== "vendida");
   const events = (eventsData ?? []) as unknown as (ItemEvent & { items: { name: string } | null })[];
   const latest = owned.slice(0, 5);
-  const covers = await coverUrls(
-    supabase,
-    latest.map((i) => i.id),
-  );
+  const covers = coversOf(latest);
 
   const invested = owned.reduce((s, i) => s + Number(i.purchase_price ?? 0), 0);
   const value = owned.reduce((s, i) => s + Number(i.estimated_value ?? i.purchase_price ?? 0), 0);
   const avgComplete = owned.length
-    ? Math.round(owned.reduce((s, i) => s + completeness(i, photoCount.get(i.id) ?? 0), 0) / owned.length)
+    ? Math.round(owned.reduce((s, i) => s + completeness(i, i.item_photos?.length ?? 0), 0) / owned.length)
     : 0;
 
   const addresses = owned.filter((i) => i.dcc_address !== null);

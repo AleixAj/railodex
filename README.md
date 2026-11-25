@@ -70,9 +70,14 @@ docs/                   the prompt used for the design
 
 Set `NEXT_PUBLIC_SITE_URL` to the public address (e.g. `https://railodex.app`) so confirmation emails and QR labels point there, and add `<that address>/auth/callback` to Supabase's _Redirect URLs_.
 
+## Performance notes
+
+- Photos are served from `/foto/...` with a fixed URL, so the browser caches them for good. Each photo is stored twice: up to 1600px for the ficha and a 480px thumbnail for lists.
+- Photos come embedded in the same query as the pieces (`item_photos(path, position)`), so a page is one round of queries to Supabase.
+- The session check is shared between layout and page (`cache()` in `requireUser`).
+
 ## Known limits
 
-- Photo links are signed for an hour; a page left open longer needs a reload to show them again.
 - Supabase returns at most 1,000 rows per query by default. Fine with the 100-piece free plan; the collection will need pagination before Pro goes unlimited.
 - The camera barcode scanner works on Chrome for Android and on Macs; elsewhere the code is typed in.
 

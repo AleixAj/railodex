@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { requireUser } from "@/lib/supabase/server";
-import { coverUrls } from "@/lib/items";
+import { coversOf } from "@/lib/photos";
 import { KINDS, TRACTIONS, labelOf } from "@/lib/catalog";
 import { money } from "@/lib/format";
 import type { Item } from "@/lib/types";
@@ -28,7 +28,7 @@ export default async function ColeccionPage({ searchParams }: PageProps<"/colecc
   let query = supabase
     .from("items")
     .select(
-      "id, kind, traction, system, name, manufacturer, catalog_ref, scale, epoch, railway, road_number, dcc_address, status, purchase_price, estimated_value, location, details",
+      "id, kind, traction, system, name, manufacturer, catalog_ref, scale, epoch, railway, road_number, dcc_address, status, purchase_price, estimated_value, location, details, item_photos(path, position)",
     );
 
   // Strip characters that mean something inside a PostgREST filter.
@@ -60,10 +60,7 @@ export default async function ColeccionPage({ searchParams }: PageProps<"/colecc
   const manufacturers = [...new Set((facets ?? []).map((f) => f.manufacturer).filter(Boolean))].sort();
   const railways = [...new Set((facets ?? []).map((f) => f.railway).filter(Boolean) as string[])].sort();
   const total = facets?.length ?? 0;
-  const covers = await coverUrls(
-    supabase,
-    items.map((i) => i.id),
-  );
+  const covers = coversOf(items);
   const value = items.filter((i) => i.status !== "vendida").reduce((s, i) => s + worth(i), 0);
   const view = get("vista") || "cuadricula";
 
@@ -115,7 +112,7 @@ function GridView({ items, covers }: { items: Item[]; covers: Record<string, str
         <Link
           key={i.id}
           href={`/coleccion/${i.id}`}
-          className="group overflow-hidden rounded-xl border border-ln bg-s1 transition hover:border-ln2"
+          className="lazy-card group overflow-hidden rounded-xl border border-ln bg-s1 transition hover:border-ln2"
         >
           <div className="relative aspect-[4/3] border-b border-ln">
             <PhotoBox src={covers[i.id]} alt={i.name} kind={i.kind} />
@@ -154,7 +151,7 @@ function ListView({ items, covers }: { items: Item[]; covers: Record<string, str
   return (
     <Card className="divide-y divide-ln overflow-hidden">
       {items.map((i) => (
-        <Link key={i.id} href={`/coleccion/${i.id}`} className="flex items-center gap-4 p-3 hover:bg-s2/50">
+        <Link key={i.id} href={`/coleccion/${i.id}`} className="lazy-row flex items-center gap-4 p-3 hover:bg-s2/50">
           <div className="h-14 w-20 flex-none overflow-hidden rounded-md border border-ln">
             <PhotoBox src={covers[i.id]} alt={i.name} kind={i.kind} />
           </div>

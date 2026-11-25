@@ -2,17 +2,16 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { CircleCheck, Info } from "lucide-react";
 import { requireUser } from "@/lib/supabase/server";
+import { isUuid } from "@/lib/ids";
 import type { Item } from "@/lib/types";
 import { ItemWizard } from "@/components/item-wizard/item-wizard";
 import { AddPaths } from "./add-paths";
 
 export const metadata: Metadata = { title: "Añadir pieza" };
 
-const UUID = /^[0-9a-f-]{36}$/i;
-
 export default async function AnadirPage({ searchParams }: PageProps<"/anadir">) {
   const sp = await searchParams;
-  const duplicar = typeof sp.duplicar === "string" && UUID.test(sp.duplicar) ? sp.duplicar : null;
+  const duplicar = isUuid(sp.duplicar) ? sp.duplicar : null;
   const ean = typeof sp.ean === "string" && /^\d{8,14}$/.test(sp.ean) ? sp.ean : null;
   const { supabase, userId } = await requireUser();
 

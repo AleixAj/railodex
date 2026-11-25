@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { TrainTrack } from "lucide-react";
 import { requireUser } from "@/lib/supabase/server";
-import { coverUrls } from "@/lib/items";
+import { coversOf } from "@/lib/photos";
 import { Card, PhotoBox } from "@/components/ui";
 import type { Kind } from "@/lib/catalog";
 import { NewComposition } from "./new-composition";
@@ -19,7 +19,7 @@ export default async function ComposicionesPage() {
   const { supabase } = await requireUser();
   const { data } = await supabase
     .from("compositions")
-    .select("id, name, composition_items(position, items(id, name, kind))")
+    .select("id, name, composition_items(position, items(id, name, kind, item_photos(path, position)))")
     .order("created_at", { ascending: false });
 
   const rows = ((data ?? []) as unknown as Row[]).map((c) => ({
@@ -29,10 +29,7 @@ export default async function ComposicionesPage() {
       .sort((a, b) => a.position - b.position)
       .map((m) => m.items!),
   }));
-  const covers = await coverUrls(
-    supabase,
-    rows.flatMap((r) => r.members.slice(0, 8).map((m) => m.id)),
-  );
+  const covers = coversOf(rows.flatMap((r) => r.members));
 
   return (
     <div className="flex flex-col gap-5">

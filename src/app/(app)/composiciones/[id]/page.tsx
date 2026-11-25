@@ -3,7 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ChevronLeft, CircleCheck, TriangleAlert } from "lucide-react";
 import { requireUser } from "@/lib/supabase/server";
-import { coverUrls } from "@/lib/items";
+import { isUuid } from "@/lib/ids";
+import { coversOf } from "@/lib/photos";
 import { EPOCHS } from "@/lib/catalog";
 import { money } from "@/lib/format";
 import type { Item } from "@/lib/types";
@@ -19,7 +20,7 @@ export async function generateMetadata({ params }: PageProps<"/composiciones/[id
 
 export default async function ComposicionPage({ params }: PageProps<"/composiciones/[id]">) {
   const { id } = await params;
-  if (!/^[0-9a-f-]{36}$/i.test(id)) notFound();
+  if (!isUuid(id)) notFound();
   const { supabase } = await requireUser();
 
   const [{ data: comp }, { data: links }, { data: all }] = await Promise.all([
@@ -28,7 +29,7 @@ export default async function ComposicionPage({ params }: PageProps<"/composicio
     supabase
       .from("items")
       .select(
-        "id, kind, traction, system, name, manufacturer, catalog_ref, scale, epoch, purchase_price, estimated_value, status, details",
+        "id, kind, traction, system, name, manufacturer, catalog_ref, scale, epoch, purchase_price, estimated_value, status, details, item_photos(path, position)",
       )
       .order("name"),
   ]);
@@ -38,10 +39,7 @@ export default async function ComposicionPage({ params }: PageProps<"/composicio
   const byId = new Map(items.map((i) => [i.id, i]));
   const ordered = (links ?? []).map((l) => byId.get(l.item_id)).filter(Boolean) as Item[];
   const inTrain = new Set(ordered.map((i) => i.id));
-  const covers = await coverUrls(
-    supabase,
-    ordered.map((i) => i.id),
-  );
+  const covers = coversOf(ordered);
 
   const members: Member[] = ordered.map((i) => ({
     id: i.id,

@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/supabase/server";
 import { parseAmount } from "@/lib/numbers";
 import { isISODate, TIME_ZONE, todayISO } from "@/lib/dates";
-import { PHOTO_BUCKET } from "@/lib/items";
+import { PHOTO_BUCKET, storageFiles } from "@/lib/photos";
 import { EVENT_KINDS, STATUSES } from "@/lib/catalog";
 
 export async function deleteItem(itemId: string) {
@@ -13,7 +13,7 @@ export async function deleteItem(itemId: string) {
   const { data: photos } = await supabase.from("item_photos").select("path").eq("item_id", itemId);
   const { error } = await supabase.from("items").delete().eq("id", itemId);
   if (error) return { error: "No se ha podido borrar la pieza." };
-  if (photos?.length) await supabase.storage.from(PHOTO_BUCKET).remove(photos.map((p) => p.path));
+  if (photos?.length) await supabase.storage.from(PHOTO_BUCKET).remove(photos.flatMap((p) => storageFiles(p.path)));
   revalidatePath("/", "layout");
   redirect("/coleccion");
 }

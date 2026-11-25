@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ChevronRight, MapPin, Printer, QrCode } from "lucide-react";
 import { requireUser } from "@/lib/supabase/server";
-import { coverUrls } from "@/lib/items";
+import { coversOf } from "@/lib/photos";
 import { buildTree, isInside, splitLocation, joinLocation, type LocationNode } from "@/lib/locations";
 import { money } from "@/lib/format";
 import type { Item } from "@/lib/types";
@@ -17,7 +17,9 @@ export default async function UbicacionesPage({ searchParams }: PageProps<"/ubic
 
   const { data } = await supabase
     .from("items")
-    .select("id, name, kind, scale, manufacturer, catalog_ref, location, estimated_value, purchase_price, status")
+    .select(
+      "id, name, kind, scale, manufacturer, catalog_ref, location, estimated_value, purchase_price, status, item_photos(path, position)",
+    )
     .neq("status", "vendida")
     .order("name");
   const items = (data ?? []) as Item[];
@@ -29,10 +31,7 @@ export default async function UbicacionesPage({ searchParams }: PageProps<"/ubic
       : selected
         ? items.filter((i) => isInside(i.location, selected))
         : [];
-  const covers = await coverUrls(
-    supabase,
-    inside.slice(0, 60).map((i) => i.id),
-  );
+  const covers = coversOf(inside);
   const crumbs = selected && selected !== "__sin__" ? splitLocation(selected) : [];
 
   return (

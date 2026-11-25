@@ -1,4 +1,5 @@
 import "server-only";
+import { cache } from "react";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -25,8 +26,11 @@ export async function createClient() {
   });
 }
 
-/** Gets the client plus the verified user, or redirects to /login. */
-export async function requireUser() {
+/**
+ * Gets the client plus the verified user, or redirects to /login.
+ * Wrapped in cache() so the layout and the page share one check per request.
+ */
+export const requireUser = cache(async () => {
   const supabase = await createClient();
   const { data } = await supabase.auth.getClaims();
   const claims = data?.claims;
@@ -37,4 +41,4 @@ export async function requireUser() {
     email: (claims.email as string | undefined) ?? "",
     name: ((claims.user_metadata as { name?: string } | undefined)?.name ?? "").trim(),
   };
-}
+});

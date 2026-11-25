@@ -67,6 +67,8 @@ export type Item = {
   details: ItemDetails;
   created_at: string;
   updated_at: string;
+  // Only there when the query embeds it: select("..., item_photos(path, position)")
+  item_photos?: { path: string; position: number }[];
 };
 
 export type ItemPhoto = { id: string; item_id: string; path: string; position: number };

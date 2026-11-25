@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useRef, useState, useTransition } from "react";
+import { useActionState, useOptimistic, useRef, useState, useTransition } from "react";
 import Link from "next/link";
 import { Check, ChevronLeft, ChevronRight, Plus, TrainTrack, Trash2, X } from "lucide-react";
 import { addToComposition } from "@/app/(app)/composiciones/actions";
@@ -10,13 +10,15 @@ import type { Kind } from "@/lib/catalog";
 import { PhotoBox, btn, field, Label } from "@/components/ui";
 import { addEvent, deleteEvent, deleteItem, setStatus, type EventState } from "./actions";
 
-export function Gallery({ urls, name, kind }: { urls: string[]; name: string; kind: Kind }) {
+type GalleryPhoto = { full: string; thumb: string };
+
+export function Gallery({ photos, name, kind }: { photos: GalleryPhoto[]; name: string; kind: Kind }) {
   const [i, setI] = useState(0);
-  const n = urls.length;
+  const n = photos.length;
   return (
     <div className="flex flex-col gap-2">
       <div className="relative aspect-[4/3] overflow-hidden rounded-xl border border-ln bg-s1">
-        <PhotoBox src={urls[i]} alt={`${name}, foto ${i + 1}`} kind={kind} />
+        <PhotoBox src={photos[i]?.full} alt={`${name}, foto ${i + 1}`} kind={kind} priority />
         {n > 1 && (
           <>
             <button
@@ -46,14 +48,14 @@ export function Gallery({ urls, name, kind }: { urls: string[]; name: string; ki
       </div>
       {n > 1 && (
         <div className="grid grid-cols-5 gap-2">
-          {urls.map((u, idx) => (
+          {photos.map((p, idx) => (
             <button
-              key={u}
+              key={p.thumb}
               onClick={() => setI(idx)}
               aria-label={`Ver foto ${idx + 1}`}
               className={`aspect-[4/3] overflow-hidden rounded-lg border ${idx === i ? "border-amb" : "border-ln"}`}
             >
-              <PhotoBox src={u} alt="" />
+              <PhotoBox src={p.thumb} alt="" />
             </button>
           ))}
         </div>
@@ -63,13 +65,20 @@ export function Gallery({ urls, name, kind }: { urls: string[]; name: string; ki
 }
 
 export function StatusSelect({ itemId, status }: { itemId: string; status: string }) {
-  const [pending, start] = useTransition();
+  // Shows the new value straight away; the server catches up in the background.
+  const [shown, setShown] = useOptimistic(status);
+  const [, start] = useTransition();
   return (
     <select
       aria-label="Estado de la pieza"
-      value={status}
-      disabled={pending}
-      onChange={(e) => start(() => setStatus(itemId, e.target.value))}
+      value={shown}
+      onChange={(e) => {
+        const next = e.target.value;
+        start(async () => {
+          setShown(next);
+          await setStatus(itemId, next);
+        });
+      }}
       className="h-9 rounded-lg border border-ln2 bg-s1 px-2 text-[14px]"
     >
       {STATUSES.map((s) => (

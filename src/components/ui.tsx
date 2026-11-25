@@ -88,16 +88,28 @@ export function PhotoBox({
   alt,
   className = "",
   kind,
+  priority = false,
 }: {
   src?: string | null;
   alt: string;
   className?: string;
   kind?: Kind;
+  /** The main photo on screen: load it straight away instead of lazily. */
+  priority?: boolean;
 }) {
   const Icon = kind ? KIND_ICONS[kind] : TrainFront;
   if (src) {
-    // eslint-disable-next-line @next/next/no-img-element -- URLs firmadas de Supabase, temporales
-    return <img src={src} alt={alt} className={`h-full w-full object-cover ${className}`} />;
+    return (
+      // eslint-disable-next-line @next/next/no-img-element -- already resized WebP served by /foto, next/image would add nothing
+      <img
+        src={src}
+        alt={alt}
+        loading={priority ? "eager" : "lazy"}
+        fetchPriority={priority ? "high" : "auto"}
+        decoding="async"
+        className={`h-full w-full object-cover ${className}`}
+      />
+    );
   }
   return (
     <div

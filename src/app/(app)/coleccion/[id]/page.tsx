@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
+import { cache } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ChevronLeft, Copy, MapPin, Pencil, TriangleAlert } from "lucide-react";
 import { requireUser } from "@/lib/supabase/server";
-import { photoUrls } from "@/lib/items";
+import { photoSrc } from "@/lib/photos";
+import { isUuid } from "@/lib/ids";
 import {
   CONDITIONS,
   EVENT_KINDS,
@@ -27,51 +29,57 @@ import {
   StatusSelect,
 } from "./client-parts";
 
+type FichaItem = Item & {
+  item_photos: ItemPhoto[];
+  item_events: ItemEvent[];
+  composition_items: { composition_id: string }[];
+};
+
+// One request-scoped loader, so the page title and the page share the same query.
+const loadItem = cache(async (id: string) => {
+  const { supabase } = await requireUser();
+  const { data } = await supabase
+    .from("items")
+    .select("*, item_photos(id, item_id, path, position), item_events(*), composition_items(composition_id)")
+    .eq("id", id)
+    .order("position", { referencedTable: "item_photos" })
+    .order("happened_on", { referencedTable: "item_events", ascending: false })
+    .maybeSingle();
+  return data as FichaItem | null;
+});
+
 export async function generateMetadata({ params }: PageProps<"/coleccion/[id]">): Promise<Metadata> {
   const { id } = await params;
-  const { supabase } = await requireUser();
-  const { data } = await supabase.from("items").select("name").eq("id", id).maybeSingle();
-  return { title: data?.name ?? "Pieza" };
+  const item = isUuid(id) ? await loadItem(id) : null;
+  return { title: item?.name ?? "Pieza" };
 }
 
 export default async function FichaPage({ params, searchParams }: PageProps<"/coleccion/[id]">) {
   const { id } = await params;
   const failedPhotos = Number((await searchParams).fotos_fallidas) || 0;
-  if (!/^[0-9a-f-]{36}$/i.test(id)) notFound();
+  if (!isUuid(id)) notFound();
   const { supabase } = await requireUser();
 
-  const [{ data: itemData }, { data: photosData }, { data: eventsData }, { data: compsData }, { data: linksData }] =
-    await Promise.all([
-      supabase.from("items").select("*").eq("id", id).maybeSingle(),
-      supabase.from("item_photos").select("*").eq("item_id", id).order("position"),
-      supabase.from("item_events").select("*").eq("item_id", id).order("happened_on", { ascending: false }),
-      supabase.from("compositions").select("id, name").order("name"),
-      supabase.from("composition_items").select("composition_id").eq("item_id", id),
-    ]);
-  if (!itemData) notFound();
+  // The piece, the trains list and the DCC addresses in use, all at once.
+  const [item, { data: compsData }, { data: addressData }] = await Promise.all([
+    loadItem(id),
+    supabase.from("compositions").select("id, name").order("name"),
+    supabase.from("items").select("id, name, dcc_address").not("dcc_address", "is", null).neq("status", "vendida"),
+  ]);
+  if (!item) notFound();
 
-  const inTrains = new Set((linksData ?? []).map((l) => l.composition_id));
+  const inTrains = new Set(item.composition_items.map((l) => l.composition_id));
   const compositions = (compsData ?? []).map((c) => ({ ...c, member: inTrains.has(c.id) }));
 
-  const item = itemData as Item;
   const d = item.details ?? {};
-  const photos = (photosData ?? []) as ItemPhoto[];
-  const events = (eventsData ?? []) as ItemEvent[];
-  const urlsById = await photoUrls(supabase, photos);
-  const urls = photos.map((p) => urlsById[p.id]).filter(Boolean);
+  const photos = item.item_photos;
+  const events = item.item_events;
+  const gallery = photos.map((p) => ({ full: photoSrc(p.path), thumb: photoSrc(p.path, "thumb") }));
 
-  let duplicate: { id: string; name: string } | null = null;
-  if (item.dcc_address !== null && item.status !== "vendida") {
-    const { data } = await supabase
-      .from("items")
-      .select("id, name")
-      .eq("dcc_address", item.dcc_address)
-      .neq("id", item.id)
-      .neq("status", "vendida")
-      .limit(1)
-      .maybeSingle();
-    duplicate = data;
-  }
+  const duplicate =
+    item.dcc_address !== null && item.status !== "vendida"
+      ? (addressData ?? []).find((a) => a.dcc_address === item.dcc_address && a.id !== item.id)
+      : undefined;
 
   const pct = completeness(item, photos.length);
   const wa =
@@ -114,7 +122,7 @@ export default async function FichaPage({ params, searchParams }: PageProps<"/co
       </div>
 
       <div className="grid gap-6 lg:grid-cols-[1.15fr_1fr]">
-        <Gallery urls={urls} name={item.name} kind={item.kind} />
+        <Gallery photos={gallery} name={item.name} kind={item.kind} />
 
         <div className="flex flex-col gap-4">
           <div className="flex flex-wrap items-center gap-2">
