@@ -119,27 +119,27 @@ export function AddEventForm({ itemId }: { itemId: string }) {
       </div>
       <div>
         <Label htmlFor="ev-title">¿Qué se ha hecho?</Label>
-        <input id="ev-title" name="title" required className={field} placeholder="Limpieza de ruedas y engrase" />
+        <input id="ev-title" name="title" required maxLength={200} defaultValue={state.values?.title} className={field} placeholder="p. ej. Limpieza de ruedas y engrase" />
       </div>
-      <div className="grid grid-cols-3 gap-2">
+      <div className="grid gap-2 sm:grid-cols-3">
         <div>
           <Label htmlFor="ev-kind">Tipo</Label>
-          <select id="ev-kind" name="kind" className={field}>
+          <select id="ev-kind" name="kind" defaultValue={state.values?.kind} className={field}>
             {EVENT_KINDS.map((k) => <option key={k.id} value={k.id}>{k.label}</option>)}
           </select>
         </div>
         <div>
           <Label htmlFor="ev-date">Fecha</Label>
-          <input id="ev-date" name="happened_on" type="date" className={field} defaultValue={todayISO()} />
+          <input id="ev-date" name="happened_on" type="date" className={field} defaultValue={state.values?.happened_on ?? todayISO()} />
         </div>
         <div>
           <Label htmlFor="ev-cost">Coste €</Label>
-          <input id="ev-cost" name="cost" inputMode="decimal" className={field} placeholder="0" />
+          <input id="ev-cost" name="cost" inputMode="decimal" defaultValue={state.values?.cost} className={field} placeholder="0" />
         </div>
       </div>
       <div>
         <Label htmlFor="ev-notes">Notas</Label>
-        <input id="ev-notes" name="notes" className={field} placeholder="Opcional" />
+        <input id="ev-notes" name="notes" defaultValue={state.values?.notes} className={field} placeholder="Opcional" />
       </div>
       {state.error && <p className="text-red">{state.error}</p>}
       <button className={btn.primary} disabled={pending}>{pending ? "Guardando…" : "Guardar"}</button>

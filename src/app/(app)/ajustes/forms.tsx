@@ -16,7 +16,7 @@ export function NameForm({ name }: { name: string }) {
     <form action={action} className="flex flex-col gap-3">
       <div>
         <Label htmlFor="name">Nombre</Label>
-        <input id="name" name="name" defaultValue={name} maxLength={60} autoComplete="name" className={field} />
+        <input id="name" name="name" defaultValue={state.name ?? name} maxLength={60} autoComplete="name" className={field} />
       </div>
       <Feedback state={state} />
       <button className={`${btn.secondary} self-start`} disabled={pending}>{pending ? "Guardando…" : "Guardar nombre"}</button>

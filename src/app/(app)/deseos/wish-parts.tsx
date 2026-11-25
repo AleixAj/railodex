@@ -29,9 +29,14 @@ export function WishDialog({ wish, trigger }: { wish?: Wish; trigger: "nuevo" | 
   const [status, setStatus] = useState<"deseo" | "reservada">(wish?.status ?? "deseo");
   const [state, action, pending] = useActionState<WishState, FormData>(async (prev, fd) => {
     const res = await saveWish(prev, fd);
-    if (res.ok) dialog.current?.close();
+    if (res.ok) {
+      dialog.current?.close();
+      if (!wish) setStatus("deseo");
+    }
     return res;
   }, {});
+  // What each field starts with: what was just typed if saving failed, otherwise the saved wish.
+  const initial = (key: keyof Wish) => state.values?.[key] ?? (wish?.[key] == null ? "" : String(wish[key]));
 
   return (
     <>
@@ -50,40 +55,40 @@ export function WishDialog({ wish, trigger }: { wish?: Wish; trigger: "nuevo" | 
           {wish && <input type="hidden" name="id" value={wish.id} />}
           <div>
             <Label htmlFor="w-name" hint="obligatorio">¿Qué pieza quieres?</Label>
-            <input id="w-name" name="name" required defaultValue={wish?.name} className={field} placeholder="p. ej. RENFE 333.3 «Faraona»" />
+            <input id="w-name" name="name" required defaultValue={initial("name")} className={field} placeholder="p. ej. RENFE 333.3 «Faraona»" />
           </div>
           <div className="grid gap-3 sm:grid-cols-2">
             <div>
               <Label htmlFor="w-mf">Fabricante</Label>
-              <input id="w-mf" name="manufacturer" list="w-mfs" defaultValue={wish?.manufacturer ?? ""} className={field} />
+              <input id="w-mf" name="manufacturer" list="w-mfs" defaultValue={initial("manufacturer")} className={field} />
               <datalist id="w-mfs">{MANUFACTURERS.map((m) => <option key={m} value={m} />)}</datalist>
             </div>
             <div>
               <Label htmlFor="w-ref">Referencia</Label>
-              <input id="w-ref" name="catalog_ref" defaultValue={wish?.catalog_ref ?? ""} className={`${field} font-mono`} />
+              <input id="w-ref" name="catalog_ref" defaultValue={initial("catalog_ref")} className={`${field} font-mono`} />
             </div>
             <div>
               <Label htmlFor="w-kind">Tipo</Label>
-              <select id="w-kind" name="kind" defaultValue={wish?.kind ?? ""} className={field}>
+              <select id="w-kind" name="kind" defaultValue={initial("kind")} className={field}>
                 <option value="">Sin indicar</option>
                 {KINDS.map((k) => <option key={k.id} value={k.id}>{k.label}</option>)}
               </select>
             </div>
             <div>
               <Label htmlFor="w-scale">Escala</Label>
-              <select id="w-scale" name="scale" defaultValue={wish?.scale ?? ""} className={field}>
+              <select id="w-scale" name="scale" defaultValue={initial("scale")} className={field}>
                 <option value="">Sin indicar</option>
                 {SCALES.map((s) => <option key={s.id} value={s.id}>{s.label} · {s.ratio}</option>)}
               </select>
             </div>
             <div>
               <Label htmlFor="w-rw">Compañía</Label>
-              <input id="w-rw" name="railway" list="w-rws" defaultValue={wish?.railway ?? ""} className={field} />
+              <input id="w-rw" name="railway" list="w-rws" defaultValue={initial("railway")} className={field} />
               <datalist id="w-rws">{RAILWAYS.map((r) => <option key={r} value={r} />)}</datalist>
             </div>
             <div>
               <Label htmlFor="w-prio">Prioridad</Label>
-              <select id="w-prio" name="priority" defaultValue={String(wish?.priority ?? 2)} className={field}>
+              <select id="w-prio" name="priority" defaultValue={initial("priority") || "2"} className={field}>
                 <option value="1">Alta</option>
                 <option value="2">Media</option>
                 <option value="3">Baja</option>
@@ -91,15 +96,15 @@ export function WishDialog({ wish, trigger }: { wish?: Wish; trigger: "nuevo" | 
             </div>
             <div>
               <Label htmlFor="w-price">Precio objetivo (€)</Label>
-              <input id="w-price" name="target_price" inputMode="decimal" defaultValue={wish?.target_price ?? ""} className={field} />
+              <input id="w-price" name="target_price" inputMode="decimal" defaultValue={initial("target_price")} className={field} />
             </div>
             <div>
               <Label htmlFor="w-shop">Tienda</Label>
-              <input id="w-shop" name="shop" defaultValue={wish?.shop ?? ""} className={field} />
+              <input id="w-shop" name="shop" defaultValue={initial("shop")} className={field} />
             </div>
             <div className="sm:col-span-2">
               <Label htmlFor="w-url">Enlace</Label>
-              <input id="w-url" name="url" type="url" defaultValue={wish?.url ?? ""} className={field} placeholder="https://…" />
+              <input id="w-url" name="url" type="url" defaultValue={initial("url")} className={field} placeholder="https://…" />
             </div>
           </div>
 
@@ -125,17 +130,17 @@ export function WishDialog({ wish, trigger }: { wish?: Wish; trigger: "nuevo" | 
             <div className="grid gap-3 sm:grid-cols-2">
               <div>
                 <Label htmlFor="w-dep">Señal pagada (€)</Label>
-                <input id="w-dep" name="deposit" inputMode="decimal" defaultValue={wish?.deposit ?? ""} className={field} />
+                <input id="w-dep" name="deposit" inputMode="decimal" defaultValue={initial("deposit")} className={field} />
               </div>
               <div>
                 <Label htmlFor="w-date">Llegada prevista</Label>
-                <input id="w-date" name="expected_date" type="date" defaultValue={wish?.expected_date ?? ""} className={field} />
+                <input id="w-date" name="expected_date" type="date" defaultValue={initial("expected_date")} className={field} />
               </div>
             </div>
           )}
           <div>
             <Label htmlFor="w-notes">Notas</Label>
-            <input id="w-notes" name="notes" defaultValue={wish?.notes ?? ""} className={field} />
+            <input id="w-notes" name="notes" defaultValue={initial("notes")} className={field} />
           </div>
 
           {state.error && <p role="alert" className="text-red">{state.error}</p>}

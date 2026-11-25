@@ -3,15 +3,17 @@
 import { revalidatePath } from "next/cache";
 import { requireUser } from "@/lib/supabase/server";
 
-export type SettingsState = { error?: string; ok?: string };
+export type SettingsState = { error?: string; ok?: string; name?: string };
 
 export async function updateName(prev: SettingsState, fd: FormData): Promise<SettingsState> {
   const name = String(fd.get("name") ?? "").trim().slice(0, 60);
   const { supabase } = await requireUser();
   const { error } = await supabase.auth.updateUser({ data: { name } });
-  if (error) return { error: "No se ha podido guardar el nombre." };
+  if (error) return { name, error: "No se ha podido guardar el nombre." };
+  // The name is read from the session token, so refresh it or the old one keeps showing.
+  await supabase.auth.refreshSession();
   revalidatePath("/", "layout");
-  return { ok: "Nombre guardado." };
+  return { name, ok: "Nombre guardado." };
 }
 
 export async function updatePassword(prev: SettingsState, fd: FormData): Promise<SettingsState> {

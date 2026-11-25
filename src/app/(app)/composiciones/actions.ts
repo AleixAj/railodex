@@ -4,14 +4,14 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/supabase/server";
 
-export type FormState = { error?: string };
+export type FormState = { error?: string; name?: string };
 
 export async function createComposition(prev: FormState, formData: FormData): Promise<FormState> {
   const name = String(formData.get("name") ?? "").trim().slice(0, 120);
   if (!name) return { error: "Ponle un nombre, p. ej. «Talgo III RENFE»." };
   const { supabase } = await requireUser();
   const { data, error } = await supabase.from("compositions").insert({ name }).select("id").single();
-  if (error || !data) return { error: "No se ha podido crear la composición." };
+  if (error || !data) return { name, error: "No se ha podido crear la composición." };
   revalidatePath("/composiciones");
   redirect(`/composiciones/${data.id}`);
 }

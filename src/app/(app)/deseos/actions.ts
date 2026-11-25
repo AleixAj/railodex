@@ -8,7 +8,10 @@ import { isISODate, TIME_ZONE, todayISO } from "@/lib/dates";
 import { remainingSlots, LIMIT_MESSAGE } from "@/lib/plan";
 import { KINDS, SCALES } from "@/lib/catalog";
 
-export type WishState = { error?: string; ok?: number };
+// `values` goes back on errors so the dialog can refill itself (React clears forms after submitting).
+export type WishState = { error?: string; ok?: number; values?: Record<string, string> };
+
+const FIELDS = ["name", "kind", "manufacturer", "catalog_ref", "scale", "railway", "priority", "target_price", "shop", "url", "status", "deposit", "expected_date", "notes"];
 
 const text = (v: FormDataEntryValue | null, max = 200) => {
   const t = String(v ?? "").trim().slice(0, max);
@@ -16,7 +19,22 @@ const text = (v: FormDataEntryValue | null, max = 200) => {
 };
 const num = (v: FormDataEntryValue | null) => parseAmount(String(v ?? ""));
 
+function isWebUrl(value: string) {
+  try {
+    const u = new URL(value);
+    return u.protocol === "https:" || u.protocol === "http:";
+  } catch {
+    return false;
+  }
+}
+
 export async function saveWish(prev: WishState, fd: FormData): Promise<WishState> {
+  const result = await validateAndSave(fd);
+  if (result.error) return { ...result, values: Object.fromEntries(FIELDS.map((f) => [f, String(fd.get(f) ?? "")])) };
+  return result;
+}
+
+async function validateAndSave(fd: FormData): Promise<WishState> {
   const id = text(fd.get("id"), 40);
   const name = text(fd.get("name"));
   if (!name) return { error: "Escribe qué pieza quieres." };
@@ -31,7 +49,7 @@ export async function saveWish(prev: WishState, fd: FormData): Promise<WishState
   const deposit = num(fd.get("deposit"));
   if (Number.isNaN(target_price) || Number.isNaN(deposit)) return { error: "Revisa los precios: tienen que ser números." };
   const url = text(fd.get("url"), 500);
-  if (url && !/^https?:\/\//i.test(url)) return { error: "El enlace tiene que empezar por http:// o https://" };
+  if (url && !isWebUrl(url)) return { error: "El enlace tiene que ser una dirección web (https://…)." };
   const expected_date = text(fd.get("expected_date"), 10);
   if (expected_date && !isISODate(expected_date)) return { error: "Fecha no válida." };
 

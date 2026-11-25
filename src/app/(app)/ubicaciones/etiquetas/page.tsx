@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { headers } from "next/headers";
 import { ChevronLeft } from "lucide-react";
 import QRCode from "qrcode";
 import { requireUser } from "@/lib/supabase/server";
+import { siteOrigin } from "@/lib/site";
 import { buildTree, flatten, isInside } from "@/lib/locations";
 import { btn } from "@/components/ui";
 import { PrintButton } from "@/components/print-button";
@@ -18,8 +18,7 @@ export default async function EtiquetasPage({ searchParams }: PageProps<"/ubicac
   const { roots } = buildTree((data ?? []).map((d) => d.location));
   const nodes = flatten(roots).filter((n) => !only || isInside(n.path, only));
 
-  const h = await headers();
-  const origin = `${h.get("x-forwarded-proto") ?? "http"}://${h.get("host")}`;
+  const origin = await siteOrigin();
   const labels = await Promise.all(
     nodes.map(async (n) => ({
       ...n,

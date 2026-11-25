@@ -1,5 +1,6 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import { safeNext } from "@/lib/redirects";
 
 const PUBLIC_PATHS = ["/login", "/auth"];
 
@@ -34,20 +35,19 @@ export async function updateSession(request: NextRequest) {
   const isPublic = PUBLIC_PATHS.some((p) => pathname === p || pathname.startsWith(`${p}/`));
 
   if (!signedIn && !isPublic) {
-    return redirectKeepingCookies(request, "/login", supabaseResponse);
+    // Remember where they were going (e.g. a QR label) so login can take them back there.
+    const next = pathname === "/" ? "" : `?next=${encodeURIComponent(pathname + request.nextUrl.search)}`;
+    return redirectKeepingCookies(request, `/login${next}`, supabaseResponse);
   }
   if (signedIn && pathname === "/login") {
-    return redirectKeepingCookies(request, "/", supabaseResponse);
+    return redirectKeepingCookies(request, safeNext(request.nextUrl.searchParams.get("next")), supabaseResponse);
   }
 
   return supabaseResponse;
 }
 
-function redirectKeepingCookies(request: NextRequest, path: string, from: NextResponse) {
-  const url = request.nextUrl.clone();
-  url.pathname = path;
-  url.search = "";
-  const res = NextResponse.redirect(url);
+function redirectKeepingCookies(request: NextRequest, target: string, from: NextResponse) {
+  const res = NextResponse.redirect(new URL(target, request.url));
   from.cookies.getAll().forEach((c) => res.cookies.set(c));
   for (const header of ["cache-control", "expires", "pragma"]) {
     const value = from.headers.get(header);

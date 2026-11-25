@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
+import { safeNext } from "@/lib/redirects";
 import { LoginForm } from "./login-form";
 
 export const metadata: Metadata = { title: "Entrar" };
 
 export default async function LoginPage({ searchParams }: PageProps<"/login">) {
-  const { error, confirmado } = await searchParams;
+  const { error, confirmado, next } = await searchParams;
   const notice = error ? "El enlace no es válido o ha caducado. Vuelve a intentarlo." : undefined;
   const info = confirmado ? "Email confirmado. Ya puedes entrar con tu email y contraseña." : undefined;
 
@@ -29,7 +30,7 @@ export default async function LoginPage({ searchParams }: PageProps<"/login">) {
           <span className="font-display text-4xl font-bold tracking-tight">Railodex</span>
           <p className="mt-2 text-fg2">Entra o crea tu cuenta gratis.</p>
         </div>
-        <LoginForm notice={notice} info={info} />
+        <LoginForm notice={notice} info={info} next={safeNext(next)} />
       </section>
     </div>
   );

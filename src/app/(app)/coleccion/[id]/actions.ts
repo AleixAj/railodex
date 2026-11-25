@@ -25,7 +25,8 @@ export async function setStatus(itemId: string, status: string) {
   revalidatePath(`/coleccion/${itemId}`);
 }
 
-export type EventState = { error?: string; ok?: number };
+// `values` goes back on errors so the form can refill itself (React clears it after submitting).
+export type EventState = { error?: string; ok?: number; values?: Record<string, string> };
 
 export async function addEvent(itemId: string, prev: EventState, formData: FormData): Promise<EventState> {
   const { supabase } = await requireUser();
@@ -35,13 +36,20 @@ export async function addEvent(itemId: string, prev: EventState, formData: FormD
   const cost = parseAmount(String(formData.get("cost") ?? ""));
   const notes = String(formData.get("notes") ?? "").trim().slice(0, 2000) || null;
 
-  if (!title) return { error: "Escribe qué se ha hecho." };
-  if (!EVENT_KINDS.some((k) => k.id === kind)) return { error: "Tipo no válido." };
-  if (!isISODate(happened_on)) return { error: "La fecha no es válida." };
-  if (Number.isNaN(cost)) return { error: "El coste no es un número válido." };
+  const values = {
+    title,
+    kind,
+    happened_on,
+    cost: String(formData.get("cost") ?? ""),
+    notes: notes ?? "",
+  };
+  if (!title) return { values, error: "Escribe qué se ha hecho." };
+  if (!EVENT_KINDS.some((k) => k.id === kind)) return { values, error: "Tipo no válido." };
+  if (!isISODate(happened_on)) return { values, error: "La fecha no es válida." };
+  if (Number.isNaN(cost)) return { values, error: "El coste no es un número válido." };
 
   const { error } = await supabase.from("item_events").insert({ item_id: itemId, title, kind, happened_on, cost, notes });
-  if (error) return { error: "No se ha podido guardar." };
+  if (error) return { values, error: "No se ha podido guardar." };
   revalidatePath(`/coleccion/${itemId}`);
   return { ok: Date.now() };
 }
