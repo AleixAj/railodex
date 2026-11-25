@@ -73,7 +73,7 @@ export default async function InicioPage() {
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
         <QuickAction href="/anadir" icon={Plus} title="Añadir una pieza" text="Busca, escanea o rellénala a mano" primary />
         <QuickAction href="/coleccion" icon={Library} title="Ver mi colección" text={plural(owned.length, "pieza", "piezas")} />
-        <QuickAction href="/anadir?camino=escanear" icon={ScanBarcode} title="Escanear una caja" text="Con el código de barras" soon />
+        <QuickAction href="/anadir?camino=escanear" icon={ScanBarcode} title="Escanear una caja" text="Con el código de barras" />
         <QuickAction href="/importar" icon={FileUp} title="Importar mi lista" text="Desde Excel o CSV" />
       </div>
 
@@ -226,7 +226,7 @@ function plural(n: number, one: string, many: string) {
   return `${n} ${n === 1 ? one : many}`;
 }
 
-function QuickAction({ href, icon: Icon, title, text, primary, soon }: { href: string; icon: typeof Plus; title: string; text: string; primary?: boolean; soon?: boolean }) {
+function QuickAction({ href, icon: Icon, title, text, primary }: { href: string; icon: typeof Plus; title: string; text: string; primary?: boolean }) {
   return (
     <Link
       href={href}
@@ -240,7 +240,6 @@ function QuickAction({ href, icon: Icon, title, text, primary, soon }: { href: s
       <span className="min-w-0">
         <span className="flex items-center gap-2 text-[17px] font-semibold">
           {title}
-          {soon && <span className="rounded border border-ln2 px-1 font-mono text-[11px] font-normal text-fg3">pronto</span>}
         </span>
         <span className="block text-[15px] text-fg2">{text}</span>
       </span>
