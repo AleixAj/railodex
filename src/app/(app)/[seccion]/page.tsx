@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import { Card } from "@/components/ui";
 
 const SECTIONS: Record<string, { title: string; text: string }> = {
-  importar: { title: "Importar y exportar", text: "Importar desde Excel/CSV con vista previa, y exportar a CSV o PDF para el seguro." },
   ajustes: { title: "Ajustes y perfil", text: "Idioma, moneda, privacidad y tu plan (Gratis o Pro)." },
 };
 

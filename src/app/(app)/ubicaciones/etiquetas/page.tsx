@@ -6,7 +6,7 @@ import QRCode from "qrcode";
 import { requireUser } from "@/lib/supabase/server";
 import { buildTree, flatten, isInside } from "@/lib/locations";
 import { btn } from "@/components/ui";
-import { PrintButton } from "./print-button";
+import { PrintButton } from "@/components/print-button";
 
 export const metadata: Metadata = { title: "Etiquetas QR" };
 
