@@ -33,8 +33,8 @@ export async function deleteComposition(id: string) {
   redirect("/composiciones");
 }
 
-export async function addToComposition(id: string, itemId: string) {
-  if (!itemId) return;
+export async function addToComposition(id: string, itemId: string): Promise<{ error?: string }> {
+  if (!itemId) return {};
   const { supabase } = await requireUser();
   const { data: last } = await supabase
     .from("composition_items")
@@ -43,10 +43,15 @@ export async function addToComposition(id: string, itemId: string) {
     .order("position", { ascending: false })
     .limit(1)
     .maybeSingle();
-  await supabase
+  // Already in the train (e.g. added from two tabs) counts as done, not as an error.
+  const { error } = await supabase
     .from("composition_items")
-    .insert({ composition_id: id, item_id: itemId, position: (last?.position ?? -1) + 1 });
+    .upsert(
+      { composition_id: id, item_id: itemId, position: (last?.position ?? -1) + 1 },
+      { onConflict: "composition_id,item_id", ignoreDuplicates: true },
+    );
   revalidatePath(`/composiciones/${id}`);
+  return error ? { error: "No se ha podido añadir." } : {};
 }
 
 export async function removeFromComposition(id: string, itemId: string) {

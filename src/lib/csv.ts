@@ -2,7 +2,7 @@
 // regional settings, and add a BOM so accents open correctly.
 
 import type { Item } from "./types";
-import { CONDITIONS, KINDS, labelOf } from "./catalog";
+import { CONDITIONS, KINDS, STATUSES, labelOf } from "./catalog";
 
 /** Byte order mark. Without it Excel opens the file as Latin-1 and breaks the accents. */
 export const BOM = String.fromCharCode(0xfeff);
@@ -24,6 +24,8 @@ export const COLUMNS = [
   { header: "Fecha compra", key: "purchase_date" },
   { header: "Valor estimado", key: "estimated_value" },
   { header: "Ubicación", key: "location" },
+  { header: "Situación", key: "status" },
+  { header: "Etiquetas", key: "tags" },
   { header: "Notas", key: "notes" },
 ] as const;
 
@@ -44,6 +46,8 @@ export function itemsToCsv(items: Item[]) {
       COLUMNS.map((c) => {
         if (c.key === "kind") return escape(labelOf(KINDS, item.kind));
         if (c.key === "condition") return escape(labelOf(CONDITIONS, item.condition));
+        if (c.key === "status") return escape(labelOf(STATUSES, item.status));
+        if (c.key === "tags") return escape((item.tags ?? []).join(", "));
         if (c.key === "system")
           return escape(item.system === "digital" ? "Digital" : item.system === "analogico" ? "Analógico" : "");
         const v = item[c.key];
@@ -118,6 +122,8 @@ const ALIASES: Record<string, ColumnKey> = {
   valor: "estimated_value",
   ubicacion: "location",
   direccion: "dcc_address",
+  estado: "condition",
+  etiqueta: "tags",
 };
 
 /** Works out which column of the file goes to which field. Unknown headers are ignored. */

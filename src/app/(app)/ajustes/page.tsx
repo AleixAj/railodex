@@ -52,7 +52,8 @@ const PLANS = [
   },
 ];
 
-export default async function AjustesPage() {
+export default async function AjustesPage({ searchParams }: PageProps<"/ajustes">) {
+  const { recuperar } = await searchParams;
   const { supabase, email, name } = await requireUser();
   const { count } = await supabase.from("items").select("id", { count: "exact", head: true });
   const theme = (await cookies()).get("theme")?.value === "claro" ? "claro" : "oscuro";
@@ -77,8 +78,13 @@ export default async function AjustesPage() {
         <ThemeToggle initial={theme} withLabel className={`${btn.secondary} mt-3`} />
       </Card>
 
-      <Card className="p-5">
+      <Card id="contrasena" className={`scroll-mt-24 p-5 ${recuperar ? "border-amb" : ""}`}>
         <h2 className="text-[17px] font-semibold">Contraseña</h2>
+        {recuperar && (
+          <p role="status" className="mt-2 text-ambtx">
+            Has entrado con el enlace del email. Elige ahora tu contraseña nueva.
+          </p>
+        )}
         <div className="mt-4">
           <PasswordForm />
         </div>

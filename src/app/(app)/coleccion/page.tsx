@@ -48,6 +48,7 @@ export default async function ColeccionPage({ searchParams }: PageProps<"/colecc
   if (get("compania")) query = query.eq("railway", get("compania"));
   if (get("epoca")) query = query.eq("epoch", get("epoca"));
   if (get("fabricante")) query = query.eq("manufacturer", get("fabricante"));
+  if (get("situacion")) query = query.eq("status", get("situacion"));
   const order = ORDER[get("orden")] ?? ORDER.recientes;
   query = query.order(order.column, { ascending: order.ascending, nullsFirst: false });
 
@@ -62,7 +63,10 @@ export default async function ColeccionPage({ searchParams }: PageProps<"/colecc
   const railways = [...new Set((facets ?? []).map((f) => f.railway).filter(Boolean) as string[])].sort();
   const total = facets?.length ?? 0;
   const covers = coversOf(items);
-  const value = items.filter((i) => i.status !== "vendida").reduce((s, i) => s + worth(i), 0);
+  // Sold pieces aren't worth anything to you any more, unless you're looking at just those.
+  const value = items
+    .filter((i) => i.status !== "vendida" || get("situacion") === "vendida")
+    .reduce((s, i) => s + worth(i), 0);
   const view = get("vista") || "cuadricula";
 
   return (

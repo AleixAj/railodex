@@ -1,15 +1,19 @@
 // Converts spreadsheet rows into rows for the `items` table.
 // Plain module so both the preview (browser) and the import (server) use the same rules.
 
-import { CONDITIONS, EPOCHS, KINDS, SCALES } from "./catalog";
+import { CONDITIONS, EPOCHS, KINDS, SCALES, STATUSES } from "./catalog";
 import { isISODate } from "./dates";
 import { parseAmount } from "./numbers";
 import type { ColumnKey } from "./csv";
 
 export type ImportRow = Partial<Record<ColumnKey, string>>;
 
+// Our export puts an apostrophe before text starting with = + - @ so Excel doesn't run it
+// as a formula; take it off again when the file comes back.
+const unguard = (v: string) => (/^'[=+\-@]/.test(v) ? v.slice(1) : v);
+
 const text = (v: string | undefined, max = 200) => {
-  const t = (v ?? "").trim().slice(0, max);
+  const t = unguard((v ?? "").trim()).slice(0, max);
   return t || null;
 };
 
@@ -63,6 +67,15 @@ export function toItemRow(r: ImportRow) {
     purchase_date: date(r.purchase_date),
     estimated_value: money(r.estimated_value),
     location: text(r.location),
+    status: findId(STATUSES, r.status) ?? "coleccion",
+    tags: [
+      ...new Set(
+        (r.tags ?? "")
+          .split(",")
+          .map((t) => t.trim().slice(0, 40))
+          .filter(Boolean),
+      ),
+    ].slice(0, 20),
     notes: text(r.notes, 4000),
   };
 }

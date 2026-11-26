@@ -4,6 +4,7 @@ import { Wrench } from "lucide-react";
 import { requireUser } from "@/lib/supabase/server";
 import { EVENT_KINDS, labelOf } from "@/lib/catalog";
 import { money, shortDate } from "@/lib/format";
+import { TIME_ZONE, todayISO } from "@/lib/dates";
 import { Card, Tag } from "@/components/ui";
 
 export const metadata: Metadata = { title: "Mantenimiento" };
@@ -34,13 +35,15 @@ export default async function MantenimientoPage({ searchParams }: PageProps<"/ma
   const filter = typeof tipo === "string" && EVENT_KINDS.some((k) => k.id === tipo) ? tipo : "";
   const events = filter ? all.filter((e) => e.kind === filter) : all;
 
-  const year = new Date().getFullYear().toString();
+  // Dates are Madrid dates; the server runs in UTC, so work from today's date there.
+  const today = todayISO(TIME_ZONE);
+  const year = today.slice(0, 4);
   const costYear = all.filter((e) => e.happened_on.startsWith(year)).reduce((s, e) => s + Number(e.cost ?? 0), 0);
   const costAll = all.reduce((s, e) => s + Number(e.cost ?? 0), 0);
 
   // Locos with no maintenance logged in the last year.
-  const cutoff = new Date();
-  cutoff.setFullYear(cutoff.getFullYear() - 1);
+  // Plain string compare of YYYY-MM-DD dates; also fine on 29 February.
+  const cutoff = `${Number(year) - 1}${today.slice(4)}`;
   const lastByItem = new Map<string, string>();
   all
     .filter((e) => e.kind === "mantenimiento")
@@ -49,7 +52,7 @@ export default async function MantenimientoPage({ searchParams }: PageProps<"/ma
     });
   const overdue = (tractorsData ?? []).filter((t) => {
     const last = lastByItem.get(t.id);
-    return !last || new Date(last) < cutoff;
+    return !last || last < cutoff;
   });
 
   return (

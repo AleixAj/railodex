@@ -29,7 +29,12 @@ export function BarcodeScanner({ onCode, onClose }: { onCode: (code: string) => 
     (async () => {
       try {
         stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" }, audio: false });
-        if (stopped || !video.current) return;
+        // Closed while the permission prompt was open: the cleanup below already ran
+        // without a stream to stop, so turn the camera off here.
+        if (stopped || !video.current) {
+          stream.getTracks().forEach((t) => t.stop());
+          return;
+        }
         video.current.srcObject = stream;
         await video.current.play();
 

@@ -2,14 +2,29 @@
 
 import { revalidatePath } from "next/cache";
 import { requireUser } from "@/lib/supabase/server";
-import { remainingSlots, LIMIT_MESSAGE } from "@/lib/plan";
+import { isLimitError, remainingSlots, LIMIT_MESSAGE } from "@/lib/plan";
+import { COLUMNS } from "@/lib/csv";
 import { toItemRow, type ImportRow } from "@/lib/import-row";
 
 export type ImportResult = { error?: string; imported?: number; skipped?: number };
 
-export async function importItems(rows: ImportRow[]): Promise<ImportResult> {
-  if (rows.length === 0) return { error: "El archivo no tiene filas." };
-  if (rows.length > 1000) return { error: "Importa como mucho 1.000 filas cada vez." };
+const KEYS = COLUMNS.map((c) => c.key);
+
+/** Server actions can be called with anything, so keep only known columns with text values. */
+function cleanRow(raw: unknown): ImportRow {
+  const out: ImportRow = {};
+  if (!raw || typeof raw !== "object") return out;
+  for (const key of KEYS) {
+    const v = (raw as Record<string, unknown>)[key];
+    if (typeof v === "string" || typeof v === "number") out[key] = String(v).slice(0, 5000);
+  }
+  return out;
+}
+
+export async function importItems(input: ImportRow[]): Promise<ImportResult> {
+  if (!Array.isArray(input) || input.length === 0) return { error: "El archivo no tiene filas." };
+  if (input.length > 1000) return { error: "Importa como mucho 1.000 filas cada vez." };
+  const rows = input.map(cleanRow);
 
   const { supabase } = await requireUser();
   const valid = rows.map(toItemRow).filter((r) => r !== null);
@@ -20,6 +35,7 @@ export async function importItems(rows: ImportRow[]): Promise<ImportResult> {
   const toInsert = valid.slice(0, slots);
 
   const { error } = await supabase.from("items").insert(toInsert);
+  if (isLimitError(error)) return { error: LIMIT_MESSAGE };
   if (error) return { error: "No se ha podido importar. Revisa el archivo e inténtalo otra vez." };
 
   revalidatePath("/", "layout");

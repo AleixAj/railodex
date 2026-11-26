@@ -8,8 +8,9 @@ Web app for cataloguing model railway collections: locomotives, coaches and wago
 2. In the project's **SQL Editor**, run these files in order (it creates the tables, permissions and photo storage):
    - `supabase/migrations/20261125025818_init_coleccion.sql`
    - `supabase/migrations/20261125110913_composiciones_y_deseos.sql`
+   - `supabase/migrations/20261126120000_limites_en_la_base.sql` (the database also enforces the 100-piece limit, 8 photos per piece and text sizes, so nobody can skip them by calling the API directly)
 3. In **Project Settings → API Keys**, copy the project URL and the _publishable_ key into `.env.local` (use `.env.example` as the template).
-4. In **Authentication → URL Configuration**, add `http://localhost:3000/auth/callback` to _Redirect URLs_.
+4. In **Authentication → URL Configuration**, add `http://localhost:3000/auth/**` to _Redirect URLs_ (it covers the confirmation email and the "forgot password" link).
 5. Start it up:
 
    ```bash
@@ -33,8 +34,8 @@ Web app for cataloguing model railway collections: locomotives, coaches and wago
 | Ubicaciones         | Tree of shelves and display cases, printable QR labels                                                       |
 | Digital             | DCC addresses (duplicates in red), decoders, locos ready to digitise                                         |
 | Estadísticas        | Value vs. invested, spending per year, by maker and by railway                                               |
-| Importar / exportar | Import CSV with preview, export to CSV, JSON backup, printable insurance report                              |
-| Ajustes             | Name, theme, password, plans and the 100-piece limit on the free plan                                        |
+| Importar / exportar | Import CSV with preview, export to CSV (status and tags included), JSON backup, printable insurance report   |
+| Ajustes             | Name, theme, password (also reset by email from the login page), plans and the 100-piece limit               |
 
 ## Structure
 
@@ -77,7 +78,7 @@ The page doesn't exist in production. Each photo's author and licence are in `sr
 
 ## Going online
 
-Set `NEXT_PUBLIC_SITE_URL` to the public address (e.g. `https://railodex.app`) so confirmation emails and QR labels point there, and add `<that address>/auth/callback` to Supabase's _Redirect URLs_.
+Set `NEXT_PUBLIC_SITE_URL` to the public address (e.g. `https://railodex.app`) so confirmation emails and QR labels point there, and add `<that address>/auth/**` to Supabase's _Redirect URLs_.
 
 ## Performance notes
 

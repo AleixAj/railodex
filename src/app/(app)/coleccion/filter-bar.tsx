@@ -3,7 +3,7 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState, useTransition } from "react";
 import { LayoutGrid, List, Search, Table2, X } from "lucide-react";
-import { EPOCHS, KINDS, SCALES } from "@/lib/catalog";
+import { EPOCHS, KINDS, SCALES, STATUSES } from "@/lib/catalog";
 
 const SELECT =
   "h-11 rounded-[10px] border border-ln2 bg-s1 px-3 pr-8 text-[15px] text-fg focus:border-amb focus:outline-none data-[on=true]:border-amb data-[on=true]:bg-amb2";
@@ -36,7 +36,9 @@ export function FilterBar({ manufacturers, railways }: { manufacturers: string[]
   };
 
   const view = params.get("vista") ?? "cuadricula";
-  const active = ["q", "escala", "tipo", "sistema", "compania", "epoca", "fabricante"].some((k) => params.get(k));
+  const active = ["q", "escala", "tipo", "sistema", "compania", "epoca", "fabricante", "situacion"].some((k) =>
+    params.get(k),
+  );
 
   const select = (key: string, label: string, options: { value: string; label: string }[]) => (
     <select
@@ -106,15 +108,25 @@ export function FilterBar({ manufacturers, railways }: { manufacturers: string[]
           "Fabricante",
           manufacturers.map((m) => ({ value: m, label: m })),
         )}
+        {select(
+          "situacion",
+          "Situación",
+          STATUSES.map((s) => ({ value: s.id, label: s.label })),
+        )}
         {active && (
           <button
             onClick={() => {
               setText("");
               clearTimeout(timer.current);
+              // Clear the filters but keep how the list is shown and sorted.
+              const keep = new URLSearchParams();
+              for (const k of ["vista", "orden"]) {
+                const v = params.get(k);
+                if (v) keep.set(k, v);
+              }
+              const qs = keep.toString();
               startTransition(() =>
-                router.replace(`${pathname}${view !== "cuadricula" ? `?vista=${view}` : ""}`, {
-                  transitionTypes: ["filter"],
-                }),
+                router.replace(`${pathname}${qs ? `?${qs}` : ""}`, { transitionTypes: ["filter"] }),
               );
             }}
             className="inline-flex h-11 items-center gap-1.5 rounded-[10px] px-3 text-[15px] text-ambtx hover:bg-s2"

@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/supabase/server";
 import { parseAmount } from "@/lib/numbers";
 import { isISODate, TIME_ZONE, todayISO } from "@/lib/dates";
-import { remainingSlots, LIMIT_MESSAGE } from "@/lib/plan";
+import { isLimitError, remainingSlots, LIMIT_MESSAGE } from "@/lib/plan";
 import { KINDS, SCALES } from "@/lib/catalog";
 
 // `values` goes back on errors so the dialog can refill itself (React clears forms after submitting).
@@ -129,6 +129,7 @@ export async function wishToCollection(id: string) {
     })
     .select("id")
     .single();
+  if (isLimitError(error)) return { error: LIMIT_MESSAGE };
   if (error || !item) return { error: "No se ha podido crear la pieza." };
   await supabase.from("wishes").delete().eq("id", id);
   revalidatePath("/", "layout");

@@ -22,7 +22,8 @@ export async function setStatus(itemId: string, status: string) {
   if (!STATUSES.some((s) => s.id === status)) return;
   const { supabase } = await requireUser();
   await supabase.from("items").update({ status }).eq("id", itemId);
-  revalidatePath(`/coleccion/${itemId}`);
+  // Selling a piece changes totals on Inicio, Colección and Estadísticas too.
+  revalidatePath("/", "layout");
 }
 
 // `values` goes back on errors so the form can refill itself (React clears it after submitting).
@@ -57,7 +58,7 @@ export async function addEvent(itemId: string, prev: EventState, formData: FormD
     .from("item_events")
     .insert({ item_id: itemId, title, kind, happened_on, cost, notes });
   if (error) return { values, error: "No se ha podido guardar." };
-  revalidatePath(`/coleccion/${itemId}`);
+  revalidatePath("/", "layout");
   return { ok: Date.now() };
 }
 

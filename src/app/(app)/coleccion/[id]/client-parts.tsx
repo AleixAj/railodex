@@ -234,6 +234,7 @@ export function CompositionPicker({
   const dialog = useRef<HTMLDialogElement>(null);
   const [pending, start] = useTransition();
   const [added, setAdded] = useState<string[]>([]);
+  const [addError, setAddError] = useState("");
 
   return (
     <>
@@ -268,6 +269,11 @@ export function CompositionPicker({
           </p>
         ) : (
           <ul className="mt-3 flex flex-col gap-1.5">
+            {addError && (
+              <li role="alert" className="text-red">
+                {addError}
+              </li>
+            )}
             {compositions.map((c) => {
               const inside = c.member || added.includes(c.id);
               return (
@@ -287,8 +293,10 @@ export function CompositionPicker({
                       disabled={pending}
                       onClick={() =>
                         start(async () => {
-                          await addToComposition(c.id, itemId);
-                          setAdded((a) => [...a, c.id]);
+                          setAddError("");
+                          const res = await addToComposition(c.id, itemId).catch(() => ({ error: "Sin conexión." }));
+                          if (res.error) setAddError(res.error);
+                          else setAdded((a) => [...a, c.id]);
                         })
                       }
                       className="rounded-md border border-ln2 px-2.5 py-1 text-[14px] hover:border-amb hover:text-ambtx"

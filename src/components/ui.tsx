@@ -47,8 +47,12 @@ export function Tag({
   );
 }
 
-export function Card({ className = "", children }: { className?: string; children: React.ReactNode }) {
-  return <section className={`rounded-xl border border-ln bg-s1 ${className}`}>{children}</section>;
+export function Card({ className = "", id, children }: { className?: string; id?: string; children: React.ReactNode }) {
+  return (
+    <section id={id} className={`rounded-xl border border-ln bg-s1 ${className}`}>
+      {children}
+    </section>
+  );
 }
 
 export function SectionTitle({ children, aside }: { children: React.ReactNode; aside?: React.ReactNode }) {

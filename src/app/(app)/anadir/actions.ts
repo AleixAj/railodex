@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { requireUser } from "@/lib/supabase/server";
-import { remainingSlots, LIMIT_MESSAGE } from "@/lib/plan";
+import { isLimitError, remainingSlots, LIMIT_MESSAGE } from "@/lib/plan";
 import { CONDITIONS, EPOCHS, KINDS, SCALES, STATUSES, TRACTIONS } from "@/lib/catalog";
 import { sanitizeDetails } from "@/lib/details";
 import { parseAmount } from "@/lib/numbers";
@@ -103,6 +103,7 @@ export async function saveItem(payload: ItemPayload, itemId?: string): Promise<{
     ? await supabase.from("items").update(row).eq("id", itemId).select("id").single()
     : await supabase.from("items").insert(row).select("id").single();
 
+  if (isLimitError(res.error)) return { error: LIMIT_MESSAGE };
   if (res.error || !res.data) return { error: "No se ha podido guardar la pieza. Inténtalo de nuevo." };
   revalidatePath("/", "layout");
   return { id: res.data.id };

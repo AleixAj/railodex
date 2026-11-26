@@ -17,7 +17,8 @@ const MESSAGES: Record<string, string> = {
 };
 
 export async function authenticate(prev: AuthState, formData: FormData): Promise<AuthState> {
-  const mode = formData.get("mode") === "registro" ? "registro" : "entrar";
+  const raw = formData.get("mode");
+  const mode = raw === "registro" || raw === "recuperar" ? raw : "entrar";
   const email = String(formData.get("email") ?? "")
     .trim()
     .toLowerCase();
@@ -26,6 +27,8 @@ export async function authenticate(prev: AuthState, formData: FormData): Promise
     .trim()
     .slice(0, 60);
   const next = safeNext(formData.get("next"));
+
+  if (mode === "recuperar") return sendResetLink(email);
 
   // `email` goes back with every error so the form doesn't wipe it.
   if (!email || !password) return { email, error: "Escribe tu email y tu contraseña." };
@@ -53,4 +56,18 @@ export async function authenticate(prev: AuthState, formData: FormData): Promise
   // Supabase answers the same whether or not the email already had an account,
   // so nobody can use this form to find out who's registered.
   return { email, info: "Listo. Si el email es correcto te llegará un enlace para confirmar la cuenta." };
+}
+
+/**
+ * Emails a link that logs the user in and takes them to Ajustes to pick a new password.
+ * The answer is the same whether or not the account exists, so it can't be used to probe emails.
+ */
+async function sendResetLink(email: string): Promise<AuthState> {
+  if (!email) return { error: "Escribe el email de tu cuenta." };
+  const supabase = await createClient();
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: `${await siteOrigin()}/auth/recuperar`,
+  });
+  if (error && MESSAGES[error.code ?? ""]) return { email, error: MESSAGES[error.code ?? ""] };
+  return { email, info: "Si hay una cuenta con ese email, te llegará un enlace para cambiar la contraseña." };
 }

@@ -3,7 +3,7 @@
 // Add / edit wizard. This file only holds the state, the step list and saving;
 // each step's fields live in steps.tsx.
 
-import { useMemo, useState, useTransition } from "react";
+import { useEffect, useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Check, ChevronLeft, ChevronRight, Plus } from "lucide-react";
 import type { Item, ItemDetails } from "@/lib/types";
@@ -56,6 +56,17 @@ export function ItemWizard({ userId, initial, existingPhotos = [], addresses, mo
   const [error, setError] = useState("");
   const [saving, startSaving] = useTransition();
 
+  // Ask before closing the tab or reloading with unsaved changes (a long form is painful to redo).
+  const [pristine] = useState(() => JSON.stringify(form));
+  const dirty =
+    JSON.stringify(form) !== pristine || newPhotos.length > 0 || keptPhotos.length !== existingPhotos.length;
+  useEffect(() => {
+    if (!dirty || saving) return;
+    const warn = (e: BeforeUnloadEvent) => e.preventDefault();
+    window.addEventListener("beforeunload", warn);
+    return () => window.removeEventListener("beforeunload", warn);
+  }, [dirty, saving]);
+
   const set = <K extends keyof ItemPayload>(key: K, value: ItemPayload[K]) => setForm((f) => ({ ...f, [key]: value }));
   const setD = <K extends keyof ItemDetails>(key: K, value: ItemDetails[K]) =>
     setForm((f) => ({ ...f, details: { ...f.details, [key]: value } }));
@@ -93,7 +104,14 @@ export function ItemWizard({ userId, initial, existingPhotos = [], addresses, mo
     }
     setError("");
     startSaving(async () => {
-      const res = await saveItem(form, mode === "editar" ? initial?.id : undefined);
+      let res: Awaited<ReturnType<typeof saveItem>>;
+      try {
+        res = await saveItem(form, mode === "editar" ? initial?.id : undefined);
+      } catch {
+        // Without this a dropped connection ends on the error page and everything typed is lost.
+        setError("No hay conexión con el servidor. Revisa internet y vuelve a pulsar Guardar.");
+        return;
+      }
       if (res.error || !res.id) {
         setError(res.error ?? "No se ha podido guardar.");
         return;

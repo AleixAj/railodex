@@ -10,6 +10,32 @@ import { importItems, type ImportResult } from "./actions";
 
 type Preview = { rows: ImportRow[]; matched: string[]; ignored: string[] };
 
+// Server actions accept up to 1 MB per call, which a long file with notes can pass,
+// so the rows go in batches. Only rows that will import are sent.
+const CHUNK = 200;
+
+async function importInChunks(checked: { raw: ImportRow; item: unknown }[]): Promise<ImportResult> {
+  const rows = checked.filter((c) => c.item).map((c) => c.raw);
+  const skippedHere = checked.length - rows.length;
+  let imported = 0;
+  let skipped = skippedHere;
+  for (let i = 0; i < rows.length; i += CHUNK) {
+    try {
+      const res = await importItems(rows.slice(i, i + CHUNK));
+      if (res.error) {
+        // Earlier batches are already in, so say how many made it.
+        return imported ? { imported, skipped: skipped + rows.length - i, error: res.error } : res;
+      }
+      imported += res.imported ?? 0;
+      skipped += res.skipped ?? 0;
+    } catch {
+      const error = "Se ha cortado la conexión. Revisa tu colección antes de volver a importar.";
+      return imported ? { imported, skipped: skipped + rows.length - i, error } : { error };
+    }
+  }
+  return { imported, skipped };
+}
+
 export function Importer({ existing }: { existing: string[] }) {
   const [preview, setPreview] = useState<Preview | null>(null);
   const [fileError, setFileError] = useState("");
@@ -120,7 +146,7 @@ export function Importer({ existing }: { existing: string[] }) {
               Cancelar
             </button>
             <button
-              onClick={() => start(async () => setResult(await importItems(preview.rows)))}
+              onClick={() => start(async () => setResult(await importInChunks(checked)))}
               disabled={pending || okCount === 0}
               className={btn.primary}
             >

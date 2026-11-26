@@ -12,3 +12,8 @@ export async function remainingSlots(supabase: SupabaseClient) {
 }
 
 export const LIMIT_MESSAGE = `Has llegado al límite de ${FREE_PLAN_LIMIT} piezas del plan Gratis. Con Pro no hay límite.`;
+
+/** The database refuses inserts past the limit too (see the limites_en_la_base migration). */
+export function isLimitError(error: { hint?: string | null } | null | undefined) {
+  return error?.hint === "plan_limit";
+}

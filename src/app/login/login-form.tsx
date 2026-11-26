@@ -4,14 +4,14 @@ import { useActionState, useState } from "react";
 import { authenticate, type AuthState } from "./actions";
 import { btn, field, Label } from "@/components/ui";
 
-type Mode = "entrar" | "registro";
+type Mode = "entrar" | "registro" | "recuperar";
 
 export function LoginForm({ notice, info, next }: { notice?: string; info?: string; next: string }) {
   const [mode, setMode] = useState<Mode>("entrar");
   const [state, action, pending] = useActionState<AuthState, FormData>(async (prev, formData) => {
     const result = await authenticate(prev, formData);
     // After signing up, switch to "Entrar" so they can log in once they've confirmed.
-    if (result.info) setMode("entrar");
+    if (result.info && formData.get("mode") === "registro") setMode("entrar");
     return result;
   }, {});
 
@@ -26,9 +26,9 @@ export function LoginForm({ notice, info, next }: { notice?: string; info?: stri
             key={m}
             type="button"
             role="tab"
-            aria-selected={mode === m}
+            aria-selected={mode === m || (m === "entrar" && mode === "recuperar")}
             onClick={() => setMode(m)}
-            className={`h-10 rounded-[9px] text-[15px] font-medium ${mode === m ? "bg-s2 text-fg" : "text-fg3 hover:text-fg"}`}
+            className={`h-10 rounded-[9px] text-[15px] font-medium ${mode === m || (m === "entrar" && mode === "recuperar") ? "bg-s2 text-fg" : "text-fg3 hover:text-fg"}`}
           >
             {m === "entrar" ? "Entrar" : "Crear cuenta"}
           </button>
@@ -63,20 +63,38 @@ export function LoginForm({ notice, info, next }: { notice?: string; info?: stri
             className={field}
           />
         </div>
-        <div>
-          <Label htmlFor="password" hint={mode === "registro" ? "mínimo 8 caracteres" : undefined}>
-            Contraseña
-          </Label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            required
-            minLength={mode === "registro" ? 8 : undefined}
-            autoComplete={mode === "registro" ? "new-password" : "current-password"}
-            className={field}
-          />
-        </div>
+        {mode === "recuperar" ? (
+          <p className="text-[15px] text-fg2">
+            Te enviaremos un enlace para entrar y elegir una contraseña nueva.{" "}
+            <button type="button" onClick={() => setMode("entrar")} className="text-ambtx hover:underline">
+              Volver
+            </button>
+          </p>
+        ) : (
+          <div>
+            <Label htmlFor="password" hint={mode === "registro" ? "mínimo 8 caracteres" : undefined}>
+              Contraseña
+            </Label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              required
+              minLength={mode === "registro" ? 8 : undefined}
+              autoComplete={mode === "registro" ? "new-password" : "current-password"}
+              className={field}
+            />
+            {mode === "entrar" && (
+              <button
+                type="button"
+                onClick={() => setMode("recuperar")}
+                className="mt-2 text-[14px] text-fg3 hover:text-ambtx"
+              >
+                ¿Has olvidado la contraseña?
+              </button>
+            )}
+          </div>
+        )}
 
         {error && (
           <p role="alert" className="rounded-[10px] border border-red/40 bg-red2 px-3 py-2.5 text-[15px] text-red">
@@ -90,7 +108,13 @@ export function LoginForm({ notice, info, next }: { notice?: string; info?: stri
         )}
 
         <button className={`${btn.primary} mt-1 h-12`} disabled={pending}>
-          {pending ? "Un momento…" : mode === "entrar" ? "Entrar" : "Crear cuenta gratis"}
+          {pending
+            ? "Un momento…"
+            : mode === "entrar"
+              ? "Entrar"
+              : mode === "registro"
+                ? "Crear cuenta gratis"
+                : "Enviarme el enlace"}
         </button>
       </form>
     </div>
