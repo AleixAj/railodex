@@ -34,7 +34,8 @@ export default async function DemoPage() {
           colección real. Las fotos son de los trenes y accesorios de verdad (el autor está en las notas de cada pieza).
           Las referencias son de modelos que existen; los precios, fechas y ubicaciones son de ejemplo. También añade{" "}
           {wishes.filter((w) => w.status === "reservada").length} preventas,{" "}
-          {wishes.filter((w) => w.status === "deseo").length} deseos y {compositions.length} composiciones.
+          {wishes.filter((w) => w.status === "deseo").length} deseos, {compositions.length} composiciones y un historial
+          de mantenimiento.
         </p>
       </div>
       <DemoSeeder

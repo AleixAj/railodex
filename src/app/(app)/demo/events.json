@@ -1,0 +1,106 @@
+[
+  {
+    "piece": "DB BR 103.1 «TEE»",
+    "happened_on": "2026-10-04",
+    "kind": "mantenimiento",
+    "title": "Limpieza de ruedas y engrase",
+    "cost": null,
+    "notes": "Una gota de aceite en cada eje y en la reductora."
+  },
+  {
+    "piece": "DB BR 103.1 «TEE»",
+    "happened_on": "2025-06-12",
+    "kind": "reparacion",
+    "title": "Cambio de bandajes",
+    "cost": 6.5,
+    "notes": "Patinaba en la rampa de la maqueta."
+  },
+  {
+    "piece": "RENFE 141F-2332 «Mikado»",
+    "happened_on": "2026-03-15",
+    "kind": "mantenimiento",
+    "title": "Engrase de bielas y reductora",
+    "cost": null,
+    "notes": null
+  },
+  {
+    "piece": "RENFE 319.319",
+    "happened_on": "2026-09-12",
+    "kind": "reparacion",
+    "title": "Bombillas de cabina cambiadas por LED",
+    "cost": 7.8,
+    "notes": "Una de las cabinas no se encendía."
+  },
+  {
+    "piece": "RENFE 141F-2332 «Mikado»",
+    "happened_on": "2023-06-02",
+    "kind": "digitalizacion",
+    "title": "Dirección cambiada a 2332 y luces ajustadas",
+    "cost": null,
+    "notes": "Venía con la dirección de fábrica."
+  },
+  {
+    "piece": "01 118 «Historische Eisenbahn Frankfurt»",
+    "happened_on": "2026-08-22",
+    "kind": "mantenimiento",
+    "title": "Limpieza de ruedas y tomas de corriente",
+    "cost": null,
+    "notes": null
+  },
+  {
+    "piece": "RENFE 333.083",
+    "happened_on": "2025-01-18",
+    "kind": "reparacion",
+    "title": "Escobillas del motor nuevas",
+    "cost": 4.2,
+    "notes": "Arrancaba a tirones."
+  },
+  {
+    "piece": "RENFE 333.083",
+    "happened_on": "2024-11-02",
+    "kind": "mantenimiento",
+    "title": "Limpieza del motor",
+    "cost": null,
+    "notes": null
+  },
+  {
+    "piece": "Ferrobús RENFE 591",
+    "happened_on": "2026-11-08",
+    "kind": "otro",
+    "title": "Prestado al club para la exposición de Navidad",
+    "cost": null,
+    "notes": "Lo devuelven en enero."
+  },
+  {
+    "piece": "Ferrobús RENFE 591",
+    "happened_on": "2023-05-20",
+    "kind": "reparacion",
+    "title": "Motor revisado en la tienda",
+    "cost": 25,
+    "notes": null
+  },
+  {
+    "piece": "RENFE 269.604",
+    "happened_on": "2026-01-10",
+    "kind": "ubicacion",
+    "title": "De la caja a la vitrina 1",
+    "cost": null,
+    "notes": null
+  },
+  {
+    "piece": "Talgo III RD «Catalán Talgo» (8 coches)",
+    "happened_on": "2025-12-01",
+    "kind": "reparacion",
+    "title": "Dos enganches pegados",
+    "cost": null,
+    "notes": "Uno de los coches intermedios se soltaba en las curvas."
+  },
+  {
+    "piece": "Casa de entramado «Mäulesmühle»",
+    "happened_on": "2025-05-03",
+    "kind": "otro",
+    "title": "Montada y pintada",
+    "cost": 8.9,
+    "notes": "Pintura para envejecer la piedra."
+  }
+]

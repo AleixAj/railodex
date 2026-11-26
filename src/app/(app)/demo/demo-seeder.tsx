@@ -8,7 +8,14 @@ import { createClient } from "@/lib/supabase/client";
 import { syncPhotos } from "@/components/item-wizard/photos";
 import { btn, Card } from "@/components/ui";
 import type { DemoPiece } from "./page";
-import { deleteDemoCompositions, deleteDemoWishes, deletePieces, seedCompositions, seedWishes } from "./actions";
+import {
+  deleteDemoCompositions,
+  deleteDemoWishes,
+  deletePieces,
+  seedCompositions,
+  seedEvents,
+  seedWishes,
+} from "./actions";
 
 type Status = "pending" | "working" | "done" | "skipped" | "failed";
 
@@ -54,7 +61,7 @@ export function DemoSeeder({
           setStatus((s) => ({ ...s, [piece.slug]: "failed" }));
         }
       }
-      await Promise.all([seedWishes(), seedCompositions()]);
+      await Promise.all([seedWishes(), seedCompositions(), seedEvents()]);
       router.refresh();
     });
 

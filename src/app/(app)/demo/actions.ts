@@ -5,6 +5,7 @@ import { requireUser } from "@/lib/supabase/server";
 import { PHOTO_BUCKET, storageFiles } from "@/lib/photos";
 import wishes from "./wishes.json";
 import compositions from "./compositions.json";
+import events from "./events.json";
 
 /** Deletes several pieces (with their photos) in one go, without leaving the page. */
 export async function deletePieces(ids: string[]) {
@@ -76,5 +77,23 @@ export async function deleteDemoCompositions() {
       "name",
       compositions.map((c) => c.name),
     );
+  revalidatePath("/", "layout");
+}
+
+/** Adds the example history (services, repairs...) to the demo pieces. Deleting a piece takes its history with it. */
+export async function seedEvents() {
+  if (process.env.NODE_ENV === "production") return;
+  const { supabase } = await requireUser();
+  const [{ data: items }, { data: existing }] = await Promise.all([
+    supabase.from("items").select("id, name"),
+    supabase.from("item_events").select("item_id, title"),
+  ]);
+  const idByName = new Map((items ?? []).map((i) => [i.name, i.id]));
+  const have = new Set((existing ?? []).map((e) => `${e.item_id}|${e.title}`));
+  const rows = events.flatMap(({ piece, ...event }) => {
+    const item_id = idByName.get(piece);
+    return item_id && !have.has(`${item_id}|${event.title}`) ? [{ item_id, ...event }] : [];
+  });
+  if (rows.length) await supabase.from("item_events").insert(rows);
   revalidatePath("/", "layout");
 }
