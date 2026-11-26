@@ -61,7 +61,7 @@ docs/                   the prompt used for the design
 
 To see the app with a realistic collection:
 
-1. `python scripts/demo-photos.py` downloads real, freely licensed photos of each train and accessory from Wikimedia Commons and crops them around the train. They go to `public/demo/`, which isn't committed.
+1. `python scripts/demo-photos.py` downloads real, freely licensed photos of each train and accessory from Wikimedia Commons and crops them around the train. Extra gallery photos are saved as `<slug>-2.jpg`. They go to `public/demo/`, which isn't committed.
 2. Open `/demo` (or Ajustes → Colección de ejemplo) and press **Cargar colección de ejemplo**. It also adds a few wishes and pre-orders from `wishes.json` , example trains from `compositions.json` and a maintenance history from `events.json` (real models; deposits and dates are made up). **Quitar la colección de ejemplo** clears it again, for example after changing the photos.
 
 The page doesn't exist in production. Each photo's author and licence are in `src/app/(app)/demo/pieces.json` and get copied into the piece's notes (the CC licences ask for credit). Catalogue numbers, running numbers, lengths and epochs come from the makers' or dealers' product pages; prices, dates and locations are made up. Model details nobody could confirm (length, interface) are left empty rather than guessed.

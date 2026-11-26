@@ -39,7 +39,7 @@
         "seller": "Bolsa de Alcalá",
         "hasBox": true
       },
-      "notes": "Foto del tren real: Falk2, Wikimedia Commons (CC BY 3.0)."
+      "notes": "Foto del tren real: Falk2 (CC BY 3.0), Wikimedia Commons."
     }
   },
   {
@@ -84,7 +84,7 @@
         "hasBox": true,
         "hasInstructions": true
       },
-      "notes": "Foto del tren real: Hugh Llewelyn, Wikimedia Commons (CC BY-SA 2.0)."
+      "notes": "Foto del tren real: Hugh Llewelyn (CC BY-SA 2.0), Wikimedia Commons."
     }
   },
   {
@@ -129,7 +129,7 @@
         "hasBox": true,
         "hasInstructions": true
       },
-      "notes": "Foto del tren real: Jorge González, Wikimedia Commons (CC BY-SA 3.0)."
+      "notes": "Foto del tren real: Jorge González (CC BY-SA 3.0), Wikimedia Commons."
     }
   },
   {
@@ -171,7 +171,7 @@
         "hasBox": true,
         "hasInstructions": true
       },
-      "notes": "Foto del tren real: Iván Rivera, Wikimedia Commons (CC BY-SA 2.0)."
+      "notes": "Foto del tren real: Iván Rivera (CC BY-SA 2.0), Wikimedia Commons."
     }
   },
   {
@@ -181,7 +181,16 @@
       "author": "Urmelbeauftragter",
       "license": "CC BY-SA 3.0",
       "page": "https://commons.wikimedia.org/wiki/File:103_224%2BTEE_DDM.jpg",
-      "crop": [0.5, 0.6, 0.8]
+      "crop": [0.5, 0.6, 0.8],
+      "extra": [
+        {
+          "file": "File:TEE Rheingold in Öhringen 02.JPG",
+          "author": "Wolfgang Ellsässer (Geryones)",
+          "license": "CC BY-SA 3.0 de",
+          "page": "https://commons.wikimedia.org/wiki/File:TEE_Rheingold_in_%C3%96hringen_02.JPG",
+          "crop": [0.55, 0.6, 0.9]
+        }
+      ]
     },
     "item": {
       "traction": "electrica",
@@ -229,7 +238,7 @@
           }
         ]
       },
-      "notes": "Foto del tren real: Urmelbeauftragter, Wikimedia Commons (CC BY-SA 3.0)."
+      "notes": "Foto del tren real: Urmelbeauftragter (CC BY-SA 3.0); Wolfgang Ellsässer (Geryones) (CC BY-SA 3.0 de), Wikimedia Commons."
     }
   },
   {
@@ -272,7 +281,7 @@
         "origin": "segunda_mano",
         "hasBox": true
       },
-      "notes": "Foto del tren real: Eva K., Wikimedia Commons (CC BY-SA 2.5)."
+      "notes": "Foto del tren real: Eva K. (CC BY-SA 2.5), Wikimedia Commons."
     }
   },
   {
@@ -313,7 +322,7 @@
         "origin": "herencia",
         "hasBox": false
       },
-      "notes": "Foto del tren real: José Ignacio Esnarriaga San José, Wikimedia Commons (CC BY 4.0)."
+      "notes": "Foto del tren real: José Ignacio Esnarriaga San José (CC BY 4.0), Wikimedia Commons."
     }
   },
   {
@@ -351,7 +360,7 @@
         "origin": "online",
         "hasBox": true
       },
-      "notes": "Foto del tren real: Falk2, Wikimedia Commons (CC BY 3.0)."
+      "notes": "Foto del tren real: Falk2 (CC BY 3.0), Wikimedia Commons."
     }
   },
   {
@@ -389,7 +398,7 @@
         "origin": "online",
         "hasBox": true
       },
-      "notes": "Foto del tren real: Christian28TMA, Wikimedia Commons (CC BY-SA 4.0)."
+      "notes": "Foto del tren real: Christian28TMA (CC BY-SA 4.0), Wikimedia Commons."
     }
   },
   {
@@ -426,7 +435,7 @@
         "origin": "segunda_mano",
         "hasBox": true
       },
-      "notes": "Foto del tren real: Falk2, Wikimedia Commons (CC BY-SA 4.0)."
+      "notes": "Foto del tren real: Falk2 (CC BY-SA 4.0), Wikimedia Commons."
     }
   },
   {
@@ -464,7 +473,7 @@
         "origin": "online",
         "hasBox": true
       },
-      "notes": "Foto del tren real: Benno Bickel, Wikimedia Commons (CC BY 3.0)."
+      "notes": "Foto del tren real: Benno Bickel (CC BY 3.0), Wikimedia Commons."
     }
   },
   {
@@ -503,7 +512,7 @@
         "origin": "tienda",
         "hasBox": true
       },
-      "notes": "Foto del tren real: NAC, Wikimedia Commons (CC BY-SA 4.0)."
+      "notes": "Foto del tren real: NAC (CC BY-SA 4.0), Wikimedia Commons."
     }
   },
   {
@@ -541,7 +550,7 @@
         "origin": "feria",
         "hasBox": true
       },
-      "notes": "Foto del tren real: Nederlandse Spoorwegen, Wikimedia Commons (CC0)."
+      "notes": "Foto del tren real: Nederlandse Spoorwegen (CC0), Wikimedia Commons."
     }
   },
   {
@@ -578,7 +587,7 @@
         "origin": "online",
         "hasBox": true
       },
-      "notes": "Foto del tren real: Falk2, Wikimedia Commons (CC BY-SA 4.0)."
+      "notes": "Foto del tren real: Falk2 (CC BY-SA 4.0), Wikimedia Commons."
     }
   },
   {
@@ -614,7 +623,7 @@
         "hasBox": true,
         "hasInstructions": true
       },
-      "notes": "Foto: Schwenn, Wikimedia Commons (CC BY-SA 3.0)."
+      "notes": "Foto: Schwenn (CC BY-SA 3.0), Wikimedia Commons."
     }
   },
   {
@@ -649,7 +658,7 @@
         "origin": "regalo",
         "hasBox": true
       },
-      "notes": "Foto: Hering-Home-Projects, Wikimedia Commons (CC BY-SA 3.0)."
+      "notes": "Foto: Hering-Home-Projects (CC BY-SA 3.0), Wikimedia Commons."
     }
   },
   {
@@ -685,7 +694,7 @@
         "origin": "tienda",
         "hasBox": true
       },
-      "notes": "Foto: Bourbaki 2021, Wikimedia Commons (CC BY-SA 4.0)."
+      "notes": "Foto: Bourbaki 2021 (CC BY-SA 4.0), Wikimedia Commons."
     }
   },
   {
@@ -721,7 +730,56 @@
         "hasBox": true,
         "hasInstructions": true
       },
-      "notes": "Foto: Berthold Werner, Wikimedia Commons (CC BY-SA 3.0)."
+      "notes": "Foto: Berthold Werner (CC BY-SA 3.0), Wikimedia Commons."
+    }
+  },
+  {
+    "slug": "renfe-7700",
+    "photo": {
+      "file": "File:RENFE 277-002 Pla de Vilanoveta.jpg",
+      "author": "Willtron",
+      "license": "CC BY-SA 2.0",
+      "page": "https://commons.wikimedia.org/wiki/File:RENFE_277-002_Pla_de_Vilanoveta.jpg",
+      "crop": [0.3, 0.55, 0.85],
+      "extra": [
+        {
+          "file": "File:Locomotora 7702 en Delicias.jpg",
+          "author": "CHV",
+          "license": "CC BY-SA 3.0",
+          "page": "https://commons.wikimedia.org/wiki/File:Locomotora_7702_en_Delicias.jpg",
+          "crop": [0.5, 0.5, 1.0]
+        }
+      ]
+    },
+    "item": {
+      "traction": "electrica",
+      "system": "analogico",
+      "dcc_address": "",
+      "status": "vendida",
+      "kind": "locomotora",
+      "name": "RENFE 7700 «Inglesa»",
+      "manufacturer": "Electrotren",
+      "catalog_ref": "HE2040",
+      "scale": "H0",
+      "epoch": "III",
+      "railway": "RENFE",
+      "road_number": "",
+      "condition": "como_nuevo",
+      "purchase_price": "190",
+      "estimated_value": "210",
+      "purchase_date": "2022-04-23",
+      "location": "",
+      "tags": "Eléctrica, Vendida",
+      "details": {
+        "wheelArrangement": "Co'Co'",
+        "pantographs": 2,
+        "current": "dc",
+        "livery": "Verde con bigotes amarillos",
+        "origin": "tienda",
+        "hasBox": true,
+        "hasInstructions": true
+      },
+      "notes": "Vendida en la bolsa de Alcalá en marzo de 2026 por 210 €. Foto del tren real: Willtron (CC BY-SA 2.0); CHV (CC BY-SA 3.0), Wikimedia Commons."
     }
   }
 ]

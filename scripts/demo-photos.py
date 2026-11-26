@@ -54,14 +54,19 @@ def crop(img: Image.Image, cx: float, cy: float, wf: float) -> Image.Image:
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
     for piece in PIECES:
-        target = OUT / f"{piece['slug']}.jpg"
-        if target.exists():
-            print("skip", target.name)
-            continue
-        photo = piece["photo"]
-        crop(download(photo["file"]), *photo["crop"]).save(target, quality=90)
-        print("ok", target.name, "-", photo["author"], photo["license"], flush=True)
-        time.sleep(1)  # be gentle with the API
+        main = piece["photo"]
+        # The cover is <slug>.jpg; any extra photos for the gallery are <slug>-2.jpg, <slug>-3.jpg...
+        photos = [(piece["slug"], main)] + [
+            (f"{piece['slug']}-{n}", extra) for n, extra in enumerate(main.get("extra", []), start=2)
+        ]
+        for name, photo in photos:
+            target = OUT / f"{name}.jpg"
+            if target.exists():
+                print("skip", target.name)
+                continue
+            crop(download(photo["file"]), *photo["crop"]).save(target, quality=90)
+            print("ok", target.name, "-", photo["author"], photo["license"], flush=True)
+            time.sleep(1)  # be gentle with the API
 
 
 if __name__ == "__main__":

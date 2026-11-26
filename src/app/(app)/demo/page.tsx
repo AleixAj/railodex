@@ -9,7 +9,7 @@ import compositions from "./compositions.json";
 
 export const metadata: Metadata = { title: "Colección de ejemplo" };
 
-export type DemoPiece = { slug: string; item: ItemPayload };
+export type DemoPiece = { slug: string; photo?: { extra?: unknown[] }; item: ItemPayload };
 
 // Development helper: fills your account with an example collection and real photos
 // from Wikimedia Commons (scripts/demo-photos.py) so the app can be seen as it would look in real use.

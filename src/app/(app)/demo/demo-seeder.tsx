@@ -51,8 +51,12 @@ export function DemoSeeder({
         }
         setStatus((s) => ({ ...s, [piece.slug]: "working" }));
         try {
-          const photo = await fetch(`/demo/${piece.slug}.jpg`);
-          const files = photo.ok ? [new File([await photo.blob()], `${piece.slug}.jpg`, { type: "image/jpeg" })] : [];
+          const names = [piece.slug, ...(piece.photo?.extra ?? []).map((_, n) => `${piece.slug}-${n + 2}`)];
+          const files: File[] = [];
+          for (const name of names) {
+            const photo = await fetch(`/demo/${name}.jpg`);
+            if (photo.ok) files.push(new File([await photo.blob()], `${name}.jpg`, { type: "image/jpeg" }));
+          }
           const res = await saveItem(piece.item, undefined);
           if (!res.id) throw new Error(res.error);
           await syncPhotos(supabase, { userId, itemId: res.id, before: [], kept: [], added: files });
